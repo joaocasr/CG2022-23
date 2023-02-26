@@ -1,0 +1,4 @@
+C:/Users/joaop/Desktop/CG2022-23/FASE1/engine_module/build/CMakeFiles/engine.dir
+C:/Users/joaop/Desktop/CG2022-23/FASE1/engine_module/build/CMakeFiles/xmlparser.dir
+C:/Users/joaop/Desktop/CG2022-23/FASE1/engine_module/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/joaop/Desktop/CG2022-23/FASE1/engine_module/build/CMakeFiles/ZERO_CHECK.dir

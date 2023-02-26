@@ -1,0 +1,27 @@
+# CMake generation dependency list for this directory.
+C:/Users/joaop/Desktop/CG2022-23/FASE1/generator_module/build/CMakeFiles/3.26.0-rc2/CMakeCCompiler.cmake
+C:/Users/joaop/Desktop/CG2022-23/FASE1/generator_module/build/CMakeFiles/3.26.0-rc2/CMakeCXXCompiler.cmake
+C:/Users/joaop/Desktop/CG2022-23/FASE1/generator_module/build/CMakeFiles/3.26.0-rc2/CMakeRCCompiler.cmake
+C:/Users/joaop/Desktop/CG2022-23/FASE1/generator_module/build/CMakeFiles/3.26.0-rc2/CMakeSystem.cmake
+C:/Users/joaop/Desktop/CG2022-23/FASE1/generator_module/generator/CMakeLists.txt
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/CMakeCInformation.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/CMakeCXXInformation.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/CMakeCommonLanguageInclude.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/CMakeGenericSystem.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/CMakeInitializeConfigs.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/CMakeLanguageInformation.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/CMakeRCInformation.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/CMakeSystemSpecificInformation.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/CMakeSystemSpecificInitialize.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/Compiler/MSVC-C.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/Compiler/MSVC-CXX.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/Compiler/MSVC.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/FindOpenGL.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/FindPackageHandleStandardArgs.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/FindPackageMessage.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/Platform/Windows-MSVC-C.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/Platform/Windows-MSVC-CXX.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/Platform/Windows-MSVC.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/Platform/Windows.cmake
+C:/Users/joaop/Desktop/cmake/cmake-3.26.0-rc2-windows-x86_64/share/cmake-3.26/Modules/Platform/WindowsPaths.cmake
