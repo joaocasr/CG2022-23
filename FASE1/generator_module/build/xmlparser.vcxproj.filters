@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\joaop\Desktop\CG2022-23\FASE1\generator_module\generator\tinyxml2.cpp">
+    <ClCompile Include="C:\Users\User\Desktop\Lessons\CG\CG2022-23\FASE1\generator_module\generator\tinyxml2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\joaop\Desktop\CG2022-23\FASE1\generator_module\generator\tinyxml2.h">
+    <ClInclude Include="C:\Users\User\Desktop\Lessons\CG\CG2022-23\FASE1\generator_module\generator\tinyxml2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\joaop\Desktop\CG2022-23\FASE1\generator_module\generator\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\User\Desktop\Lessons\CG\CG2022-23\FASE1\generator_module\generator\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{6E824E49-7D58-3EEB-8DBC-9944766A4BE7}</UniqueIdentifier>
+      <UniqueIdentifier>{27251B0F-9E7D-3DAE-B8F2-051BEDBE64F1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{C7F438B6-8303-3570-8AE8-E6D63B93A4C2}</UniqueIdentifier>
+      <UniqueIdentifier>{2374FAC6-B272-3D69-96E1-37EEDD4A8696}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

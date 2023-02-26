@@ -9,7 +9,7 @@ add_executable(${PROJECT_NAME} engine.cpp engine.h)
 add_library(xmlparser tinyxml2.cpp tinyxml2.h)
 
 target_link_libraries(${PROJECT_NAME} xmlparser)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
 
 find_package(OpenGL REQUIRED)
 include_directories(${OpenGL_INCLUDE_DIRS})

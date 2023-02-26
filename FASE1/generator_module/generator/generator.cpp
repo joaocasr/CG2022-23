@@ -1,18 +1,65 @@
 #include "generator.h"
+
 using namespace std;
-string path = "C:\\Users\\joaop\\Desktop\\CG2022-23\\FASE1\\generator_module\\models";
+
+string path = fs::current_path().string();
 
 vector<Triangle> triangulos;
 int sizeTriangulos = 0;
 
-void buildCube(int units, int grid, char * filename) {
+int main(int args, char* argv[]) {
+	if (strcmp(argv[1], "box") == 0) {
+		int units = atoi(argv[2]);
+		int grid = atoi(argv[3]);
+		char* filename = argv[4];
+		buildCube(units, grid, filename);
+	}else if (strcmp(argv[1], "plane") == 0) {
+		int units = atoi(argv[2]);
+		int divs = atoi(argv[3]);
+		char* filename = argv[4];
+		buildPlane(units, divs, filename);
+	}
+	else {
+		std::cout << argv[0] << "\n";
+	}
+}
 
+string PointtoString(Point p) {
+	return "(" + std::to_string(p.x) + "," + std::to_string(p.y) + "," + std::to_string(p.z) + ")";
+}
+
+
+string TriangletoString(Triangle* t) {
+	return "p1:" + PointtoString(t->p1) + ";" + "p2:" + PointtoString(t->p2) + ";" + "p3:" + PointtoString(t->p3) + "\n";
+}
+
+void buildPlane(int units, int divs, char* filename) {
+	path += "\\";
+	path += filename;
+	ofstream file;
+	file.open(path);
+
+	if (!file) {
+		std::cout << "Error opening file" << "\n";
+		exit(1);
+	}
+	else {
+		std::cout << path << "\n";
+	}
+}
+
+void buildCube(int units, int grid, char * filename) {
+	path += "\\";
 	path += filename;
 	ofstream file;
 	file.open(path); 
+
 	if (!file) { 
 		std::cout << "Error opening file" << "\n";
 		exit(1);
+	}
+	else {
+		std::cout << path << "\n";
 	}
 
 	float stepx, stepy, stepz;
@@ -174,24 +221,4 @@ void buildCube(int units, int grid, char * filename) {
 	}
 	std::cout << "size:" << sizeTriangulos << "\n";
 
-}
-
-
-string PointtoString(Point p) {
-	return "("+std::to_string(p.x) + "," + std::to_string(p.y) + "," + std::to_string(p.z) + ")";
-}
-
-
-string TriangletoString(Triangle* t) {
-	return "p1:" + PointtoString(t->p1) + ";" + "p2:" + PointtoString(t->p2) + ";" + "p3:" + PointtoString(t->p3)+"\n";
-}
-
-
-int main(int args, char* argv[]) {
-	if (argv[1] == "box") {
-		int units = atoi(argv[2]);
-		int grid = atoi(argv[3]);
-		char* filename = argv[4];
-		buildCube(units,grid,filename);
-	}
 }

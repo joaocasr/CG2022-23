@@ -1,13 +1,16 @@
 #pragma once
 #include <string>
-#include<vector>
+#include <vector>
 #include <iostream>
 #include <stdlib.h>
 #include <list>
 #include <fstream>
-using std::ofstream;
 #include <cstdlib>
+#include <filesystem>
+using std::ofstream;
+namespace fs = std::filesystem;
 
+void buildPlane(int unit, int div, char* filename);
 void buildCube(int units, int grid, char* filename);
 
 class Point {
