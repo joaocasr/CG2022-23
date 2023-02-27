@@ -83,7 +83,18 @@ int main(int argc, char** argv)
 
 void parse_XML() {
 	XMLDocument document;
-	bool loadOkay = document.LoadFile("C:\\Users\\joaop\\Desktop\\CG2022-23\\FASE1\\engine_module\\engine\\config.xml");
+	std::string path= fs::current_path().string();
+	string dir = path.substr(0, path.length() - 5);
+	dir += "engine\\config.xml";
+
+	char* pathfile = new char[dir.length() + 1];
+	std::strcpy(pathfile, dir.c_str());
+
+	cout << path << endl;
+
+	cout << pathfile << endl;
+	//C:\Users\joaop\Desktop\CG2022-23\FASE1\engine_module\build\Release
+	bool loadOkay = document.LoadFile(pathfile);
 	if (loadOkay == 0) {
 		XMLElement* world = document.FirstChildElement("world");
 		XMLElement* window = world->FirstChildElement("window");

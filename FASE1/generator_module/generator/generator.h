@@ -10,7 +10,7 @@
 using std::ofstream;
 namespace fs = std::filesystem;
 
-void buildPlane(int unit, int div, char* filename);
+void buildPlane(int units, int divs, char* filename);
 void buildCube(int units, int grid, char* filename);
 
 class Point {
@@ -64,3 +64,7 @@ public:
 		p3 = t->p3;
 	}
 };
+
+std::string PointToString(Point p);
+
+std::string TriangleToString(Triangle* t);

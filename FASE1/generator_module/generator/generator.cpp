@@ -1,11 +1,10 @@
 #include "generator.h"
-
 using namespace std;
-
-string path = fs::current_path().string();
+std::string path = fs::current_path().string();
 
 vector<Triangle> triangulos;
 int sizeTriangulos = 0;
+
 
 int main(int args, char* argv[]) {
 	if (strcmp(argv[1], "box") == 0) {
@@ -13,7 +12,8 @@ int main(int args, char* argv[]) {
 		int grid = atoi(argv[3]);
 		char* filename = argv[4];
 		buildCube(units, grid, filename);
-	}else if (strcmp(argv[1], "plane") == 0) {
+	}
+	else if (strcmp(argv[1], "plane") == 0) {
 		int units = atoi(argv[2]);
 		int divs = atoi(argv[3]);
 		char* filename = argv[4];
@@ -24,42 +24,39 @@ int main(int args, char* argv[]) {
 	}
 }
 
-string PointtoString(Point p) {
-	return "(" + std::to_string(p.x) + "," + std::to_string(p.y) + "," + std::to_string(p.z) + ")";
-}
-
-
-string TriangletoString(Triangle* t) {
-	return "p1:" + PointtoString(t->p1) + ";" + "p2:" + PointtoString(t->p2) + ";" + "p3:" + PointtoString(t->p3) + "\n";
-}
-
 void buildPlane(int units, int divs, char* filename) {
-	path += "\\";
-	path += filename;
+
+	
+	std::string dir = path.substr(0, path.length() - 13);
+	dir += "models\\";
+	dir += filename;
+	//C:\Users\joaop\Desktop\CG2022-23\FASE1\generator_module\build\Release
+	std::cout << dir << "\n";
 	ofstream file;
-	file.open(path);
+	file.open(dir);
 
 	if (!file) {
 		std::cout << "Error opening file" << "\n";
 		exit(1);
 	}
 	else {
-		std::cout << path << "\n";
+		std::cout << dir << "\n";
 	}
 }
 
 void buildCube(int units, int grid, char * filename) {
-	path += "\\";
-	path += filename;
-	ofstream file;
-	file.open(path); 
 
+	std::string dir = path.substr(0, path.length() - 13);
+	dir += "models\\";
+	dir += filename;
+	std::cout << dir << "\n";
+
+
+	ofstream file;
+	file.open(dir); 
 	if (!file) { 
 		std::cout << "Error opening file" << "\n";
 		exit(1);
-	}
-	else {
-		std::cout << path << "\n";
 	}
 
 	float stepx, stepy, stepz;
@@ -126,6 +123,12 @@ void buildCube(int units, int grid, char * filename) {
 			triangulos.push_back(t1);
 			triangulos.push_back(t2);
 			sizeTriangulos += 4;
+
+			file << TriangleToString(t3) << endl;
+			file << TriangleToString(t4) << endl;
+			file << TriangleToString(t1) << endl;
+			file << TriangleToString(t2) << endl;
+
 		}
 	}
 	for (int i = 0; -finalz + i * stepz < finalz; i++) {
@@ -164,6 +167,12 @@ void buildCube(int units, int grid, char * filename) {
 			triangulos.push_back(t1);
 			triangulos.push_back(t2);
 			sizeTriangulos += 4;
+
+			file << TriangleToString(t3) << endl;
+			file << TriangleToString(t4) << endl;
+			file << TriangleToString(t1) << endl;
+			file << TriangleToString(t2) << endl;
+
 		}
 	}
 	for (int i = 0; -finalz + i * stepz < finalz; i++) {
@@ -205,10 +214,10 @@ void buildCube(int units, int grid, char * filename) {
 			triangulos.push_back(t2);
 			sizeTriangulos += 4;
 
-			file << TriangletoString(t3) << endl;
-			file << TriangletoString(t4) << endl;
-			file << TriangletoString(t1) << endl;
-			file << TriangletoString(t2) << endl;
+			file << TriangleToString(t3) << endl;
+			file << TriangleToString(t4) << endl;
+			file << TriangleToString(t1) << endl;
+			file << TriangleToString(t2) << endl;
 		}
 	}
 	file.close();
@@ -221,4 +230,14 @@ void buildCube(int units, int grid, char * filename) {
 	}
 	std::cout << "size:" << sizeTriangulos << "\n";
 
+}
+
+
+std::string PointToString(Point p) {
+	return "("+std::to_string(p.x) + "," + std::to_string(p.y) + "," + std::to_string(p.z) + ")";
+}
+
+
+std::string TriangleToString(Triangle* t) {
+	return "p1:" + PointToString(t->p1) + ";" + "p2:" + PointToString(t->p2) + ";" + "p3:" + PointToString(t->p3);
 }
