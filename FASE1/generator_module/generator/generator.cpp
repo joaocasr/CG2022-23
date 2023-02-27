@@ -1,4 +1,5 @@
 #include "generator.h"
+
 using namespace std;
 std::string path = fs::current_path().string();
 
@@ -18,6 +19,13 @@ int main(int args, char* argv[]) {
 		int divs = atoi(argv[3]);
 		char* filename = argv[4];
 		buildPlane(units, divs, filename);
+	}
+	else if (strcmp(argv[1], "sphere") == 0) {
+		int radius = atoi(argv[2]);
+		int slices = atoi(argv[3]);
+		int stacks = atoi(argv[4]);
+		char* filename = argv[5];
+		buildSphere(radius,slices,stacks,filename);
 	}
 	else {
 		std::cout << argv[0] << "\n";
@@ -293,4 +301,59 @@ std::string PointToString(Point p) {
 
 std::string TriangleToString(Triangle* t) {
 	return "p1:" + PointToString(t->p1) + ";" + "p2:" + PointToString(t->p2) + ";" + "p3:" + PointToString(t->p3);
+}
+
+void buildSphere(float radius, int slices, int stacks, const char* filename)
+{
+	std::string dir = path.substr(0, path.length() - 13);
+	dir += "models\\";
+	dir += filename;
+	std::cout << dir << "\n";
+
+
+	ofstream file;
+	file.open(dir);
+	if (!file) {
+		std::cout << "Error opening file" << "\n";
+		exit(1);
+	}
+	double pi = M_PI;
+
+	float deltaPhi = pi / stacks;
+	float deltaTheta = 2 * pi / slices;
+
+	for (int i = 0; i < stacks; i++) {
+		float phi = i * deltaPhi;
+		float nextPhi = (i + 1) * deltaPhi;
+		for (int j = 0; j < slices; j++) {
+			float theta = j * deltaTheta;
+			float nextTheta = (j + 1) * deltaTheta;
+
+			Point p1(radius * sin(phi) * cos(theta), radius * sin(phi) * sin(theta), radius * cos(phi));
+			Point p2(radius * sin(phi) * cos(nextTheta), radius * sin(phi) * sin(nextTheta), radius * cos(phi));
+			Point p3(radius * sin(nextPhi) * cos(theta), radius * sin(nextPhi) * sin(theta), radius * cos(nextPhi));
+			Point p4(radius * sin(nextPhi) * cos(nextTheta), radius * sin(nextPhi) * sin(nextTheta), radius * cos(nextPhi));
+
+			Triangle t1(&p1, &p2, &p4);
+			Triangle t2(&p1, &p4, &p3);
+
+
+			triangulos.push_back(t1);
+			triangulos.push_back(t2);
+			sizeTriangulos += 2;
+
+			file << TriangleToString(&t1) << std::endl;
+			file << TriangleToString(&t2) << std::endl;
+		}
+	}
+
+	file.close();
+	std::cout << "size:" << sizeTriangulos << "\n";
+
+	for (Triangle t : triangulos) {
+		std::cout << std::to_string(t.p1.x) + ";" + std::to_string(t.p1.y) + ";" + std::to_string(t.p1.z) << ",";
+		std::cout << std::to_string(t.p2.x) + ";" + std::to_string(t.p2.y) + ";" + std::to_string(t.p2.z) << ",";
+		std::cout << std::to_string(t.p3.x) + ";" + std::to_string(t.p3.y) + ";" + std::to_string(t.p3.z) << "\n";
+	}
+	std::cout << "size:" << sizeTriangulos << "\n";
 }

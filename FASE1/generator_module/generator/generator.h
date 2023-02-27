@@ -7,11 +7,14 @@
 #include <fstream>
 #include <cstdlib>
 #include <filesystem>
+#include <math.h>
+#define M_PI 3.14159265358979323846
 using std::ofstream;
 namespace fs = std::filesystem;
 
 void buildPlane(int units, int divs, char* filename);
 void buildCube(int units, int grid, char* filename);
+void buildSphere(float radius, int slices, int stacks, const char* filename);
 
 class Point {
 
