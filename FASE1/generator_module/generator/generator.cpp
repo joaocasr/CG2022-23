@@ -42,6 +42,59 @@ void buildPlane(int units, int divs, char* filename) {
 	else {
 		std::cout << dir << "\n";
 	}
+
+
+	float stepx, stepy, stepz;
+	stepx = stepy = stepz = static_cast<float>(units) / divs;
+	float finalx, finaly, finalz;
+	finalx = finaly = finalz = units / static_cast<float>(2);
+
+	//valores das coordenadas dos pontos do triangulos do plano
+	float px1, py1, pz1;
+	float px2, py2, pz2;
+	Point* p1, * p2, * p3, * p4;
+	Triangle* t1, * t2;
+
+	for (int i = 0; -finalz + i * stepz < finalz; i++) {
+		for (int j = 0; -finalx + j * stepx < finalx; j++) {
+
+			px1 = -finalx + (j * stepx);
+			px2 = -finalx + ((j + 1) * stepx);
+			pz1 = -finalz + (i * stepz);
+			pz2 = -finalz + ((i + 1) * stepz);
+
+			py1 = -finaly;
+			py2 = finaly;
+
+			//pontos do plano
+			p1 = new Point(px1, py1, pz1);
+			p2 = new Point(px2, py1, pz1);
+			p3 = new Point(px1, py1, pz2);
+			p4 = new Point(px2, py1, pz2);
+
+
+			//triangulos do plano
+			t1 = new Triangle(p4, p3, p1);
+			t2 = new Triangle(p2, p4, p1);
+
+			triangulos.push_back(t1);
+			triangulos.push_back(t2);
+			sizeTriangulos += 2;
+;
+			file << TriangleToString(t1) << endl;
+			file << TriangleToString(t2) << endl;
+
+		}
+	}
+	file.close();
+	std::cout << "size:" << sizeTriangulos << "\n";
+
+	for (Triangle t : triangulos) {
+		std::cout << std::to_string(t.p1.x) + ";" + std::to_string(t.p1.y) + ";" + std::to_string(t.p1.z) << ",";
+		std::cout << std::to_string(t.p2.x) + ";" + std::to_string(t.p2.y) + ";" + std::to_string(t.p2.z) << ",";
+		std::cout << std::to_string(t.p3.x) + ";" + std::to_string(t.p3.y) + ";" + std::to_string(t.p3.z) << "\n";
+	}
+	std::cout << "size:" << sizeTriangulos << "\n";
 }
 
 void buildCube(int units, int grid, char * filename) {
