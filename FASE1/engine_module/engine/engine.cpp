@@ -50,6 +50,22 @@ void renderScene(void)
 		upCamx, upCamy, upCamz);
 	glColor3f(1.0f, 1.0f, 1.0f);
 
+	// Axis
+	glBegin(GL_LINES);
+		// X axis Red
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f(100.0f, 0.0f, 0.0f);
+		//Y Axis Green
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 100.0f, 0.0f);
+		//Z axis Blue
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 100.0f);
+	glEnd();
+
 	
 	// End of frame
 	glutSwapBuffers();
@@ -167,21 +183,28 @@ void parse_XML() {
 			path += "\\";
 			path += fname;
 			myfile.open(path);
-			string seg;
+			string line, seg;
 			int vertex_num = 0;
 
 			if (myfile.is_open()) {
+				cout << "Reading from: " << fname << endl;
+
 				getline(myfile, seg);
 
 				vertex_num = stoi(seg);
 
-				vector<int> tmp;
+				vector<float> tmp;
 
 				for (int i = 0; i < vertex_num; i++) {
-					while (getline(myfile, seg, ',')) 
-						tmp.push_back(stoi(seg));
+					getline(myfile, line);
+					stringstream tmpss(line);
 
-					vertex.push_back(Point(tmp[0], tmp[1], tmp[2], tmp[3]));
+					for (int c = 0; c < 3; c++) {
+						getline(tmpss, seg, ',');
+						tmp.push_back(stof(seg));
+					}
+
+					vertex.push_back(Point(tmp[0], tmp[1], tmp[2], 0)); // TODO NEED TO CHANGE GENERATOR SO IT ALSO WRITES AST VERTIX POINT
 					tmp.clear();
 				}
 
