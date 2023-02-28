@@ -8,6 +8,7 @@ vector<Triangle> triangulos;
 int sizeTriangulos = 0;
 
 vector<string> modelos;
+vector<Point> vertex;
 float width = 0, height = 0;
 float posCamx = 0, posCamy = 0, posCamz = 0;
 float lookCamx = 0, lookCamy = 0, lookCamz = 0;
@@ -93,7 +94,7 @@ void parse_XML() {
 	cout << path << endl;
 
 	cout << pathfile << endl;
-	//C:\Users\joaop\Desktop\CG2022-23\FASE1\engine_module\build\Release
+
 	bool loadOkay = document.LoadFile(pathfile);
 	if (loadOkay == 0) {
 		XMLElement* world = document.FirstChildElement("world");
@@ -153,10 +154,43 @@ void parse_XML() {
 		cout << "near = " << near << endl;
 		cout << "far = " << far << endl;
 		cout << "model1 = " << modelos[0] << endl;
-		cout << "model2 = " << modelos[1] << endl;
 
 	}
 	else {
 		cout << "Failed to load XML file" << endl;
 	}
+
+	if(modelos.size() > 0)
+		for (string fname : modelos) {
+			std::ifstream myfile;
+			string path = fs::current_path().string();
+			path += "\\";
+			path += fname;
+			myfile.open(path);
+			string seg;
+			int vertex_num = 0;
+
+			if (myfile.is_open()) {
+				getline(myfile, seg);
+
+				vertex_num = stoi(seg);
+
+				vector<int> tmp;
+
+				for (int i = 0; i < vertex_num; i++) {
+					while (getline(myfile, seg, ',')) 
+						tmp.push_back(stoi(seg));
+
+					vertex.push_back(Point(tmp[0], tmp[1], tmp[2], tmp[3]));
+					tmp.clear();
+				}
+
+				for (Point p : vertex) {
+					cout << p.x << "," << p.y << "," << p.z << "," << p.dim << endl;
+				}
+			}
+			else {
+				cout << "Failed to open " << fname << endl;
+			}
+		}
 }

@@ -13,6 +13,7 @@
 #include <string>
 #include <fstream>
 #include <filesystem>
+#include <string>
 using std::ofstream;
 namespace fs = std::filesystem;
 #include <cstdlib>
@@ -27,23 +28,54 @@ public:
 	float x;
 	float y;
 	float z;
+	int dim;
 
 	Point()
 	{
 		x = 0;
 		y = 0;
 		z = 0;
+		dim = 0;
 	}
-	Point(float px, float py, float pz)
+
+	Point(float px, float py, float pz, int pdim)
 	{
 		x = px;
 		y = py;
 		z = pz;
+		dim = pdim;
 	}
+
 	Point(Point* p) {
 		x = p->x;
 		y = p->y;
 		z = p->z;
+		dim = p->dim;
+	}
+};
+
+class Model {
+public:
+	int vertex_num;
+	vector<Point> vertex;
+
+	Model() {
+		vertex_num = 0;
+	}
+
+	Model(int vert_num, vector<Point> vert) {
+		vertex_num = vert_num;
+		copy(vert.begin(), vert.end(), back_inserter(vertex));
+	}
+
+	Model(Model* m) {
+		vertex_num = m->vertex_num;
+		copy(m->vertex.begin(), m->vertex.end(), back_inserter(vertex));
+	}
+
+	void addVertex(Point p) {
+		vertex_num++;
+		vertex.push_back(Point(p));
 	}
 };
 

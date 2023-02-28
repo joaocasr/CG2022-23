@@ -40,17 +40,6 @@ void buildPlane(int units, int divs, char* filename) {
 	dir += filename;
 	//C:\Users\joaop\Desktop\CG2022-23\FASE1\generator_module\build\Release
 	std::cout << dir << "\n";
-	ofstream file;
-	file.open(dir);
-
-	if (!file) {
-		std::cout << "Error opening file" << "\n";
-		exit(1);
-	}
-	else {
-		std::cout << dir << "\n";
-	}
-
 
 	float stepx, stepy, stepz;
 	stepx = stepy = stepz = static_cast<float>(units) / divs;
@@ -88,21 +77,30 @@ void buildPlane(int units, int divs, char* filename) {
 			triangulos.push_back(t1);
 			triangulos.push_back(t2);
 			sizeTriangulos += 2;
-;
-			file << TriangleToString(t1) << endl;
-			file << TriangleToString(t2) << endl;
 
 		}
 	}
-	file.close();
-	std::cout << "size:" << sizeTriangulos << "\n";
 
-	for (Triangle t : triangulos) {
-		std::cout << std::to_string(t.p1.x) + ";" + std::to_string(t.p1.y) + ";" + std::to_string(t.p1.z) << ",";
-		std::cout << std::to_string(t.p2.x) + ";" + std::to_string(t.p2.y) + ";" + std::to_string(t.p2.z) << ",";
-		std::cout << std::to_string(t.p3.x) + ";" + std::to_string(t.p3.y) + ";" + std::to_string(t.p3.z) << "\n";
+	ofstream file;
+	file.open(dir);
+
+	if (!file) {
+		std::cout << "Error opening file" << "\n";
+		exit(1);
 	}
-	std::cout << "size:" << sizeTriangulos << "\n";
+	else {
+		std::cout << dir << "\n";
+	}
+
+	file << to_string(triangulos.size() * 3) << "\n";
+	cout << "Writing: <" << to_string(triangulos.size() * 3) << "> Points!" << endl;
+
+	for (int c = 0; c < triangulos.size(); c++) {
+		file << TriangleToString(&triangulos[c]);
+		cout << "Wrote: " << TriangleToString(&triangulos[c]);
+	}
+
+	file.close();
 }
 
 void buildCube(int units, int grid, char * filename) {
@@ -295,12 +293,12 @@ void buildCube(int units, int grid, char * filename) {
 
 
 std::string PointToString(Point p) {
-	return "("+std::to_string(p.x) + "," + std::to_string(p.y) + "," + std::to_string(p.z) + ")";
+	return to_string(p.x) + "," + to_string(p.y) + "," + to_string(p.z);
 }
 
 
 std::string TriangleToString(Triangle* t) {
-	return "p1:" + PointToString(t->p1) + ";" + "p2:" + PointToString(t->p2) + ";" + "p3:" + PointToString(t->p3);
+	return PointToString(t->p1) + "\n" + PointToString(t->p2) + "\n" + PointToString(t->p3) + "\n";
 }
 
 void buildSphere(float radius, int slices, int stacks, const char* filename)
