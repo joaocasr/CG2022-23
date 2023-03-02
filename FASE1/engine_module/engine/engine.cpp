@@ -66,11 +66,30 @@ void renderScene(void)
 		glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
 
+	// Transformations
+
+
+	// Models
+	build_models();
 	
 	// End of frame
 	glutSwapBuffers();
 }
 
+void build_models() {
+	Point p1, p2, p3;
+	for (int c = 0; c < vertex.size(); c += 3) {
+		p1 = vertex[c];
+		p2 = vertex[c + 1];
+		p3 = vertex[c + 2];
+		glBegin(GL_TRIANGLES);
+			glColor3f(1.0f, 0.5f, 0.0f);
+			glVertex3f(p3.x, p3.y, p3.z);
+			glVertex3f(p2.x, p2.y, p2.z);
+			glVertex3f(p1.x, p1.y, p1.z);
+		glEnd();
+	}
+}
 
 int main(int argc, char** argv)
 {

@@ -21,6 +21,7 @@ namespace fs = std::filesystem;
 #include <iostream>
 using namespace std;
 void parse_XML();
+void build_models();
 
 class Point {
 
