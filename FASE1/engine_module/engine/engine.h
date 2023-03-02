@@ -8,18 +8,19 @@
 #include <string>
 #include <iostream>
 #include <stdlib.h>
+#define _USE_MATH_DEFINES
 #include <math.h>
 #include <list>
 #include <string>
 #include <fstream>
 #include <filesystem>
 #include <string>
+#include <cstdlib>
+#include <iostream>
 using std::ofstream;
 namespace fs = std::filesystem;
-#include <cstdlib>
-
-#include <iostream>
 using namespace std;
+
 void parse_XML();
 void build_models();
 

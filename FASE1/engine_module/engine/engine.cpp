@@ -1,11 +1,14 @@
 #include "tinyxml2.h"
 #include "engine.h"
 
-#define _USE_MATH_DEFINES
+#define M_FIX 0
+#define M_FPS 1
+#define STEP ((M_PI*2) / 20)
 using namespace tinyxml2;
 
 vector<Triangle> triangulos;
 int sizeTriangulos = 0;
+int mode = M_FIX;
 
 vector<string> modelos;
 vector<Point> vertex;
@@ -14,6 +17,9 @@ float posCamx = 0, posCamy = 0, posCamz = 0;
 float lookCamx = 0, lookCamy = 0, lookCamz = 0;
 float upCamx = 0, upCamy = 0, upCamz = 0;
 float fov = 0, near = 0, far = 0;
+float G_alpha = 0.0f;
+float G_beta = 0.0f;
+float G_radious = 5.0f;
 
 
 void changeSize(int w, int h)
@@ -42,7 +48,6 @@ void renderScene(void)
 	// clear buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	// set camera
 	glLoadIdentity();
 	gluLookAt(posCamx, posCamy, posCamz,
@@ -91,6 +96,71 @@ void build_models() {
 	}
 }
 
+void processKeys(unsigned char c, int xx, int yy) {
+	// put code to process regular keys in here
+	if (mode == M_FIX) {
+		if (c == 'a' || c == 'A')
+			G_alpha -= STEP;
+		else if (c == 'd' || c == 'D') {
+			G_alpha += STEP;
+		}
+		else if ((c == 'w' || c == 'W') && G_beta < 1.5f) {
+			G_beta += STEP;
+		}
+		else if ((c == 's' || c == 'S') && G_beta > -1.5f) {
+			G_beta -= STEP;
+		}
+		else if ((c == 'q' || c == 'Q') && G_radious > 0.5f) {
+			G_radious -= 0.5f;
+		}
+		else if (c == 'e' || c == 'E') {
+			G_radious += 0.5f;
+		}
+	}
+	else {
+		if (c == 'a' || c == 'A') {
+
+		}
+		else if (c == 'd' || c == 'D') {
+
+		}
+		else if (c == 'w' || c == 'W') {
+
+		}
+		else if (c == 's' || c == 'S') {
+
+		}
+		else if (c == 'q' || c == 'Q') {
+
+		}
+		else if (c == 'e' || c == 'E') {
+
+		}
+	}
+
+	posCamx = G_radious * cos(G_beta) * sin(G_alpha);
+	posCamy = G_radious * sin(G_beta);
+	posCamz = G_radious * cos(G_beta) * cos(G_alpha);
+
+	glutPostRedisplay();
+}
+
+
+void processSpecialKeys(int key, int xx, int yy) {
+	// put code to process special keys in here
+	if (key == GLUT_KEY_F1) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+	else if (key == GLUT_KEY_F2) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else if (key == GLUT_KEY_F3) {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	}
+
+	glutPostRedisplay();
+}
+
 int main(int argc, char** argv)
 {
 	parse_XML();
@@ -106,9 +176,14 @@ int main(int argc, char** argv)
 	glutIdleFunc(renderScene);
 	glutDisplayFunc(renderScene);
 
+	// Callback registration for keyboard processing
+	glutKeyboardFunc(processKeys);
+	glutSpecialFunc(processSpecialKeys);
+
 	// some OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// enter GLUT’s main cycle
