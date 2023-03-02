@@ -334,6 +334,7 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 
 	float step = (M_PI * 2) / slices;
 	float stackStep = static_cast<float>(height) / static_cast<float>(stacks);
+	float radStep = static_cast<float>(radius) / static_cast<float>(stacks);
 	float alpha = 0.0f;
 	Point* p1, * p2, * p3, * p4;
 
@@ -349,19 +350,24 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 	}
 
 	alpha = 0.0f;
-	float curHeight = 0.0f;
+	float curHeight;
+	float curRad;
 
 	for (int i = 0; i < slices; i++) {
+		curHeight = 0.0f;
+		curRad = radius;
+
 		for (int j = 0; j < stacks-1; j++) {
-			p1 = new Point(radius * sin(alpha), curHeight, radius * cos(alpha));
-			p2 = new Point(radius * sin(alpha + step), curHeight, radius * cos(alpha + step));
-			p3 = new Point(radius * sin(alpha + step), curHeight + stackStep, radius * cos(alpha + step));
-			p4 = new Point(radius * sin(alpha), curHeight + stackStep, radius * cos(alpha));
+			p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
+			p2 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
+			p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight + stackStep, (curRad - radStep) * cos(alpha + step));
+			p4 = new Point((curRad - radStep) * sin(alpha), curHeight + stackStep, (curRad - radStep) * cos(alpha));
 
 			triangulos.push_back(new Triangle(p1, p2, p3));
-			triangulos.push_back(new Triangle(p4, p1, p2));
+			triangulos.push_back(new Triangle(p3, p4, p1));
 
 			curHeight += stackStep;
+			curRad -= radStep;
 		}
 
 		alpha += step;
@@ -370,8 +376,8 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 	alpha = 0.0f;
 
 	for (int c = 0; c < slices; c++) {
-		p1 = new Point(radius * sin(alpha + step), curHeight, radius * cos(alpha + step));
-		p2 = new Point(radius * sin(alpha), curHeight, radius * cos(alpha));
+		p1 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
+		p2 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
 		p3 = new Point(0.0f, height, 0.0f);
 
 		triangulos.push_back(new Triangle(p3, p2, p1));
