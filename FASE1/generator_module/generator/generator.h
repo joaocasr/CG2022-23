@@ -15,6 +15,7 @@ namespace fs = std::filesystem;
 void buildPlane(int units, int divs, char* filename);
 void buildCube(int units, int grid, char* filename);
 void buildSphere(float radius, int slices, int stacks, const char* filename);
+void buildCone(float radius, int height, int slices, int stacks, const char* filename);
 
 class Point {
 
