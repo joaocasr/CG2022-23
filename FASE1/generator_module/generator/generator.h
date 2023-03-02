@@ -16,6 +16,7 @@ void buildPlane(int units, int divs, char* filename);
 void buildCube(int units, int grid, char* filename);
 void buildSphere(float radius, int slices, int stacks, const char* filename);
 void buildCone(float radius, int height, int slices, int stacks, const char* filename);
+void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks, const char* filename);
 
 class Point {
 

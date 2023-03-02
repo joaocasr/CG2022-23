@@ -35,6 +35,15 @@ int main(int args, char* argv[]) {
 		char* filename = argv[6];
 		buildCone(radius, height, slices, stacks, filename);
 	}
+	else if (strcmp(argv[1], "cylinder") == 0) {
+		float b_rad = atof(argv[2]);
+		float t_rad = atof(argv[3]);
+		int height = atoi(argv[4]);
+		int slices = atoi(argv[5]);
+		int stacks = atoi(argv[6]);
+		char* filename = argv[7];
+		buildCylinder(b_rad, t_rad, height, slices, stacks, filename);
+	}
 	else {
 		std::cout << argv[0] << "\n";
 	}
@@ -385,6 +394,106 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 		alpha += step;
 	}
 	
+	ofstream file;
+	file.open(dir);
+
+	if (!file) {
+		std::cout << "Error opening file" << "\n";
+		exit(1);
+	}
+	else {
+		std::cout << dir << "\n";
+	}
+
+	file << to_string(triangulos.size() * 3) << "\n";
+	cout << "Writing: <" << to_string(triangulos.size() * 3) << "> Points!" << endl;
+
+	for (int c = 0; c < triangulos.size(); c++) {
+		file << TriangleToString(&triangulos[c]);
+		cout << "Wrote: " << TriangleToString(&triangulos[c]);
+	}
+
+	file.close();
+}
+
+void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks, const char* filename) {
+	// Open the output file
+	std::string dir = path.substr(0, path.length() - 13);
+	dir += "models\\";
+	dir += filename;
+
+	float step = (M_PI * 2) / slices;
+	float stackStep = static_cast<float>(height) / static_cast<float>(stacks);
+	float radStep = abs(b_rad - t_rad) / stacks;
+	float alpha = 0.0f;
+	float h_height = static_cast<float>(height) / 2;
+	Point* p1, * p2, * p3, * p4;
+
+	for (int c = 0; c < slices; c++) {
+		//Lower circle
+		p1 = new Point(b_rad * sin(alpha + step), -h_height, b_rad * cos(alpha + step));
+		p2 = new Point(b_rad * sin(alpha), -h_height, b_rad * cos(alpha));
+		p3 = new Point(0.0f, -h_height, 0.0f);
+
+		triangulos.push_back(new Triangle(p1, p2, p3));
+
+		//Upper circle
+		p1 = new Point(t_rad * sin(alpha + step), h_height, t_rad * cos(alpha + step));
+		p2 = new Point(t_rad * sin(alpha), h_height, t_rad * cos(alpha));
+		p3 = new Point(0.0f, h_height, 0.0f);
+
+		triangulos.push_back(new Triangle(p3, p2, p1));
+
+		alpha += step;
+	}
+
+	alpha = 0.0f;
+	float curHeight;
+	float curRad;
+
+	if (t_rad > b_rad)
+		for (int i = 0; i < slices; i++) {
+			curHeight = static_cast<float>(height) / 2;
+
+			curRad = t_rad;
+
+			for (int j = 0; j < stacks; j++) {
+				p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
+				p2 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
+				p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight - stackStep, (curRad - radStep) * cos(alpha + step));
+				p4 = new Point((curRad - radStep) * sin(alpha), curHeight - stackStep, (curRad - radStep) * cos(alpha));
+
+				triangulos.push_back(new Triangle(p3, p2, p1));
+				triangulos.push_back(new Triangle(p1, p4, p3));
+
+				curHeight -= stackStep;
+				curRad -= radStep;
+			}
+
+			alpha += step;
+		}
+	else
+		for (int i = 0; i < slices; i++) {
+			curHeight = -(static_cast<float>(height) / 2);
+
+			curRad = b_rad;
+
+			for (int j = 0; j < stacks; j++) {
+				p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
+				p2 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
+				p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight + stackStep, (curRad - radStep) * cos(alpha + step));
+				p4 = new Point((curRad - radStep) * sin(alpha), curHeight + stackStep, (curRad - radStep) * cos(alpha));
+
+				triangulos.push_back(new Triangle(p1, p2, p3));
+				triangulos.push_back(new Triangle(p3, p4, p1));
+
+				curHeight += stackStep;
+				curRad -= radStep;
+			}
+
+			alpha += step;
+		}
+
 	ofstream file;
 	file.open(dir);
 

@@ -9,7 +9,7 @@
 	</camera>
 	<group>
 		<models>
-			<model file="cone.3d" />
+			<model file="cylinder.3d" />
 		</models>
 	</group>
 </world>
