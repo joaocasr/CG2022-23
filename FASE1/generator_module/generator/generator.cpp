@@ -33,9 +33,7 @@ int main(int args, char* argv[]) {
 }
 
 void buildPlane(int units, int divs, char* filename) {
-
-	
-	std::string dir = path.substr(0, path.length() - 13);
+	string dir = path.substr(0, path.length() - 13);
 	dir += "models\\";
 	dir += filename;
 	//C:\Users\joaop\Desktop\CG2022-23\FASE1\generator_module\build\Release
@@ -60,8 +58,8 @@ void buildPlane(int units, int divs, char* filename) {
 			pz1 = -finalz + (i * stepz);
 			pz2 = -finalz + ((i + 1) * stepz);
 
-			py1 = -finaly;
-			py2 = finaly;
+			py1 = 0;
+			py2 = 0;
 
 			//pontos do plano
 			p1 = new Point(px1, py1, pz1);
@@ -69,10 +67,9 @@ void buildPlane(int units, int divs, char* filename) {
 			p3 = new Point(px1, py1, pz2);
 			p4 = new Point(px2, py1, pz2);
 
-
 			//triangulos do plano
-			t1 = new Triangle(p4, p3, p1);
-			t2 = new Triangle(p2, p4, p1);
+			t1 = new Triangle(p1, p3, p4);
+			t2 = new Triangle(p1, p4, p2);
 
 			triangulos.push_back(t1);
 			triangulos.push_back(t2);
@@ -104,19 +101,10 @@ void buildPlane(int units, int divs, char* filename) {
 }
 
 void buildCube(int units, int grid, char * filename) {
-
 	std::string dir = path.substr(0, path.length() - 13);
 	dir += "models\\";
 	dir += filename;
 	std::cout << dir << "\n";
-
-
-	ofstream file;
-	file.open(dir); 
-	if (!file) { 
-		std::cout << "Error opening file" << "\n";
-		exit(1);
-	}
 
 	float stepx, stepy, stepz;
 	stepx = stepy = stepz = static_cast<float>(units) / grid;
@@ -147,22 +135,12 @@ void buildCube(int units, int grid, char * filename) {
 			p3 = new Point(px2, py1, pz1);
 			p2 = new Point(px1, py2, pz1); //ponto de cima   
 			p4 = new Point(px2, py2, pz1); //ponto de cima  
-			//std::cout << PointtoString(p1) << "\n";
-			//std::cout << PointtoString(p2) << "\n";
-			//std::cout << PointtoString(p3) << "\n";
-			//std::cout << PointtoString(p4) << "\n";
-
-
 
 			//pontos de um quadrado do plano de frente
 			p5 = new Point(px1, py1, pz2);
 			p7 = new Point(px2, py1, pz2);
 			p6 = new Point(px1, py2, pz2); //ponto de cima 
 			p8 = new Point(px2, py2, pz2); //ponto de cima  
-			//std::cout << PointtoString(p5) << "\n";
-			//std::cout << PointtoString(p6) << "\n";
-			//std::cout << PointtoString(p7) << "\n";
-			//std::cout << PointtoString(p8) << "\n";
 
 
 			//triangulos do plano de tras
@@ -172,24 +150,15 @@ void buildCube(int units, int grid, char * filename) {
 			//triangulo do plano de frente
 			t3 = new Triangle(p5, p7, p8);
 			t4 = new Triangle(p5, p8, p6);
-			//std::cout << TriangletoString(t1) << "\n";
-			//std::cout << TriangletoString(t2) << "\n";
-			//std::cout << TriangletoString(t3) << "\n";
-			//std::cout << TriangletoString(t4) << "\n";
 
 			triangulos.push_back(t3);
 			triangulos.push_back(t4);
 			triangulos.push_back(t1);
 			triangulos.push_back(t2);
 			sizeTriangulos += 4;
-
-			file << TriangleToString(t3) << endl;
-			file << TriangleToString(t4) << endl;
-			file << TriangleToString(t1) << endl;
-			file << TriangleToString(t2) << endl;
-
 		}
 	}
+
 	for (int i = 0; -finalz + i * stepz < finalz; i++) {
 		for (int j = 0; -finalx + j * stepx < finalx; j++) {
 
@@ -226,12 +195,6 @@ void buildCube(int units, int grid, char * filename) {
 			triangulos.push_back(t1);
 			triangulos.push_back(t2);
 			sizeTriangulos += 4;
-
-			file << TriangleToString(t3) << endl;
-			file << TriangleToString(t4) << endl;
-			file << TriangleToString(t1) << endl;
-			file << TriangleToString(t2) << endl;
-
 		}
 	}
 	for (int i = 0; -finalz + i * stepz < finalz; i++) {
@@ -252,12 +215,10 @@ void buildCube(int units, int grid, char * filename) {
 			p5 = new Point(px1, py1, pz2);
 			p6 = new Point(px1, py2, pz2);
 
-
 			p3 = new Point(px2, py1, pz1);
 			p4 = new Point(px2, py2, pz1);
 			p7 = new Point(px2, py1, pz2);
 			p8 = new Point(px2, py2, pz2);
-
 
 			//triangulos do plano perpendicular ao semieixo negativo Ox
 			t1 = new Triangle(p1, p5, p6);
@@ -272,23 +233,37 @@ void buildCube(int units, int grid, char * filename) {
 			triangulos.push_back(t1);
 			triangulos.push_back(t2);
 			sizeTriangulos += 4;
-
-			file << TriangleToString(t3) << endl;
-			file << TriangleToString(t4) << endl;
-			file << TriangleToString(t1) << endl;
-			file << TriangleToString(t2) << endl;
 		}
 	}
-	file.close();
-	std::cout << "size:" << sizeTriangulos << "\n";
 
-	for (Triangle t : triangulos) {
-		std::cout << std::to_string(t.p1.x) + ";" + std::to_string(t.p1.y) + ";" + std::to_string(t.p1.z) << ",";
-		std::cout << std::to_string(t.p2.x) + ";" + std::to_string(t.p2.y) + ";" + std::to_string(t.p2.z) << ",";
-		std::cout << std::to_string(t.p3.x) + ";" + std::to_string(t.p3.y) + ";" + std::to_string(t.p3.z) << "\n";
+	ofstream file;
+	file.open(dir);
+
+	if (!file) {
+		std::cout << "Error opening file" << "\n";
+		exit(1);
 	}
-	std::cout << "size:" << sizeTriangulos << "\n";
+	else {
+		std::cout << dir << "\n";
+	}
 
+	file << to_string(triangulos.size() * 3) << "\n";
+	cout << "Writing: <" << to_string(triangulos.size() * 3) << "> Points!" << endl;
+
+	for (int c = 0; c < triangulos.size(); c++) {
+		file << TriangleToString(&triangulos[c]);
+		cout << "Wrote: " << TriangleToString(&triangulos[c]);
+	}
+
+	file << to_string(triangulos.size() * 3) << "\n";
+	cout << "Writing: <" << to_string(triangulos.size() * 3) << "> Points!" << endl;
+
+	for (int c = 0; c < triangulos.size(); c++) {
+		file << TriangleToString(&triangulos[c]);
+		cout << "Wrote: " << TriangleToString(&triangulos[c]);
+	}
+
+	file.close();
 }
 
 

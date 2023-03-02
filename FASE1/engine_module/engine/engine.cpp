@@ -89,9 +89,9 @@ void build_models() {
 		p3 = vertex[c + 2];
 		glBegin(GL_TRIANGLES);
 			glColor3f(1.0f, 0.5f, 0.0f);
-			glVertex3f(p3.x, p3.y, p3.z);
-			glVertex3f(p2.x, p2.y, p2.z);
 			glVertex3f(p1.x, p1.y, p1.z);
+			glVertex3f(p2.x, p2.y, p2.z);
+			glVertex3f(p3.x, p3.y, p3.z);
 		glEnd();
 	}
 }
