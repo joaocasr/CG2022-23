@@ -315,6 +315,8 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 		std::cout << "Error opening file" << "\n";
 		exit(1);
 	}
+	Point* p1, * p2, * p3, * p4;
+	Triangle* t1, * t2;
 	double pi = M_PI;
 
 	float deltaPhi = pi / stacks;
@@ -327,21 +329,21 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 			float theta = j * deltaTheta;
 			float nextTheta = (j + 1) * deltaTheta;
 
-			Point p1(radius * sin(phi) * cos(theta), radius * sin(phi) * sin(theta), radius * cos(phi));
-			Point p2(radius * sin(phi) * cos(nextTheta), radius * sin(phi) * sin(nextTheta), radius * cos(phi));
-			Point p3(radius * sin(nextPhi) * cos(theta), radius * sin(nextPhi) * sin(theta), radius * cos(nextPhi));
-			Point p4(radius * sin(nextPhi) * cos(nextTheta), radius * sin(nextPhi) * sin(nextTheta), radius * cos(nextPhi));
+			p1 = new Point (radius * sin(phi) * cos(theta), radius * sin(phi) * sin(theta), radius * cos(phi));
+			p2 = new Point(radius * sin(phi) * cos(nextTheta), radius * sin(phi) * sin(nextTheta), radius * cos(phi));
+			p3 = new Point(radius * sin(nextPhi) * cos(theta), radius * sin(nextPhi) * sin(theta), radius * cos(nextPhi));
+			p4 = new Point(radius * sin(nextPhi) * cos(nextTheta), radius * sin(nextPhi) * sin(nextTheta), radius * cos(nextPhi));
 
-			Triangle t1(&p1, &p2, &p4);
-			Triangle t2(&p1, &p4, &p3);
+			t1 = new Triangle (p1, p2, p4);
+			t2 = new Triangle (p1, p4, p3);
 
 
 			triangulos.push_back(t1);
 			triangulos.push_back(t2);
 			sizeTriangulos += 2;
 
-			file << TriangleToString(&t1) << std::endl;
-			file << TriangleToString(&t2) << std::endl;
+			file << TriangleToString(t1) << std::endl;
+			file << TriangleToString(t2) << std::endl;
 		}
 	}
 
@@ -354,4 +356,56 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 		std::cout << std::to_string(t.p3.x) + ";" + std::to_string(t.p3.y) + ";" + std::to_string(t.p3.z) << "\n";
 	}
 	std::cout << "size:" << sizeTriangulos << "\n";
+}
+
+
+void buildCone(float radius, int height, int slices, int stacks, const char* filename)
+{
+	// Open the output file
+	std::string dir = "models\\" + std::string(filename);
+	std::ofstream file(dir);
+	if (!file.is_open()) {
+		std::cout << "Error opening file" << std::endl;
+		return;
+	}
+
+	// Calculate the angle increments for slices and stacks
+	Point* p1;
+	const double pi = M_PI;
+	const float deltaPhi = pi / stacks;
+	const float deltaTheta = 2 * pi / slices;
+
+	// Create the vertices and triangles of the cone
+	std::vector<Point> vertices;
+	for (int i = 0; i <= stacks; i++) {
+		const float phi = i * deltaPhi;
+		const float y = height * (float)i / stacks;
+		for (int j = 0; j <= slices; j++) {
+			const float theta = j * deltaTheta;
+			const float x = radius * sin(phi) * cos(theta);
+			const float z = radius * sin(phi) * sin(theta);
+			p1 = new Point(x, y, z);
+			vertices.push_back(p1);
+		}
+	}
+	
+	for (int i = 0; i < stacks; i++) {
+		for (int j = 0; j < slices; j++) {
+			const int p1 = i * (slices + 1) + j;
+			const int p2 = p1 + 1;
+			const int p3 = (i + 1) * (slices + 1) + j;
+			const int p4 = p3 + 1;
+			triangulos.push_back(Triangle(&vertices[p1], &vertices[p3], &vertices[p2]));
+			triangulos.push_back(Triangle(&vertices[p2], &vertices[p3], &vertices[p4]));
+		}
+	}
+
+	// Write the triangles to the file
+	for (Triangle t : triangulos) {
+		file << TriangleToString(&t) << std::endl;
+	}
+
+	// Close the file and print the number of triangles
+	file.close();
+	std::cout << "Cone with " << triangulos.size() << " triangles written to file " << dir << std::endl;
 }

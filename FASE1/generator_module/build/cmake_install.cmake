@@ -1,4 +1,4 @@
-# Install script for directory: D:/Github/CG2022-23/FASE1/generator_module/generator
+# Install script for directory: C:/Users/Renato Gomes/OneDrive/Documentos/GitHub/CG2022-23/FASE1/generator_module/generator
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/Github/CG2022-23/FASE1/generator_module/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/Renato Gomes/OneDrive/Documentos/GitHub/CG2022-23/FASE1/generator_module/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
