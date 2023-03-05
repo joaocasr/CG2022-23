@@ -6,12 +6,12 @@
 #define STEP ((M_PI*2) / 20)
 using namespace tinyxml2;
 
-vector<Triangle> triangulos;
 int sizeTriangulos = 0;
 int mode = M_FIX;
 
 vector<string> modelos;
 vector<Point> vertex;
+
 float width = 0, height = 0;
 float posCamx = 0, posCamy = 0, posCamz = 0;
 float lookCamx = 0, lookCamy = 0, lookCamz = 0;
@@ -37,7 +37,7 @@ void changeSize(int w, int h)
 	// Set the viewport to be the entire window
 	glViewport(0, 0, w, h);
 	// Set the perspective
-	gluPerspective(45.0f, ratio, 1.0f, 1000.0f);
+	gluPerspective(fov, ratio, near, far);
 	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
 }
@@ -57,18 +57,18 @@ void renderScene(void)
 
 	// Axis
 	glBegin(GL_LINES);
-		// X axis Red
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(-100.0f, 0.0f, 0.0f);
-		glVertex3f(100.0f, 0.0f, 0.0f);
-		//Y Axis Green
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(0.0f, -100.0f, 0.0f);
-		glVertex3f(0.0f, 100.0f, 0.0f);
-		//Z axis Blue
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(0.0f, 0.0f, -100.0f);
-		glVertex3f(0.0f, 0.0f, 100.0f);
+	// X axis Red
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(-100.0f, 0.0f, 0.0f);
+	glVertex3f(100.0f, 0.0f, 0.0f);
+	//Y Axis Green
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.0f, -100.0f, 0.0f);
+	glVertex3f(0.0f, 100.0f, 0.0f);
+	//Z axis Blue
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, -100.0f);
+	glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
 
 	// Transformations
@@ -76,7 +76,7 @@ void renderScene(void)
 
 	// Models
 	build_models();
-	
+
 	// End of frame
 	glutSwapBuffers();
 }
@@ -88,10 +88,10 @@ void build_models() {
 		p2 = vertex[c + 1];
 		p3 = vertex[c + 2];
 		glBegin(GL_TRIANGLES);
-			glColor3f(1.0f, 0.5f, 0.0f);
-			glVertex3f(p1.x, p1.y, p1.z);
-			glVertex3f(p2.x, p2.y, p2.z);
-			glVertex3f(p3.x, p3.y, p3.z);
+		glColor3f(1.0f, 0.5f, 0.0f);
+		glVertex3f(p1.x, p1.y, p1.z);
+		glVertex3f(p2.x, p2.y, p2.z);
+		glVertex3f(p3.x, p3.y, p3.z);
 		glEnd();
 	}
 }
@@ -148,13 +148,13 @@ void processKeys(unsigned char c, int xx, int yy) {
 
 void processSpecialKeys(int key, int xx, int yy) {
 	// put code to process special keys in here
-	if (key == GLUT_KEY_F1) {
+	if (key == GLUT_KEY_END) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	else if (key == GLUT_KEY_F2) {
+	else if (key == GLUT_KEY_PAGE_UP) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
-	else if (key == GLUT_KEY_F3) {
+	else if (key == GLUT_KEY_PAGE_DOWN) {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
 	}
 
@@ -163,13 +163,19 @@ void processSpecialKeys(int key, int xx, int yy) {
 
 int main(int argc, char** argv)
 {
-	parse_XML();
+	std::string xmlfile;
+	if (argc == 2) {
+		xmlfile = argv[1];
+	}
+	else xmlfile = "config.xml";
+
+	parse_XML(xmlfile);
 	// put GLUT’s init here
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(width, height);
-	glutCreateWindow("CG1");
+	glutCreateWindow("CG-TP");
 
 	// put callback registry here
 	glutReshapeFunc(changeSize);
@@ -185,6 +191,7 @@ int main(int argc, char** argv)
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	// enter GLUT’s main cycle
 	glutMainLoop();
@@ -192,11 +199,11 @@ int main(int argc, char** argv)
 	return 1;
 }
 
-void parse_XML() {
+void parse_XML(std::string xmlfile) {
 	XMLDocument document;
-	std::string path= fs::current_path().string();
-	string dir = path.substr(0, path.length() - 5);
-	dir += "engine\\config.xml";
+	std::string path = fs::current_path().string();
+	string dir = path.substr(0, path.length() - 13);//C:\Users\joaop\Desktop\CG2022-23\FASE1\engine_module\build\Release
+	dir += "engine\\"+xmlfile;
 
 	char* pathfile = new char[dir.length() + 1];
 	std::strcpy(pathfile, dir.c_str());
@@ -270,13 +277,14 @@ void parse_XML() {
 		cout << "Failed to load XML file" << endl;
 	}
 
-	if(modelos.size() > 0)
+	if (modelos.size() > 0)
 		for (string fname : modelos) {
 			std::ifstream myfile;
-			string path = fs::current_path().string();
-			path += "\\";
-			path += fname;
-			myfile.open(path);
+			string path = fs::current_path().string();//C:\Users\joaop\Desktop\CG2022-23\FASE1\engine_module\build\Release
+			string dirpath = path.substr(0, path.length() - 27);
+			dirpath += "generator_module\\generator\\models\\";
+			dirpath += fname;
+			myfile.open(dirpath);
 			string line, seg;
 			int vertex_num = 0;
 

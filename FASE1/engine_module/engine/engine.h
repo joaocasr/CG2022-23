@@ -21,7 +21,7 @@ using std::ofstream;
 namespace fs = std::filesystem;
 using namespace std;
 
-void parse_XML();
+void parse_XML(std::string xmlfile);
 void build_models();
 
 class Point {
@@ -56,31 +56,6 @@ public:
 	}
 };
 
-class Model {
-public:
-	int vertex_num;
-	vector<Point> vertex;
-
-	Model() {
-		vertex_num = 0;
-	}
-
-	Model(int vert_num, vector<Point> vert) {
-		vertex_num = vert_num;
-		copy(vert.begin(), vert.end(), back_inserter(vertex));
-	}
-
-	Model(Model* m) {
-		vertex_num = m->vertex_num;
-		copy(m->vertex.begin(), m->vertex.end(), back_inserter(vertex));
-	}
-
-	void addVertex(Point p) {
-		vertex_num++;
-		vertex.push_back(Point(p));
-	}
-};
-
 class Triangle {
 
 public:
@@ -106,4 +81,3 @@ public:
 		p3 = t->p3;
 	}
 };
-

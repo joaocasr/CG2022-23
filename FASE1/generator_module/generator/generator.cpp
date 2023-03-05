@@ -25,7 +25,7 @@ int main(int args, char* argv[]) {
 		int slices = atoi(argv[3]);
 		int stacks = atoi(argv[4]);
 		char* filename = argv[5];
-		buildSphere(radius,slices,stacks,filename);
+		buildSphere(radius, slices, stacks, filename);
 	}
 	else if (strcmp(argv[1], "cone") == 0) {
 		float radius = atof(argv[2]);
@@ -51,7 +51,7 @@ int main(int args, char* argv[]) {
 
 void buildPlane(int units, int divs, char* filename) {
 	string dir = path.substr(0, path.length() - 13);
-	dir += "models\\";
+	dir += "generator\\models\\";
 	dir += filename;
 	//C:\Users\joaop\Desktop\CG2022-23\FASE1\generator_module\build\Release
 	std::cout << dir << "\n";
@@ -117,9 +117,9 @@ void buildPlane(int units, int divs, char* filename) {
 	file.close();
 }
 
-void buildCube(int units, int grid, char * filename) {
+void buildCube(int units, int grid, char* filename) {
 	std::string dir = path.substr(0, path.length() - 13);
-	dir += "models\\";
+	dir += "generator\\models\\";
 	dir += filename;
 	std::cout << dir << "\n";
 
@@ -278,7 +278,7 @@ void buildCube(int units, int grid, char * filename) {
 void buildSphere(float radius, int slices, int stacks, const char* filename)
 {
 	std::string dir = path.substr(0, path.length() - 13);
-	dir += "models\\";
+	dir += "generator\\models\\";
 	dir += filename;
 	std::cout << dir << "\n";
 
@@ -292,7 +292,7 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 	for (int i = -(stacks / 2); i < (stacks / 2); i++) {
 		float beta = i * deltaBeta;
 		float nextBeta = (i + 1) * deltaBeta;
-		
+
 		for (int j = 0; j < slices; j++) {
 			float alpha = j * deltaAlpha;
 			float nextAlpha = (j + 1) * deltaAlpha;
@@ -338,7 +338,7 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 {
 	// Open the output file
 	std::string dir = path.substr(0, path.length() - 13);
-	dir += "models\\";
+	dir += "generator\\models\\";
 	dir += filename;
 
 	float step = (M_PI * 2) / slices;
@@ -366,7 +366,7 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 		curHeight = 0.0f;
 		curRad = radius;
 
-		for (int j = 0; j < stacks-1; j++) {
+		for (int j = 0; j < stacks - 1; j++) {
 			p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
 			p2 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
 			p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight + stackStep, (curRad - radStep) * cos(alpha + step));
@@ -393,7 +393,7 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 
 		alpha += step;
 	}
-	
+
 	ofstream file;
 	file.open(dir);
 
@@ -419,7 +419,7 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks, const char* filename) {
 	// Open the output file
 	std::string dir = path.substr(0, path.length() - 13);
-	dir += "models\\";
+	dir += "generator\\models\\";
 	dir += filename;
 
 	float step = (M_PI * 2) / slices;
