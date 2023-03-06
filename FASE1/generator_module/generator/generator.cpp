@@ -50,11 +50,10 @@ int main(int args, char* argv[]) {
 }
 
 void buildPlane(int units, int divs, char* filename) {
-	string dir = path.substr(0, path.length() - 13);
-	dir += "generator\\models\\";
+	// Open the output file
+	std::string dir = path;
+	dir += "\\models\\";
 	dir += filename;
-	//C:\Users\joaop\Desktop\CG2022-23\FASE1\generator_module\build\Release
-	std::cout << dir << "\n";
 
 	float stepx, stepy, stepz;
 	stepx = stepy = stepz = static_cast<float>(units) / divs;
@@ -96,6 +95,7 @@ void buildPlane(int units, int divs, char* filename) {
 	}
 
 	ofstream file;
+	fs::create_directory("models");
 	file.open(dir);
 
 	if (!file) {
@@ -118,10 +118,10 @@ void buildPlane(int units, int divs, char* filename) {
 }
 
 void buildCube(int units, int grid, char* filename) {
-	std::string dir = path.substr(0, path.length() - 13);
-	dir += "generator\\models\\";
+	// Open the output file
+	std::string dir = path;
+	dir += "\\models\\";
 	dir += filename;
-	std::cout << dir << "\n";
 
 	float stepx, stepy, stepz;
 	stepx = stepy = stepz = static_cast<float>(units) / grid;
@@ -254,6 +254,7 @@ void buildCube(int units, int grid, char* filename) {
 	}
 
 	ofstream file;
+	fs::create_directory("models");
 	file.open(dir);
 
 	if (!file) {
@@ -277,10 +278,10 @@ void buildCube(int units, int grid, char* filename) {
 
 void buildSphere(float radius, int slices, int stacks, const char* filename)
 {
-	std::string dir = path.substr(0, path.length() - 13);
-	dir += "generator\\models\\";
+	// Open the output file
+	std::string dir = path;
+	dir += "\\models\\";
 	dir += filename;
-	std::cout << dir << "\n";
 
 	Point* p1, * p2, * p3, * p4;
 	Triangle* t1, * t2;
@@ -312,6 +313,7 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 	}
 
 	ofstream file;
+	fs::create_directory("models");
 	file.open(dir);
 
 	if (!file) {
@@ -337,8 +339,8 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 void buildCone(float radius, int height, int slices, int stacks, const char* filename)
 {
 	// Open the output file
-	std::string dir = path.substr(0, path.length() - 13);
-	dir += "generator\\models\\";
+	std::string dir = path;
+	dir += "\\models\\";
 	dir += filename;
 
 	float step = (M_PI * 2) / slices;
@@ -395,6 +397,7 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 	}
 
 	ofstream file;
+	fs::create_directory("models");
 	file.open(dir);
 
 	if (!file) {
@@ -418,8 +421,8 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 
 void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks, const char* filename) {
 	// Open the output file
-	std::string dir = path.substr(0, path.length() - 13);
-	dir += "generator\\models\\";
+	std::string dir = path;
+	dir += "\\models\\";
 	dir += filename;
 
 	float step = (M_PI * 2) / slices;
@@ -495,6 +498,7 @@ void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks,
 		}
 
 	ofstream file;
+	fs::create_directory("models");
 	file.open(dir);
 
 	if (!file) {
