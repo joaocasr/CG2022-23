@@ -202,8 +202,8 @@ int main(int argc, char** argv)
 void parse_XML(std::string xmlfile) {
 	XMLDocument document;
 	std::string path = fs::current_path().string();
-	string dir = path.substr(0, path.length() - 13);//C:\Users\joaop\Desktop\CG2022-23\FASE1\engine_module\build\Release
-	dir += "engine\\"+xmlfile;
+	string dir = path + "\\";//C:\Users\joaop\Desktop\CG2022-23\FASE1\engine_module\build\Release
+	dir += xmlfile;
 
 	char* pathfile = new char[dir.length() + 1];
 	std::strcpy(pathfile, dir.c_str());
@@ -280,9 +280,8 @@ void parse_XML(std::string xmlfile) {
 	if (modelos.size() > 0)
 		for (string fname : modelos) {
 			std::ifstream myfile;
-			string path = fs::current_path().string();//C:\Users\joaop\Desktop\CG2022-23\FASE1\engine_module\build\Release
-			string dirpath = path.substr(0, path.length() - 27);
-			dirpath += "generator_module\\generator\\models\\";
+			string path = fs::current_path().string();
+			string dirpath = path + "\\";
 			dirpath += fname;
 			myfile.open(dirpath);
 			string line, seg;
