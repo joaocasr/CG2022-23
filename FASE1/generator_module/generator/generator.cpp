@@ -36,6 +36,14 @@ int main(int args, char* argv[]) {
 		buildCone(radius, height, slices, stacks, filename);
 	}
 	else if (strcmp(argv[1], "cylinder") == 0) {
+		float rad = atof(argv[2]);
+		int height = atoi(argv[3]);
+		int slices = atoi(argv[4]);
+		int stacks = atoi(argv[5]);
+		char* filename = argv[6];
+		buildCylinder(rad, rad, height, slices, stacks, filename);
+	}
+	else if (strcmp(argv[1], "prisma") == 0) {
 		float b_rad = atof(argv[2]);
 		float t_rad = atof(argv[3]);
 		int height = atoi(argv[4]);
