@@ -9,8 +9,7 @@
 	</camera>
 	<group>
 		<models>
-			<model file="plane.3d" />
-			<model file="sphere.3d" />
+			<model file="torus.3d" />
 		</models>
 	</group>
 </world>

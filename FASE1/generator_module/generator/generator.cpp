@@ -52,6 +52,14 @@ int main(int args, char* argv[]) {
 		char* filename = argv[7];
 		buildCylinder(b_rad, t_rad, height, slices, stacks, filename);
 	}
+	else if (strcmp(argv[1], "torus") == 0) {
+		float rad1 = atof(argv[2]);
+		float rad2 = atof(argv[3]);
+		int slices = atoi(argv[4]);
+		int stacks = atoi(argv[5]);
+		char* filename = argv[6];
+		buildTorus(rad1, rad2, slices, stacks, filename);
+	}
 	else {
 		std::cout << argv[0] << "\n";
 	}
@@ -504,6 +512,65 @@ void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks,
 
 			alpha += step;
 		}
+
+	ofstream file;
+	fs::create_directory("models");
+	file.open(dir);
+
+	if (!file) {
+		std::cout << "Error opening file" << "\n";
+		exit(1);
+	}
+	else {
+		std::cout << dir << "\n";
+	}
+
+	file << to_string(triangulos.size() * 3) << "\n";
+	cout << "Writing: <" << to_string(triangulos.size() * 3) << "> Points!" << endl;
+
+	for (int c = 0; c < triangulos.size(); c++) {
+		file << TriangleToString(&triangulos[c]);
+		cout << "Wrote: " << TriangleToString(&triangulos[c]);
+	}
+
+	file.close();
+}
+
+void buildTorus(float rad1, float rad2, int slices, int stacks, char* filename) {
+	// Open the output file
+	std::string dir = path;
+	dir += "\\models\\";
+	dir += filename;
+
+	float deltaAlpha = (M_PI * 2) / slices;
+	float deltaBeta = (M_PI * 2) / stacks;
+	float alpha = 0.0f;
+	float beta = 0.0f;
+	Point* p1, * p2, * p3, * p4;
+
+	for (int i = 0; i < slices; i++) {
+		alpha = i * deltaAlpha;
+
+		for (int j = 0; j < stacks; j++) {
+			beta = j * deltaBeta;
+
+			p1 = new Point((rad1 + rad2 * cos(beta)) * cos(alpha),
+				rad2 * sin(beta),
+				(rad1 + rad2 * cos(beta)) * sin(alpha));
+			p2 = new Point((rad1 + rad2 * cos(beta)) * cos(alpha + deltaAlpha), 
+				rad2 * sin(beta),
+				(rad1 + rad2 * cos(beta)) * sin(alpha + deltaAlpha));
+			p3 = new Point((rad1 + rad2 * cos(beta + deltaBeta)) * cos(alpha + deltaAlpha),
+				rad2 * sin(beta + deltaBeta),
+				(rad1 + rad2 * cos(beta + deltaBeta)) * sin(alpha + deltaAlpha));
+			p4 = new Point((rad1 + rad2 * cos(beta + deltaBeta)) * cos(alpha), 
+				rad2 * sin(beta + deltaBeta),
+				(rad1 + rad2 * cos(beta + deltaBeta)) * sin(alpha));
+
+			triangulos.push_back(new Triangle(p3, p2, p1));
+			triangulos.push_back(new Triangle(p1, p4, p3));
+		}
+	}
 
 	ofstream file;
 	fs::create_directory("models");
