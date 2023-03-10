@@ -149,13 +149,13 @@ void processKeys(unsigned char c, int xx, int yy) {
 void processSpecialKeys(int key, int xx, int yy) {
 	// put code to process special keys in here
 	if (key == GLUT_KEY_END) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glPolygonMode(GL_FRONT, GL_FILL);
 	}
 	else if (key == GLUT_KEY_PAGE_UP) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT, GL_LINE);
 	}
 	else if (key == GLUT_KEY_PAGE_DOWN) {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		glPolygonMode(GL_FRONT, GL_POINT);
 	}
 
 	glutPostRedisplay();
@@ -191,7 +191,7 @@ int main(int argc, char** argv)
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT, GL_LINE);
 
 	// enter GLUT’s main cycle
 	glutMainLoop();
