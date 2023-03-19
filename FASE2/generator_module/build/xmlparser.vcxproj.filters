@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Renato Gomes\OneDrive\Documentos\GitHub\CG2022-23\FASE1\generator_module\generator\tinyxml2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\Renato Gomes\OneDrive\Documentos\GitHub\CG2022-23\FASE1\generator_module\generator\tinyxml2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Renato Gomes\OneDrive\Documentos\GitHub\CG2022-23\FASE1\generator_module\generator\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{04F98BB1-D08A-39E1-853E-7C984D96F05C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{C8ABF16A-C729-3EA2-86B1-14CAE4F0C3EE}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
