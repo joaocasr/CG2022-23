@@ -9,7 +9,9 @@ using namespace tinyxml2;
 int sizeTriangulos = 0;
 int mode = M_FIX;
 
-vector<string> modelos;
+
+vector<string> allmodels;
+
 vector<Primitiva> primitivas;
 vector<Group> allGroups;
 
@@ -26,7 +28,7 @@ float G_radious = 5.0f;
 void changeSize(int w, int h)
 {
 	// Prevent a divide by zero, when window is too short
-	// (you canâ€™t make a window with zero width).
+	// (you can’t make a window with zero width).
 	if (h == 0)
 		h = 1;
 	// compute window's aspect ratio
@@ -76,7 +78,7 @@ void renderScene(void)
 
 
 	// Models
-	//build_models();
+	build_models();
 
 	// End of frame
 	glutSwapBuffers();
@@ -84,12 +86,12 @@ void renderScene(void)
 
 void display_points(vector<Point> vertex) {
 	Point p1, p2, p3;
+	glColor3f(1.0f, 0.5f, 0.0f);
 	for (int c = 0;c < vertex.size();c += 1) {
 		p1 = vertex[c];
 		p2 = vertex[c + 1];
 		p3 = vertex[c + 2];
 		glBegin(GL_TRIANGLES);
-		glColor3f(1.0f, 0.5f, 0.0f);
 		glVertex3f(p1.x, p1.y, p1.z);
 		glVertex3f(p2.x, p2.y, p2.z);
 		glVertex3f(p3.x, p3.y, p3.z);
@@ -98,41 +100,42 @@ void display_points(vector<Point> vertex) {
 }
 
 void build_models() {
-	/*
-	* 
-	* Para cada um dos Group fazer o get dos filhos e aplicar as transformacoes do PAI
-	* 
-	* 
-	* CORRIGIR ISTO
-	* 
-	* 
 	for (int c = 0; c < allGroups.size(); c += 1) {
 		glPushMatrix();
+		//cout << "GRUPO->" << endl;
+
+		//cout << c << endl;
+
 
 		for (int i = 0; i < allGroups[c].transformacoes.size(); i++) {
 			if (allGroups[c].transformacoes[i].transformation_name == "rotation") {
+				//cout << "rotacao" << endl;
 				glRotatef(allGroups[c].transformacoes[i].angle, allGroups[c].transformacoes[i].trsx, allGroups[c].transformacoes[i].trsy, allGroups[c].transformacoes[i].trsz);
 			}
 			if (allGroups[c].transformacoes[i].transformation_name == "translate") {
+				//cout << "translate" << endl;
 				glTranslatef(allGroups[c].transformacoes[i].trsx, allGroups[c].transformacoes[i].trsy, allGroups[c].transformacoes[i].trsz);
 			}
 			if (allGroups[c].transformacoes[i].transformation_name == "scale") {
+				//cout << "scale" << endl;
 				glScalef(allGroups[c].transformacoes[i].trsx, allGroups[c].transformacoes[i].trsy, allGroups[c].transformacoes[i].trsz);
 			}
 
 			for (int j = 0;j < allGroups[c].getModelos().size();j += 1) {
 				for (int k = 0; k < primitivas.size();k++) {
+					//cout << allGroups[c].getModelos()[j] << "=?";
+					//cout << primitivas[k].filename << endl;
 					if (allGroups[c].getModelos()[j] == primitivas[k].filename) {
+						//cout << primitivas[k].filename << endl;
 						display_points(primitivas[k].pontos);
 					}
 				}
 			}
-
-
 		}
+	}
+	for (int p = 0;p < allGroups.size();p++) {
 		glPopMatrix();
-		
-	}*/
+	}
 }
 
 void processKeys(unsigned char c, int xx, int yy) {
@@ -209,7 +212,7 @@ int main(int argc, char** argv)
 	else xmlfile = "config.xml";
 
 	parse_XML(xmlfile);
-	// put GLUTâ€™s init here
+	// put GLUT’s init here
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
@@ -232,10 +235,117 @@ int main(int argc, char** argv)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glPolygonMode(GL_FRONT, GL_LINE);
 
-	// enter GLUTâ€™s main cycle
+	// enter GLUT’s main cycle
 	glutMainLoop();
 
 	return 1;
+}
+
+int ciclos = 0;
+Group getGroups(XMLElement* xmlelement) {
+	ciclos += 1;
+	float x = 0;
+	float y = 0;
+	float z = 0;
+	float angle = 0;
+	vector<Transformation> transformacoes;
+	vector<string> modelos;
+
+	XMLElement* transformacao = xmlelement->FirstChildElement("transform");
+	XMLElement* translacao = transformacao->FirstChildElement("translate");
+
+	if (translacao != nullptr) {
+
+		if (translacao->Attribute("x") != nullptr) {
+			x = stof(translacao->Attribute("x"));
+		}
+		if (translacao->Attribute("y") != nullptr) {
+			y = stof(translacao->Attribute("y"));
+		}
+		if (translacao->Attribute("z") != nullptr) {
+			z = stof(translacao->Attribute("z"));
+		}
+		Transformation t = new Transformation("translate", x, y, z);
+		//cout << TransformationToString(t) << endl;
+		transformacoes.push_back(t);
+	}
+
+	XMLElement* rotation = transformacao->FirstChildElement("rotate");
+	if (rotation != nullptr) {
+
+		if (rotation->Attribute("angle") != nullptr) {
+			angle = stof(rotation->Attribute("angle"));
+		}
+		if (rotation->Attribute("x") != nullptr) {
+			x = stof(rotation->Attribute("x"));
+		}
+		if (rotation->Attribute("y") != nullptr) {
+			y = stof(rotation->Attribute("y"));
+		}
+		if (rotation->Attribute("z") != nullptr) {
+			z = stof(rotation->Attribute("z"));
+		}
+		Transformation t = new Transformation("rotation", angle, x, y, z);
+		//cout << TransformationToString(t) << endl;
+		transformacoes.push_back(t);
+
+	}
+	XMLElement* scalation = transformacao->FirstChildElement("scale");
+	if (scalation != nullptr) {
+		if (scalation->Attribute("x") != nullptr) {
+			x = stof(scalation->Attribute("x"));
+		}
+		if (scalation->Attribute("y") != nullptr) {
+			y = stof(scalation->Attribute("y"));
+		}
+		if (scalation->Attribute("z") != nullptr) {
+			z = stof(scalation->Attribute("z"));
+		}
+		Transformation t = new Transformation("scale", x, y, z);
+		//cout << TransformationToString(t) << endl;
+		transformacoes.push_back(t);
+	}
+
+	XMLElement* models = xmlelement->FirstChildElement("models");
+	XMLElement* model = models->FirstChildElement("model");
+
+	while (model != nullptr) {
+
+		if (model->Attribute("file") != nullptr) {
+			allmodels.push_back(model->Attribute("file"));
+			modelos.push_back(model->Attribute("file"));
+		}
+		model = model->NextSiblingElement();
+	}
+	XMLElement* childElement = xmlelement->FirstChildElement("group");
+	vector<Group> children;
+	//if (ciclos==2) { cout << "Hey2" << endl; }
+
+	while (childElement != nullptr) {
+		cout << "entrou" << endl;
+		Group chld = getGroups(childElement);
+		//get the nested children group
+		children.push_back(chld);
+		childElement = childElement->FirstChildElement("group");
+	}
+
+	//cout << "GROUP" << endl;
+	//cout << "transformacoes:" + getTransformacoes(transformacoes) << endl;
+	cout << "modelos:" + getModelos(modelos) << endl;
+
+	Group groupElement = Group(transformacoes, modelos, children);
+
+	if (children.size() == 0) {
+		Group groupElement = Group(transformacoes, modelos);
+	}
+
+	//if (ciclos == 2) { cout << "Hey3" << endl; }
+	//cout << GroupToString(groupElement) << endl;
+	allGroups.push_back(groupElement);
+
+	//if (ciclos == 2) { cout << "Hey" << endl; }
+	return groupElement;
+
 }
 
 void parse_XML(std::string xmlfile) {
@@ -327,8 +437,8 @@ void parse_XML(std::string xmlfile) {
 		cout << "Failed to load XML file" << endl;
 	}
 
-	if (modelos.size() > 0)
-		for (string fname : modelos) {
+	if (allmodels.size() > 0)
+		for (string fname : allmodels) {
 			std::ifstream myfile;
 			string path = fs::current_path().string();
 			string dirpath = path + "\\";
@@ -359,125 +469,28 @@ void parse_XML(std::string xmlfile) {
 					vertex.push_back(Point(tmp[0], tmp[1], tmp[2], 0)); // TODO NEED TO CHANGE GENERATOR SO IT ALSO WRITES AST VERTIX POINT
 					tmp.clear();
 				}
+				cout << "Num.Vertices" << "=>";
+				cout << vertex.size() << endl;
+
 				/*
 				for (Point p : vertex) {
 					cout << p.x << "," << p.y << "," << p.z << "," << p.dim << endl;
 				}*/
+				Primitiva primitiva = Primitiva(fname, vertex);
+				cout << fname << endl;
+				primitivas.push_back(primitiva);
 			}
 			else {
 				cout << "Failed to open " << fname << endl;
 			}
-			Primitiva *primitiva = new Primitiva(fname, vertex);
-			primitivas.push_back(*primitiva);
 			vertex.clear();
 		}
-}
-
-int ciclos = 0;
-Group getGroups(XMLElement* xmlelement) {
-	ciclos += 1;
-	float x = 0;
-	float y = 0;
-	float z = 0;
-	float angle = 0;
-	vector<Transformation> transformacoes;
-	vector<string> modelos;
-
-	XMLElement* transformacao = xmlelement->FirstChildElement("transform");
-	XMLElement* translacao = transformacao->FirstChildElement("translate");
-
-	if (translacao != nullptr) {
-
-		if (translacao->Attribute("x") != nullptr) {
-			x = stof(translacao->Attribute("x"));
-		}
-		if (translacao->Attribute("y") != nullptr) {
-			y = stof(translacao->Attribute("y"));
-		}
-		if (translacao->Attribute("z") != nullptr) {
-			z = stof(translacao->Attribute("z"));
-		}
-		Transformation t = new Transformation("translate", x, y, z);
-		//cout << TransformationToString(t) << endl;
-		transformacoes.push_back(t);
-	}
-
-	XMLElement* rotation = transformacao->FirstChildElement("rotate");
-	if (rotation != nullptr) {
-
-		if (rotation->Attribute("angle") != nullptr) {
-			angle = stof(rotation->Attribute("angle"));
-		}
-		if (rotation->Attribute("x") != nullptr) {
-			x = stof(rotation->Attribute("x"));
-		}
-		if (rotation->Attribute("y") != nullptr) {
-			y = stof(rotation->Attribute("y"));
-		}
-		if (rotation->Attribute("z") != nullptr) {
-			z = stof(rotation->Attribute("z"));
-		}
-		Transformation t = new Transformation("rotation",angle, x, y, z);
-		//cout << TransformationToString(t) << endl;
-		transformacoes.push_back(t);
-
-	}
-	XMLElement* scalation = transformacao->FirstChildElement("scale");
-	if (scalation != nullptr) {
-		if (scalation->Attribute("x") != nullptr) {
-			x = stof(scalation->Attribute("x"));
-		}
-		if (scalation->Attribute("y") != nullptr) {
-			y = stof(scalation->Attribute("y"));
-		}
-		if (scalation->Attribute("z") != nullptr) {
-			z = stof(scalation->Attribute("z"));
-		}
-		Transformation t = new Transformation("scale", x, y, z);
-		//cout << TransformationToString(t) << endl;
-		transformacoes.push_back(t);
-	}
-
-	XMLElement* models = xmlelement->FirstChildElement("models");
-	XMLElement* model = models->FirstChildElement("model");
-
-	while (model != nullptr) {
-
-		if (model->Attribute("file") != nullptr) {
-			modelos.push_back(model->Attribute("file"));
-		}
-		model = model->NextSiblingElement();
-	}
-	XMLElement* childElement = xmlelement->FirstChildElement("group");
-	vector<Group> children;
-	//if (ciclos==2) { cout << "Hey2" << endl; }
-
-	while (childElement != nullptr) {
-		cout << "entrou" << endl;
-		Group chld = getGroups(childElement);
-		//get the nested children group
-		children.push_back(chld);
-		childElement = childElement->FirstChildElement("group");
-	}
-	
-	cout << "GROUP" << endl;
-	cout << "transformacoes:" + getTransformacoes(transformacoes) << endl;
-	cout << "modelos:" + getModelos(modelos) << endl;
-
-	Group groupElement = Group(transformacoes, modelos, children);
-
-	if (children.size() == 0) {
-		Group groupElement = Group(transformacoes, modelos);
-	}
-
-	//if (ciclos == 2) { cout << "Hey3" << endl; }
-	//cout << GroupToString(groupElement) << endl;
-	allGroups.push_back(groupElement);
-
-	//if (ciclos == 2) { cout << "Hey" << endl; }
-	return groupElement;
+		cout << "Primitivas" << "=>";
+		cout << allmodels.size() << endl;
 
 }
+
+
 
 
 string TransformationToString(Transformation t) {
@@ -512,4 +525,3 @@ string getModelos(vector<string> modelos) {
 	}
 	return models;
 }
-

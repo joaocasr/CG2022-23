@@ -175,6 +175,21 @@ public:
 	}
 };
 
+class GroupTransform {
+	string group_name;
+	vector <Transformation> transformacoes;
+
+	GroupTransform(string name, vector<Transformation> transforms) {
+		transformacoes = transforms;
+		group_name = name;
+	}
+
+	void addTransformation(Transformation t) {
+		transformacoes.push_back(t);
+	}
+};
+
+
 string PrimitivaToString(Primitiva p);
 string getTransformacoes(vector<Transformation> t);
 string getModelos(vector<string> modelos);
