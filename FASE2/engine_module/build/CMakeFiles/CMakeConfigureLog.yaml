@@ -24,8 +24,8 @@ events:
       The output was:
       0
       MSBuild version 17.4.1+9a89d02ff for .NET Framework
-      Build started 28/02/2023 22:07:27.
-      Project "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.vcxproj" on node 1 (default targets).
+      Build started 28/03/2023 17:19:12.
+      Project "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.vcxproj" on node 1 (default targets).
       PrepareForBuild:
         Creating directory "Debug\\".
         Creating directory "Debug\\CompilerIdC.tlog\\".
@@ -39,13 +39,13 @@ events:
         CMakeCCompilerId.c
       Link:
         C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x86\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib" /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "D:\\vcpkg\\installed\\x86-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X86 /SAFESEH Debug\\CMakeCCompilerId.obj
-        CompilerIdC.vcxproj -> D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.exe
+        CompilerIdC.vcxproj -> D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.exe
       AppLocalFromInstalled:
-        pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdC.tlog\\CompilerIdC.write.1u.tlog" "Debug\\vcpkg.applocal.log"
+        pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdC.tlog\\CompilerIdC.write.1u.tlog" "Debug\\vcpkg.applocal.log"
         'pwsh.exe' is not recognized as an internal or external command,
         operable program or batch file.
-        The command "pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdC.tlog\\CompilerIdC.write.1u.tlog" "Debug\\vcpkg.applocal.log"" exited with code 9009.
-        "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdC.tlog\\CompilerIdC.write.1u.tlog" "Debug\\vcpkg.applocal.log"
+        The command "pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdC.tlog\\CompilerIdC.write.1u.tlog" "Debug\\vcpkg.applocal.log"" exited with code 9009.
+        "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdC.tlog\\CompilerIdC.write.1u.tlog" "Debug\\vcpkg.applocal.log"
       PostBuildEvent:
         for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
         :VCEnd
@@ -53,13 +53,13 @@ events:
       FinalizeBuildStatus:
         Deleting file "Debug\\CompilerIdC.tlog\\unsuccessfulbuild".
         Touching "Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstate".
-      Done Building Project "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.vcxproj" (default targets).
+      Done Building Project "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdC\\CompilerIdC.vcxproj" (default targets).
       
       Build succeeded.
           0 Warning(s)
           0 Error(s)
       
-      Time Elapsed 00:00:01.96
+      Time Elapsed 00:00:01.69
       
       
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
@@ -67,7 +67,7 @@ events:
       Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
       
       The C compiler identification is MSVC, found in:
-        D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/3.26.0-rc2/CompilerIdC/CompilerIdC.exe
+        D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/3.26.0-rc2/CompilerIdC/CompilerIdC.exe
       
   -
     kind: "message-v1"
@@ -85,8 +85,8 @@ events:
       The output was:
       0
       MSBuild version 17.4.1+9a89d02ff for .NET Framework
-      Build started 28/02/2023 22:07:29.
-      Project "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" on node 1 (default targets).
+      Build started 28/03/2023 17:19:14.
+      Project "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" on node 1 (default targets).
       PrepareForBuild:
         Creating directory "Debug\\".
         Creating directory "Debug\\CompilerIdCXX.tlog\\".
@@ -100,13 +100,13 @@ events:
         CMakeCXXCompilerId.cpp
       Link:
         C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x86\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib" /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "D:\\vcpkg\\installed\\x86-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCXX.lib" /MACHINE:X86 /SAFESEH Debug\\CMakeCXXCompilerId.obj
-        CompilerIdCXX.vcxproj -> D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.exe
+        CompilerIdCXX.vcxproj -> D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.exe
       AppLocalFromInstalled:
-        pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.write.1u.tlog" "Debug\\vcpkg.applocal.log"
+        pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.write.1u.tlog" "Debug\\vcpkg.applocal.log"
         'pwsh.exe' is not recognized as an internal or external command,
         operable program or batch file.
-        The command "pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.write.1u.tlog" "Debug\\vcpkg.applocal.log"" exited with code 9009.
-        "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.write.1u.tlog" "Debug\\vcpkg.applocal.log"
+        The command "pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.write.1u.tlog" "Debug\\vcpkg.applocal.log"" exited with code 9009.
+        "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.write.1u.tlog" "Debug\\vcpkg.applocal.log"
       PostBuildEvent:
         for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
         :VCEnd
@@ -114,13 +114,13 @@ events:
       FinalizeBuildStatus:
         Deleting file "Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild".
         Touching "Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.lastbuildstate".
-      Done Building Project "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" (default targets).
+      Done Building Project "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\3.26.0-rc2\\CompilerIdCXX\\CompilerIdCXX.vcxproj" (default targets).
       
       Build succeeded.
           0 Warning(s)
           0 Error(s)
       
-      Time Elapsed 00:00:01.48
+      Time Elapsed 00:00:01.38
       
       
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
@@ -128,7 +128,7 @@ events:
       Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
       
       The CXX compiler identification is MSVC, found in:
-        D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/3.26.0-rc2/CompilerIdCXX/CompilerIdCXX.exe
+        D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/3.26.0-rc2/CompilerIdCXX/CompilerIdCXX.exe
       
   -
     kind: "try_compile-v1"
@@ -139,8 +139,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-mhhiue"
-      binary: "D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-mhhiue"
+      source: "D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-i1z2dj"
+      binary: "D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-i1z2dj"
     cmakeVariables:
       CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
       CMAKE_EXE_LINKER_FLAGS: "/machine:X86"
@@ -148,45 +148,45 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-mhhiue
+        Change Dir: D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-i1z2dj
         
-        Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_6220b.vcxproj /p:Configuration=Debug /p:Platform=Win32 /p:VisualStudioVersion=17.0 /v:n && MSBuild version 17.4.1+9a89d02ff for .NET Framework
-        Build started 28/02/2023 22:07:31.
-        Project "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mhhiue\\cmTC_6220b.vcxproj" on node 1 (default targets).
+        Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_6eca7.vcxproj /p:Configuration=Debug /p:Platform=Win32 /p:VisualStudioVersion=17.0 /v:n && MSBuild version 17.4.1+9a89d02ff for .NET Framework
+        Build started 28/03/2023 17:19:15.
+        Project "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-i1z2dj\\cmTC_6eca7.vcxproj" on node 1 (default targets).
         PrepareForBuild:
-          Creating directory "cmTC_6220b.dir\\Debug\\".
-          Creating directory "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mhhiue\\Debug\\".
-          Creating directory "cmTC_6220b.dir\\Debug\\cmTC_6220b.tlog\\".
+          Creating directory "cmTC_6eca7.dir\\Debug\\".
+          Creating directory "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-i1z2dj\\Debug\\".
+          Creating directory "cmTC_6eca7.dir\\Debug\\cmTC_6eca7.tlog\\".
         InitializeBuildStatus:
-          Creating "cmTC_6220b.dir\\Debug\\cmTC_6220b.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Creating "cmTC_6eca7.dir\\Debug\\cmTC_6eca7.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
         VcpkgTripletSelection:
           Using triplet "x86-windows" from "D:\\vcpkg\\installed\\x86-windows\\"
           Using normalized configuration "Release"
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x86\\CL.exe /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_6220b.dir\\Debug\\\\" /Fd"cmTC_6220b.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /analyze- /errorReport:queue "D:\\CMake\\share\\cmake-3.26\\Modules\\CMakeCCompilerABI.c"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x86\\CL.exe /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_6eca7.dir\\Debug\\\\" /Fd"cmTC_6eca7.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /analyze- /errorReport:queue "D:\\CMake\\share\\cmake-3.26\\Modules\\CMakeCCompilerABI.c"
           Microsoft (R) C/C++ Optimizing Compiler Version 19.34.31937 for x86
           CMakeCCompilerABI.c
           Copyright (C) Microsoft Corporation.  All rights reserved.
-          cl /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_6220b.dir\\Debug\\\\" /Fd"cmTC_6220b.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /analyze- /errorReport:queue "D:\\CMake\\share\\cmake-3.26\\Modules\\CMakeCCompilerABI.c"
+          cl /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_6eca7.dir\\Debug\\\\" /Fd"cmTC_6eca7.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /analyze- /errorReport:queue "D:\\CMake\\share\\cmake-3.26\\Modules\\CMakeCCompilerABI.c"
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x86\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mhhiue\\Debug\\cmTC_6220b.exe" /INCREMENTAL /ILK:"cmTC_6220b.dir\\Debug\\cmTC_6220b.ilk" /NOLOGO /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib" /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "D:\\vcpkg\\installed\\x86-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-mhhiue/Debug/cmTC_6220b.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-mhhiue/Debug/cmTC_6220b.lib" /MACHINE:X86 /SAFESEH  /machine:X86 cmTC_6220b.dir\\Debug\\CMakeCCompilerABI.obj
-          cmTC_6220b.vcxproj -> D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mhhiue\\Debug\\cmTC_6220b.exe
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x86\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-i1z2dj\\Debug\\cmTC_6eca7.exe" /INCREMENTAL /ILK:"cmTC_6eca7.dir\\Debug\\cmTC_6eca7.ilk" /NOLOGO /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib" /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "D:\\vcpkg\\installed\\x86-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-i1z2dj/Debug/cmTC_6eca7.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-i1z2dj/Debug/cmTC_6eca7.lib" /MACHINE:X86 /SAFESEH  /machine:X86 cmTC_6eca7.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_6eca7.vcxproj -> D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-i1z2dj\\Debug\\cmTC_6eca7.exe
         AppLocalFromInstalled:
-          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mhhiue\\Debug\\cmTC_6220b.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_6220b.dir\\Debug\\cmTC_6220b.tlog\\cmTC_6220b.write.1u.tlog" "cmTC_6220b.dir\\Debug\\vcpkg.applocal.log"
+          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-i1z2dj\\Debug\\cmTC_6eca7.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_6eca7.dir\\Debug\\cmTC_6eca7.tlog\\cmTC_6eca7.write.1u.tlog" "cmTC_6eca7.dir\\Debug\\vcpkg.applocal.log"
           'pwsh.exe' is not recognized as an internal or external command,
           operable program or batch file.
-          The command "pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mhhiue\\Debug\\cmTC_6220b.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_6220b.dir\\Debug\\cmTC_6220b.tlog\\cmTC_6220b.write.1u.tlog" "cmTC_6220b.dir\\Debug\\vcpkg.applocal.log"" exited with code 9009.
-          "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mhhiue\\Debug\\cmTC_6220b.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_6220b.dir\\Debug\\cmTC_6220b.tlog\\cmTC_6220b.write.1u.tlog" "cmTC_6220b.dir\\Debug\\vcpkg.applocal.log"
+          The command "pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-i1z2dj\\Debug\\cmTC_6eca7.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_6eca7.dir\\Debug\\cmTC_6eca7.tlog\\cmTC_6eca7.write.1u.tlog" "cmTC_6eca7.dir\\Debug\\vcpkg.applocal.log"" exited with code 9009.
+          "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-i1z2dj\\Debug\\cmTC_6eca7.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_6eca7.dir\\Debug\\cmTC_6eca7.tlog\\cmTC_6eca7.write.1u.tlog" "cmTC_6eca7.dir\\Debug\\vcpkg.applocal.log"
         FinalizeBuildStatus:
-          Deleting file "cmTC_6220b.dir\\Debug\\cmTC_6220b.tlog\\unsuccessfulbuild".
-          Touching "cmTC_6220b.dir\\Debug\\cmTC_6220b.tlog\\cmTC_6220b.lastbuildstate".
-        Done Building Project "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-mhhiue\\cmTC_6220b.vcxproj" (default targets).
+          Deleting file "cmTC_6eca7.dir\\Debug\\cmTC_6eca7.tlog\\unsuccessfulbuild".
+          Touching "cmTC_6eca7.dir\\Debug\\cmTC_6eca7.tlog\\cmTC_6eca7.lastbuildstate".
+        Done Building Project "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-i1z2dj\\cmTC_6eca7.vcxproj" (default targets).
         
         Build succeeded.
             0 Warning(s)
             0 Error(s)
         
-        Time Elapsed 00:00:01.50
+        Time Elapsed 00:00:01.37
         
       exitCode: 0
   -
@@ -198,8 +198,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-o06g63"
-      binary: "D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-o06g63"
+      source: "D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-89mxjo"
+      binary: "D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-89mxjo"
     cmakeVariables:
       CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /W3 /GR /EHsc"
       CMAKE_EXE_LINKER_FLAGS: "/machine:X86"
@@ -207,45 +207,45 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-o06g63
+        Change Dir: D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-89mxjo
         
-        Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_48f9b.vcxproj /p:Configuration=Debug /p:Platform=Win32 /p:VisualStudioVersion=17.0 /v:n && MSBuild version 17.4.1+9a89d02ff for .NET Framework
-        Build started 28/02/2023 22:07:32.
-        Project "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o06g63\\cmTC_48f9b.vcxproj" on node 1 (default targets).
+        Run Build Command(s):C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_2638b.vcxproj /p:Configuration=Debug /p:Platform=Win32 /p:VisualStudioVersion=17.0 /v:n && MSBuild version 17.4.1+9a89d02ff for .NET Framework
+        Build started 28/03/2023 17:19:17.
+        Project "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-89mxjo\\cmTC_2638b.vcxproj" on node 1 (default targets).
         PrepareForBuild:
-          Creating directory "cmTC_48f9b.dir\\Debug\\".
-          Creating directory "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o06g63\\Debug\\".
-          Creating directory "cmTC_48f9b.dir\\Debug\\cmTC_48f9b.tlog\\".
+          Creating directory "cmTC_2638b.dir\\Debug\\".
+          Creating directory "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-89mxjo\\Debug\\".
+          Creating directory "cmTC_2638b.dir\\Debug\\cmTC_2638b.tlog\\".
         InitializeBuildStatus:
-          Creating "cmTC_48f9b.dir\\Debug\\cmTC_48f9b.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
+          Creating "cmTC_2638b.dir\\Debug\\cmTC_2638b.tlog\\unsuccessfulbuild" because "AlwaysCreate" was specified.
         VcpkgTripletSelection:
           Using triplet "x86-windows" from "D:\\vcpkg\\installed\\x86-windows\\"
           Using normalized configuration "Release"
         ClCompile:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x86\\CL.exe /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_48f9b.dir\\Debug\\\\" /Fd"cmTC_48f9b.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /analyze- /errorReport:queue "D:\\CMake\\share\\cmake-3.26\\Modules\\CMakeCXXCompilerABI.cpp"
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x86\\CL.exe /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_2638b.dir\\Debug\\\\" /Fd"cmTC_2638b.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /analyze- /errorReport:queue "D:\\CMake\\share\\cmake-3.26\\Modules\\CMakeCXXCompilerABI.cpp"
           Microsoft (R) C/C++ Optimizing Compiler Version 19.34.31937 for x86
           CMakeCXXCompilerABI.cpp
           Copyright (C) Microsoft Corporation.  All rights reserved.
-          cl /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_48f9b.dir\\Debug\\\\" /Fd"cmTC_48f9b.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /analyze- /errorReport:queue "D:\\CMake\\share\\cmake-3.26\\Modules\\CMakeCXXCompilerABI.cpp"
+          cl /c /I"D:\\vcpkg\\installed\\x86-windows\\include" /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"cmTC_2638b.dir\\Debug\\\\" /Fd"cmTC_2638b.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TP /analyze- /errorReport:queue "D:\\CMake\\share\\cmake-3.26\\Modules\\CMakeCXXCompilerABI.cpp"
         Link:
-          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x86\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o06g63\\Debug\\cmTC_48f9b.exe" /INCREMENTAL /ILK:"cmTC_48f9b.dir\\Debug\\cmTC_48f9b.ilk" /NOLOGO /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib" /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "D:\\vcpkg\\installed\\x86-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-o06g63/Debug/cmTC_48f9b.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-o06g63/Debug/cmTC_48f9b.lib" /MACHINE:X86 /SAFESEH  /machine:X86 cmTC_48f9b.dir\\Debug\\CMakeCXXCompilerABI.obj
-          cmTC_48f9b.vcxproj -> D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o06g63\\Debug\\cmTC_48f9b.exe
+          C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x86\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-89mxjo\\Debug\\cmTC_2638b.exe" /INCREMENTAL /ILK:"cmTC_2638b.dir\\Debug\\cmTC_2638b.ilk" /NOLOGO /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib" /LIBPATH:"D:\\vcpkg\\installed\\x86-windows\\lib\\manual-link" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "D:\\vcpkg\\installed\\x86-windows\\lib\\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-89mxjo/Debug/cmTC_2638b.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/CMakeScratch/TryCompile-89mxjo/Debug/cmTC_2638b.lib" /MACHINE:X86 /SAFESEH  /machine:X86 cmTC_2638b.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_2638b.vcxproj -> D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-89mxjo\\Debug\\cmTC_2638b.exe
         AppLocalFromInstalled:
-          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o06g63\\Debug\\cmTC_48f9b.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_48f9b.dir\\Debug\\cmTC_48f9b.tlog\\cmTC_48f9b.write.1u.tlog" "cmTC_48f9b.dir\\Debug\\vcpkg.applocal.log"
+          pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-89mxjo\\Debug\\cmTC_2638b.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_2638b.dir\\Debug\\cmTC_2638b.tlog\\cmTC_2638b.write.1u.tlog" "cmTC_2638b.dir\\Debug\\vcpkg.applocal.log"
           'pwsh.exe' is not recognized as an internal or external command,
           operable program or batch file.
-          The command "pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o06g63\\Debug\\cmTC_48f9b.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_48f9b.dir\\Debug\\cmTC_48f9b.tlog\\cmTC_48f9b.write.1u.tlog" "cmTC_48f9b.dir\\Debug\\vcpkg.applocal.log"" exited with code 9009.
-          "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o06g63\\Debug\\cmTC_48f9b.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_48f9b.dir\\Debug\\cmTC_48f9b.tlog\\cmTC_48f9b.write.1u.tlog" "cmTC_48f9b.dir\\Debug\\vcpkg.applocal.log"
+          The command "pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-89mxjo\\Debug\\cmTC_2638b.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_2638b.dir\\Debug\\cmTC_2638b.tlog\\cmTC_2638b.write.1u.tlog" "cmTC_2638b.dir\\Debug\\vcpkg.applocal.log"" exited with code 9009.
+          "C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\\vcpkg\\scripts\\buildsystems\\msbuild\\applocal.ps1" "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-89mxjo\\Debug\\cmTC_2638b.exe" "D:\\vcpkg\\installed\\x86-windows\\bin" "cmTC_2638b.dir\\Debug\\cmTC_2638b.tlog\\cmTC_2638b.write.1u.tlog" "cmTC_2638b.dir\\Debug\\vcpkg.applocal.log"
         FinalizeBuildStatus:
-          Deleting file "cmTC_48f9b.dir\\Debug\\cmTC_48f9b.tlog\\unsuccessfulbuild".
-          Touching "cmTC_48f9b.dir\\Debug\\cmTC_48f9b.tlog\\cmTC_48f9b.lastbuildstate".
-        Done Building Project "D:\\Github\\CG2022-23\\FASE1\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-o06g63\\cmTC_48f9b.vcxproj" (default targets).
+          Deleting file "cmTC_2638b.dir\\Debug\\cmTC_2638b.tlog\\unsuccessfulbuild".
+          Touching "cmTC_2638b.dir\\Debug\\cmTC_2638b.tlog\\cmTC_2638b.lastbuildstate".
+        Done Building Project "D:\\Github\\CG2022-23\\FASE2\\engine_module\\build\\CMakeFiles\\CMakeScratch\\TryCompile-89mxjo\\cmTC_2638b.vcxproj" (default targets).
         
         Build succeeded.
             0 Warning(s)
             0 Error(s)
         
-        Time Elapsed 00:00:01.43
+        Time Elapsed 00:00:01.38
         
       exitCode: 0
 ...

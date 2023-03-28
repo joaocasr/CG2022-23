@@ -9,11 +9,11 @@ using namespace tinyxml2;
 int sizeTriangulos = 0;
 int mode = M_FIX;
 
-
 vector<string> allmodels;
-
 vector<Primitiva> primitivas;
-vector<Group> allGroups;
+vector<Group> my_world;
+
+int testing_var = 0; //TODO REMOVE LATER
 
 float width = 0, height = 0;
 float posCamx = 0, posCamy = 0, posCamz = 0;
@@ -24,6 +24,7 @@ float G_alpha = 0.0f;
 float G_beta = 0.0f;
 float G_radious = 5.0f;
 
+void build_groups(vector<Group> groups);
 
 void changeSize(int w, int h)
 {
@@ -60,80 +61,55 @@ void renderScene(void)
 
 	// Axis
 	glBegin(GL_LINES);
-	// X axis Red
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-100.0f, 0.0f, 0.0f);
-	glVertex3f(100.0f, 0.0f, 0.0f);
-	//Y Axis Green
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, -100.0f, 0.0f);
-	glVertex3f(0.0f, 100.0f, 0.0f);
-	//Z axis Blue
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, -100.0f);
-	glVertex3f(0.0f, 0.0f, 100.0f);
+		// X axis Red
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f(100.0f, 0.0f, 0.0f);
+		//Y Axis Green
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 100.0f, 0.0f);
+		//Z axis Blue
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
 
-	// Transformations
-
-
-	// Models
-	build_models();
+	build_groups(my_world);
 
 	// End of frame
 	glutSwapBuffers();
 }
 
-void display_points(vector<Point> vertex) {
-	Point p1, p2, p3;
-	glColor3f(1.0f, 0.5f, 0.0f);
-	for (int c = 0;c < vertex.size();c += 1) {
-		p1 = vertex[c];
-		p2 = vertex[c + 1];
-		p3 = vertex[c + 2];
-		glBegin(GL_TRIANGLES);
-		glVertex3f(p1.x, p1.y, p1.z);
-		glVertex3f(p2.x, p2.y, p2.z);
-		glVertex3f(p3.x, p3.y, p3.z);
-		glEnd();
-	}
-}
-
-void build_models() {
-	for (int c = 0; c < allGroups.size(); c += 1) {
+void build_groups(vector<Group> groups) {
+	for (Group g : groups) {
+		// Transformations
 		glPushMatrix();
-		//cout << "GRUPO->" << endl;
 
-		//cout << c << endl;
-
-
-		for (int i = 0; i < allGroups[c].transformacoes.size(); i++) {
-			if (allGroups[c].transformacoes[i].transformation_name == "rotation") {
-				//cout << "rotacao" << endl;
-				glRotatef(allGroups[c].transformacoes[i].angle, allGroups[c].transformacoes[i].trsx, allGroups[c].transformacoes[i].trsy, allGroups[c].transformacoes[i].trsz);
-			}
-			if (allGroups[c].transformacoes[i].transformation_name == "translate") {
-				//cout << "translate" << endl;
-				glTranslatef(allGroups[c].transformacoes[i].trsx, allGroups[c].transformacoes[i].trsy, allGroups[c].transformacoes[i].trsz);
-			}
-			if (allGroups[c].transformacoes[i].transformation_name == "scale") {
-				//cout << "scale" << endl;
-				glScalef(allGroups[c].transformacoes[i].trsx, allGroups[c].transformacoes[i].trsy, allGroups[c].transformacoes[i].trsz);
-			}
-
-			for (int j = 0;j < allGroups[c].getModelos().size();j += 1) {
-				for (int k = 0; k < primitivas.size();k++) {
-					//cout << allGroups[c].getModelos()[j] << "=?";
-					//cout << primitivas[k].filename << endl;
-					if (allGroups[c].getModelos()[j] == primitivas[k].filename) {
-						//cout << primitivas[k].filename << endl;
-						display_points(primitivas[k].pontos);
-					}
-				}
-			}
+		for (Transformation tra : g.getTransformations()) {
+			cout << tra.transformation_name << endl;
+			if (tra.transformation_name.compare("translate") == 0)
+				glTranslatef(tra.trsx, tra.trsy, tra.trsz);
+			else if (tra.transformation_name.compare("rotation") == 0)
+				glRotatef(tra.angle, tra.trsx, tra.trsy, tra.trsz);
+			else if (tra.transformation_name.compare("scale") == 0)
+				glScalef(tra.trsx, tra.trsy, tra.trsz);
 		}
-	}
-	for (int p = 0;p < allGroups.size();p++) {
+
+		// Models
+		glColor3f(1.0f, 0.5f, 0.0f);
+		for (int c = 0; c < g.modelos.size();) {
+			glBegin(GL_TRIANGLES);
+				glVertex3f(g.modelos[c++], g.modelos[c++], g.modelos[c++]);
+				glVertex3f(g.modelos[c++], g.modelos[c++], g.modelos[c++]);
+				glVertex3f(g.modelos[c++], g.modelos[c++], g.modelos[c++]);
+			glEnd();
+		}
+
+		//Children
+		if (g.getChild().size() > 0)
+			build_groups(g.getChild());
+
 		glPopMatrix();
 	}
 }
@@ -221,7 +197,7 @@ int main(int argc, char** argv)
 
 	// put callback registry here
 	glutReshapeFunc(changeSize);
-	glutIdleFunc(renderScene);
+	//glutIdleFunc(renderScene);
 	glutDisplayFunc(renderScene);
 
 	// Callback registration for keyboard processing
@@ -241,9 +217,138 @@ int main(int argc, char** argv)
 	return 1;
 }
 
-int ciclos = 0;
+void parse_XML(std::string xmlfile) {
+	XMLDocument document;
+	std::string path = fs::current_path().string();
+	string dir = path + "\\";
+	dir += xmlfile;
+
+	char* pathfile = new char[dir.length() + 1];
+	std::strcpy(pathfile, dir.c_str());
+
+	cout << path << endl;
+
+	cout << pathfile << endl;
+
+	bool loadOkay = document.LoadFile(pathfile);
+	if (loadOkay == 0) {
+		XMLElement* world = document.FirstChildElement("world");
+		XMLElement* window = world->FirstChildElement("window");
+		//define window size
+		width = stof(window->Attribute("width"));
+		height = stof(window->Attribute("height"));
+
+		XMLElement* camera = window->NextSiblingElement("camera");
+
+		XMLElement* position = camera->FirstChildElement("position");
+		//define camera position
+		posCamx = stof(position->Attribute("x"));
+		posCamy = stof(position->Attribute("y"));
+		posCamz = stof(position->Attribute("z"));
+
+		XMLElement* lookat = position->NextSiblingElement("lookAt");
+		//define camera view
+		lookCamx = stof(lookat->Attribute("x"));
+		lookCamy = stof(lookat->Attribute("y"));
+		lookCamz = stof(lookat->Attribute("z"));
+
+		XMLElement* up = lookat->NextSiblingElement("up");
+		//define camera vector
+		upCamx = stof(up->Attribute("x"));
+		upCamy = stof(up->Attribute("y"));
+		upCamz = stof(up->Attribute("z"));
+
+		XMLElement* projection = up->NextSiblingElement("projection");
+		//define camera projection
+		fov = stof(projection->Attribute("fov"));
+		near = stof(projection->Attribute("near"));
+		far = stof(projection->Attribute("far"));
+
+		XMLElement* grupo = camera->NextSiblingElement("group");
+
+		while (grupo != nullptr) {
+			getGroups(grupo);
+			grupo = grupo->NextSiblingElement("group");
+		}
+		cout << "Tamanho:" << endl;
+		cout << my_world.size() << endl;
+
+		/*
+		XMLElement* models = group->FirstChildElement("models");
+		XMLElement* model = models->FirstChildElement("model");
+
+		while (model != nullptr) {
+			modelos.push_back(model->Attribute("file"));
+			model = model->NextSiblingElement();
+		}*/
+
+		cout << "height= " << height << endl;
+		cout << "width = " << width << endl;
+		cout << "pos x= " << posCamx << endl;
+		cout << "pos y = " << posCamy << endl;
+		cout << "pos z = " << posCamz << endl;
+		cout << "look x= " << lookCamx << endl;
+		cout << "look y = " << lookCamy << endl;
+		cout << "look z = " << lookCamz << endl;
+		cout << "up x= " << upCamx << endl;
+		cout << "up y = " << upCamy << endl;
+		cout << "up z = " << upCamz << endl;
+		cout << "fov = " << fov << endl;
+		cout << "near = " << near << endl;
+		cout << "far = " << far << endl;
+		//cout << "model1 = " << modelos[0] << endl;
+
+	}
+	else {
+		cout << "Failed to load XML file" << endl;
+	}
+}
+
+vector<float> getModels(vector<string> ms) {
+	vector<float> vertex;
+
+	for (int c = 0; c < ms.size(); c++) {
+		std::ifstream myfile;
+		string path = fs::current_path().string();
+		string dirpath = path + "\\";
+		dirpath += ms[c];
+		myfile.open(dirpath);
+		string line, seg;
+		int vertex_num = 0;
+
+		if (myfile.is_open()) {
+			cout << "Reading from: " << ms[c] << endl;
+
+			getline(myfile, seg);
+
+			vertex_num = stoi(seg);
+
+			for (int i = 0; i < vertex_num; i++) {
+				getline(myfile, line);
+				stringstream tmpss(line);
+
+				for (int c = 0; c < 3; c++) {
+					getline(tmpss, seg, ',');
+					vertex.push_back(stof(seg));
+				}
+			}
+
+			cout << "Num.Vertices" << "=>";
+			cout << vertex.size() << endl;
+			cout << ms[c] << endl;
+		}
+		else {
+			cout << "Failed to open " << ms[c] << endl;
+		}
+	}
+
+	cout << "Primitivas" << "=>";
+	cout << ms.size() << endl;
+
+	return vertex;
+}
+
 Group getGroups(XMLElement* xmlelement) {
-	ciclos += 1;
 	float x = 0;
 	float y = 0;
 	float z = 0;
@@ -317,181 +422,28 @@ Group getGroups(XMLElement* xmlelement) {
 		}
 		model = model->NextSiblingElement();
 	}
+
 	XMLElement* childElement = xmlelement->FirstChildElement("group");
-	vector<Group> children;
-	//if (ciclos==2) { cout << "Hey2" << endl; }
+
+	Group groupElement = Group(transformacoes, getModels(modelos));
 
 	while (childElement != nullptr) {
 		cout << "entrou" << endl;
 		Group chld = getGroups(childElement);
 		//get the nested children group
-		children.push_back(chld);
+		groupElement.addChild(chld);
 		childElement = childElement->FirstChildElement("group");
 	}
 
-	//cout << "GROUP" << endl;
-	//cout << "transformacoes:" + getTransformacoes(transformacoes) << endl;
 	cout << "modelos:" + getModelos(modelos) << endl;
 
-	Group groupElement = Group(transformacoes, modelos, children);
-
-	if (children.size() == 0) {
-		Group groupElement = Group(transformacoes, modelos);
+	if (testing_var == 0) {
+		my_world.push_back(groupElement);
+		testing_var++;
 	}
 
-	//if (ciclos == 2) { cout << "Hey3" << endl; }
-	//cout << GroupToString(groupElement) << endl;
-	allGroups.push_back(groupElement);
-
-	//if (ciclos == 2) { cout << "Hey" << endl; }
 	return groupElement;
-
 }
-
-void parse_XML(std::string xmlfile) {
-	XMLDocument document;
-	std::string path = fs::current_path().string();
-	string dir = path + "\\";//C:\Users\joaop\Desktop\CG2022-23\FASE1\engine_module\build\Release
-	dir += xmlfile;
-
-	char* pathfile = new char[dir.length() + 1];
-	std::strcpy(pathfile, dir.c_str());
-
-	cout << path << endl;
-
-	cout << pathfile << endl;
-
-	bool loadOkay = document.LoadFile(pathfile);
-	if (loadOkay == 0) {
-		XMLElement* world = document.FirstChildElement("world");
-		XMLElement* window = world->FirstChildElement("window");
-		//define window size
-		width = stof(window->Attribute("width"));
-		height = stof(window->Attribute("height"));
-
-		XMLElement* camera = window->NextSiblingElement("camera");
-
-		XMLElement* position = camera->FirstChildElement("position");
-		//define camera position
-		posCamx = stof(position->Attribute("x"));
-		posCamy = stof(position->Attribute("y"));
-		posCamz = stof(position->Attribute("z"));
-
-		XMLElement* lookat = position->NextSiblingElement("lookAt");
-		//define camera view
-		lookCamx = stof(lookat->Attribute("x"));
-		lookCamy = stof(lookat->Attribute("y"));
-		lookCamz = stof(lookat->Attribute("z"));
-
-		XMLElement* up = lookat->NextSiblingElement("up");
-		//define camera vector
-		upCamx = stof(up->Attribute("x"));
-		upCamy = stof(up->Attribute("y"));
-		upCamz = stof(up->Attribute("z"));
-
-
-		XMLElement* projection = up->NextSiblingElement("projection");
-		//define camera projection
-		fov = stof(projection->Attribute("fov"));
-		near = stof(projection->Attribute("near"));
-		far = stof(projection->Attribute("far"));
-
-
-		XMLElement* grupo = camera->NextSiblingElement("group");
-
-		while (grupo != nullptr) {
-			getGroups(grupo);
-			grupo = grupo->NextSiblingElement("group");
-		}
-		cout << "Tamanho:" << endl;
-
-		cout << allGroups.size() << endl;
-
-		/*
-		XMLElement* models = group->FirstChildElement("models");
-		XMLElement* model = models->FirstChildElement("model");
-
-		while (model != nullptr) {
-			modelos.push_back(model->Attribute("file"));
-			model = model->NextSiblingElement();
-		}*/
-		/*
-		cout << "height= " << height << endl;
-		cout << "width = " << width << endl;
-		cout << "pos x= " << posCamx << endl;
-		cout << "pos y = " << posCamy << endl;
-		cout << "pos z = " << posCamz << endl;
-		cout << "look x= " << lookCamx << endl;
-		cout << "look y = " << lookCamy << endl;
-		cout << "look z = " << lookCamz << endl;
-		cout << "up x= " << upCamx << endl;
-		cout << "up y = " << upCamy << endl;
-		cout << "up z = " << upCamz << endl;
-		cout << "fov = " << fov << endl;
-		cout << "near = " << near << endl;
-		cout << "far = " << far << endl;
-		cout << "model1 = " << modelos[0] << endl;
-		*/
-	}
-	else {
-		cout << "Failed to load XML file" << endl;
-	}
-
-	if (allmodels.size() > 0)
-		for (string fname : allmodels) {
-			std::ifstream myfile;
-			string path = fs::current_path().string();
-			string dirpath = path + "\\";
-			dirpath += fname;
-			myfile.open(dirpath);
-			string line, seg;
-			int vertex_num = 0;
-			vector<Point> vertex;
-
-			if (myfile.is_open()) {
-				cout << "Reading from: " << fname << endl;
-
-				getline(myfile, seg);
-
-				vertex_num = stoi(seg);
-
-				vector<float> tmp;
-
-				for (int i = 0; i < vertex_num; i++) {
-					getline(myfile, line);
-					stringstream tmpss(line);
-
-					for (int c = 0; c < 3; c++) {
-						getline(tmpss, seg, ',');
-						tmp.push_back(stof(seg));
-					}
-
-					vertex.push_back(Point(tmp[0], tmp[1], tmp[2], 0)); // TODO NEED TO CHANGE GENERATOR SO IT ALSO WRITES AST VERTIX POINT
-					tmp.clear();
-				}
-				cout << "Num.Vertices" << "=>";
-				cout << vertex.size() << endl;
-
-				/*
-				for (Point p : vertex) {
-					cout << p.x << "," << p.y << "," << p.z << "," << p.dim << endl;
-				}*/
-				Primitiva primitiva = Primitiva(fname, vertex);
-				cout << fname << endl;
-				primitivas.push_back(primitiva);
-			}
-			else {
-				cout << "Failed to open " << fname << endl;
-			}
-			vertex.clear();
-		}
-		cout << "Primitivas" << "=>";
-		cout << allmodels.size() << endl;
-
-}
-
-
-
 
 string TransformationToString(Transformation t) {
 	if (t.transformation_name == "rotation") {

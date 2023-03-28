@@ -23,7 +23,6 @@ namespace fs = std::filesystem;
 using namespace std;
 
 void parse_XML(std::string xmlfile);
-void build_models();
 
 class Point {
 
@@ -129,22 +128,22 @@ string TransformationToString(Transformation t);
 class Group {
 
 public:
+	vector<float> modelos;
 	vector<Transformation> transformacoes;
-	vector<string> modelos;
 	vector<Group> groupChild;
 
-	Group(vector<Transformation> trans, vector<string> models, vector<Group> gchild) {
+	Group(vector<Transformation> trans, vector<float> models, vector<Group> gchild) {
 		transformacoes = trans;
 		modelos = models;
 		groupChild = gchild;
 	}
 
-	Group(vector<Transformation> trans, vector<string> models) {
+	Group(vector<Transformation> trans, vector<float> models) {
 		transformacoes = trans;
 		modelos = models;
 	}
 
-	vector<string> getModelos() {
+	vector<float> getModelos() {
 		return modelos;
 	}
 

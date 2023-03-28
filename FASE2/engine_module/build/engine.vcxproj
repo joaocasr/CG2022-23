@@ -22,7 +22,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{EE3008E4-9871-302B-A965-D4F27EC5BBD9}</ProjectGuid>
+    <ProjectGuid>{81AB72C5-988E-37D3-ACAF-16252D7B2623}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
     <Platform>Win32</Platform>
@@ -59,25 +59,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Github\CG2022-23\FASE1\engine_module\build\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Github\CG2022-23\FASE2\engine_module\build\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">engine.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">engine</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Github\CG2022-23\FASE1\engine_module\build\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Github\CG2022-23\FASE2\engine_module\build\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">engine.dir\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">engine</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\Github\CG2022-23\FASE1\engine_module\build\MinSizeRel\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\Github\CG2022-23\FASE2\engine_module\build\MinSizeRel\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">engine.dir\MinSizeRel\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">engine</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\Github\CG2022-23\FASE1\engine_module\build\RelWithDebInfo\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\Github\CG2022-23\FASE2\engine_module\build\RelWithDebInfo\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">engine.dir\RelWithDebInfo\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">engine</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
@@ -100,6 +100,7 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
@@ -119,8 +120,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>D:/Github/CG2022-23/FASE1/engine_module/build/Debug/engine.lib</ImportLibrary>
-      <ProgramDataBaseFile>D:/Github/CG2022-23/FASE1/engine_module/build/Debug/engine.pdb</ProgramDataBaseFile>
+      <ImportLibrary>D:/Github/CG2022-23/FASE2/engine_module/build/Debug/engine.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Github/CG2022-23/FASE2/engine_module/build/Debug/engine.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -163,8 +164,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>D:/Github/CG2022-23/FASE1/engine_module/build/Release/engine.lib</ImportLibrary>
-      <ProgramDataBaseFile>D:/Github/CG2022-23/FASE1/engine_module/build/Release/engine.pdb</ProgramDataBaseFile>
+      <ImportLibrary>D:/Github/CG2022-23/FASE2/engine_module/build/Release/engine.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Github/CG2022-23/FASE2/engine_module/build/Release/engine.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -206,8 +207,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>D:/Github/CG2022-23/FASE1/engine_module/build/MinSizeRel/engine.lib</ImportLibrary>
-      <ProgramDataBaseFile>D:/Github/CG2022-23/FASE1/engine_module/build/MinSizeRel/engine.pdb</ProgramDataBaseFile>
+      <ImportLibrary>D:/Github/CG2022-23/FASE2/engine_module/build/MinSizeRel/engine.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Github/CG2022-23/FASE2/engine_module/build/MinSizeRel/engine.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -248,8 +249,8 @@
       <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>D:/Github/CG2022-23/FASE1/engine_module/build/RelWithDebInfo/engine.lib</ImportLibrary>
-      <ProgramDataBaseFile>D:/Github/CG2022-23/FASE1/engine_module/build/RelWithDebInfo/engine.pdb</ProgramDataBaseFile>
+      <ImportLibrary>D:/Github/CG2022-23/FASE2/engine_module/build/RelWithDebInfo/engine.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Github/CG2022-23/FASE2/engine_module/build/RelWithDebInfo/engine.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -257,12 +258,12 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="D:\Github\CG2022-23\FASE1\engine_module\engine\CMakeLists.txt">
+    <CustomBuild Include="D:\Github\CG2022-23\FASE2\engine_module\engine\CMakeLists.txt">
       <UseUtf8Encoding>Always</UseUtf8Encoding>
       <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/Github/CG2022-23/FASE1/engine_module/engine/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule D:/Github/CG2022-23/FASE2/engine_module/engine/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-D:\CMake\bin\cmake.exe -SD:/Github/CG2022-23/FASE1/engine_module/engine -BD:/Github/CG2022-23/FASE1/engine_module/build --check-stamp-file D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/generate.stamp
+D:\CMake\bin\cmake.exe -SD:/Github/CG2022-23/FASE2/engine_module/engine -BD:/Github/CG2022-23/FASE2/engine_module/build --check-stamp-file D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -270,13 +271,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCXXCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeRCCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCXXCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeRCCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
       <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule D:/Github/CG2022-23/FASE1/engine_module/engine/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule D:/Github/CG2022-23/FASE2/engine_module/engine/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-D:\CMake\bin\cmake.exe -SD:/Github/CG2022-23/FASE1/engine_module/engine -BD:/Github/CG2022-23/FASE1/engine_module/build --check-stamp-file D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/generate.stamp
+D:\CMake\bin\cmake.exe -SD:/Github/CG2022-23/FASE2/engine_module/engine -BD:/Github/CG2022-23/FASE2/engine_module/build --check-stamp-file D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -284,13 +285,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCXXCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeRCCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCXXCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeRCCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
       <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule D:/Github/CG2022-23/FASE1/engine_module/engine/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule D:/Github/CG2022-23/FASE2/engine_module/engine/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
-D:\CMake\bin\cmake.exe -SD:/Github/CG2022-23/FASE1/engine_module/engine -BD:/Github/CG2022-23/FASE1/engine_module/build --check-stamp-file D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/generate.stamp
+D:\CMake\bin\cmake.exe -SD:/Github/CG2022-23/FASE2/engine_module/engine -BD:/Github/CG2022-23/FASE2/engine_module/build --check-stamp-file D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -298,13 +299,13 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCXXCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeRCCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCXXCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeRCCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
       <BuildInParallel Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</BuildInParallel>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule D:/Github/CG2022-23/FASE1/engine_module/engine/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule D:/Github/CG2022-23/FASE2/engine_module/engine/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
-D:\CMake\bin\cmake.exe -SD:/Github/CG2022-23/FASE1/engine_module/engine -BD:/Github/CG2022-23/FASE1/engine_module/build --check-stamp-file D:/Github/CG2022-23/FASE1/engine_module/build/CMakeFiles/generate.stamp
+D:\CMake\bin\cmake.exe -SD:/Github/CG2022-23/FASE2/engine_module/engine -BD:/Github/CG2022-23/FASE2/engine_module/build --check-stamp-file D:/Github/CG2022-23/FASE2/engine_module/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -312,24 +313,24 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCXXCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeRCCompiler.cmake;D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\Github\CG2022-23\FASE1\engine_module\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeCXXCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeRCCompiler.cmake;D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\3.26.0-rc2\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">D:\Github\CG2022-23\FASE2\engine_module\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D:\Github\CG2022-23\FASE1\engine_module\engine\engine.cpp" />
-    <ClInclude Include="D:\Github\CG2022-23\FASE1\engine_module\engine\engine.h" />
+    <ClCompile Include="D:\Github\CG2022-23\FASE2\engine_module\engine\engine.cpp" />
+    <ClInclude Include="D:\Github\CG2022-23\FASE2\engine_module\engine\engine.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="D:\Github\CG2022-23\FASE1\engine_module\build\ZERO_CHECK.vcxproj">
-      <Project>{AA45A63D-9868-33F8-91E2-7DBA5DF1E3D0}</Project>
+    <ProjectReference Include="D:\Github\CG2022-23\FASE2\engine_module\build\ZERO_CHECK.vcxproj">
+      <Project>{B4385249-C705-3721-AD72-F6370F03C7C0}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="D:\Github\CG2022-23\FASE1\engine_module\build\xmlparser.vcxproj">
-      <Project>{7AD8CB30-D585-337C-8EB9-C9284C3D52B0}</Project>
+    <ProjectReference Include="D:\Github\CG2022-23\FASE2\engine_module\build\xmlparser.vcxproj">
+      <Project>{83FA6C30-C0F7-3F2A-9D4B-A646B04AF907}</Project>
       <Name>xmlparser</Name>
     </ProjectReference>
   </ItemGroup>
