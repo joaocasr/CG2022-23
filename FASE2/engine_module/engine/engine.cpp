@@ -106,7 +106,7 @@ void build_groups(vector<Group> groups) {
 		for (Transformation tra : g.getTransformations()) {
 			if (tra.transformation_name.compare("translate") == 0)
 				glTranslatef(tra.trsx, tra.trsy, tra.trsz);
-			else if (tra.transformation_name.compare("rotation") == 0)
+			else if (tra.transformation_name.compare("rotate") == 0)
 				glRotatef(tra.angle, tra.trsx, tra.trsy, tra.trsz);
 			else if (tra.transformation_name.compare("scale") == 0)
 				glScalef(tra.trsx, tra.trsy, tra.trsz);
@@ -368,54 +368,28 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 
 	XMLElement* transformacao = xmlelement->FirstChildElement("transform");
 
-	XMLElement* translacao = transformacao->FirstChildElement("translate");
-	if (translacao != nullptr) {
+	for (XMLElement* tras = transformacao->FirstChildElement(); tras != nullptr; tras = tras->NextSiblingElement()) {
+		if (tras != nullptr) {
 
-		if (translacao->Attribute("x") != nullptr) {
-			x = stof(translacao->Attribute("x"));
-		}
-		if (translacao->Attribute("y") != nullptr) {
-			y = stof(translacao->Attribute("y"));
-		}
-		if (translacao->Attribute("z") != nullptr) {
-			z = stof(translacao->Attribute("z"));
-		}
-		Transformation t = new Transformation("translate", x, y, z);
-		transformacoes.push_back(t);
-	}
+			if (tras->Attribute("x") != nullptr) {
+				x = stof(tras->Attribute("x"));
+			}
+			if (tras->Attribute("y") != nullptr) {
+				y = stof(tras->Attribute("y"));
+			}
+			if (tras->Attribute("z") != nullptr) {
+				z = stof(tras->Attribute("z"));
+			}
+			if (tras->Attribute("angle") != nullptr) {
+				angle = stof(tras->Attribute("angle"));
+			}
+			Transformation t = new Transformation(tras->Name(), x, y, z);
 
-	XMLElement* rotation = transformacao->FirstChildElement("rotate");
-	if (rotation != nullptr) {
+			if (angle != 0)
+				t.setAngle(angle);
 
-		if (rotation->Attribute("angle") != nullptr) {
-			angle = stof(rotation->Attribute("angle"));
+			transformacoes.push_back(t);
 		}
-		if (rotation->Attribute("x") != nullptr) {
-			x = stof(rotation->Attribute("x"));
-		}
-		if (rotation->Attribute("y") != nullptr) {
-			y = stof(rotation->Attribute("y"));
-		}
-		if (rotation->Attribute("z") != nullptr) {
-			z = stof(rotation->Attribute("z"));
-		}
-		Transformation t = new Transformation("rotation", x, y, z, angle);
-		transformacoes.push_back(t);
-	}
-
-	XMLElement* scalation = transformacao->FirstChildElement("scale");
-	if (scalation != nullptr) {
-		if (scalation->Attribute("x") != nullptr) {
-			x = stof(scalation->Attribute("x"));
-		}
-		if (scalation->Attribute("y") != nullptr) {
-			y = stof(scalation->Attribute("y"));
-		}
-		if (scalation->Attribute("z") != nullptr) {
-			z = stof(scalation->Attribute("z"));
-		}
-		Transformation t = new Transformation("scale", x, y, z);
-		transformacoes.push_back(t);
 	}
 
 	XMLElement* models = xmlelement->FirstChildElement("models");

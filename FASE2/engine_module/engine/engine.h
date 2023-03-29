@@ -90,7 +90,7 @@ public:
 	float trsx;
 	float trsy;
 	float trsz;
-	float angle;
+	float angle = 0;
 
 	Transformation() {
 		transformation_name = "";
@@ -106,20 +106,15 @@ public:
 		trsy = trsyy;
 		trsz = trszz;
 	}
-	Transformation(string nome, float trsxx, float trsyy, float trszz, float angulo)
-	{
-		transformation_name = nome;
-		trsx = trsxx;
-		trsy = trsyy;
-		trsz = trszz;
-		angle = angulo;
-	}
 	Transformation(Transformation *t)
 	{
 		transformation_name = t->transformation_name;
 		trsx = t->trsx;
 		trsy = t->trsy;
 		trsz = t->trsz;
+	}
+	void setAngle(float a) {
+		angle = a;
 	}
 };
 
