@@ -13,8 +13,6 @@ vector<string> allmodels;
 vector<Primitiva> primitivas;
 vector<Group> my_world;
 
-int testing_var = 0; //TODO REMOVE LATER
-
 float width = 0, height = 0;
 float posCamx = 0, posCamy = 0, posCamz = 0;
 float lookCamx = 0, lookCamy = 0, lookCamz = 0;
@@ -24,7 +22,24 @@ float G_alpha = 0.0f;
 float G_beta = 0.0f;
 float G_radious = 5.0f;
 
+double frames;
+int timebase;
+
 void build_groups(vector<Group> groups);
+
+void framerate() {
+	char title[50];
+	frames++;
+	double time = glutGet(GLUT_ELAPSED_TIME);
+
+	if (time - timebase > 1000) {
+		double fps = frames * 1000.0 / (time - timebase);
+		timebase = time;
+		frames = 0;
+		sprintf(title, "CG@DI-TP | %lf FPS", fps);
+		glutSetWindowTitle(title);
+	}
+}
 
 void changeSize(int w, int h)
 {
@@ -77,6 +92,8 @@ void renderScene(void)
 
 	build_groups(my_world);
 
+	framerate();
+
 	// End of frame
 	glutSwapBuffers();
 }
@@ -87,7 +104,6 @@ void build_groups(vector<Group> groups) {
 		glPushMatrix();
 
 		for (Transformation tra : g.getTransformations()) {
-			cout << tra.transformation_name << endl;
 			if (tra.transformation_name.compare("translate") == 0)
 				glTranslatef(tra.trsx, tra.trsy, tra.trsz);
 			else if (tra.transformation_name.compare("rotation") == 0)
@@ -98,11 +114,11 @@ void build_groups(vector<Group> groups) {
 
 		// Models
 		glColor3f(1.0f, 0.5f, 0.0f);
-		for (int c = 0; c < g.modelos.size();) {
+		for (int c = 0; c < g.modelos.size();c += 9) {
 			glBegin(GL_TRIANGLES);
-				glVertex3f(g.modelos[c++], g.modelos[c++], g.modelos[c++]);
-				glVertex3f(g.modelos[c++], g.modelos[c++], g.modelos[c++]);
-				glVertex3f(g.modelos[c++], g.modelos[c++], g.modelos[c++]);
+				glVertex3f(g.modelos[c], g.modelos[c+1], g.modelos[c+2]);
+				glVertex3f(g.modelos[c+3], g.modelos[c+4], g.modelos[c+5]);
+				glVertex3f(g.modelos[c+6], g.modelos[c+7], g.modelos[c+8]);
 			glEnd();
 		}
 
@@ -211,6 +227,8 @@ int main(int argc, char** argv)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glPolygonMode(GL_FRONT, GL_LINE);
 
+	timebase = glutGet(GLUT_ELAPSED_TIME);
+
 	// enter GLUT’s main cycle
 	glutMainLoop();
 
@@ -267,20 +285,11 @@ void parse_XML(std::string xmlfile) {
 		XMLElement* grupo = camera->NextSiblingElement("group");
 
 		while (grupo != nullptr) {
-			getGroups(grupo);
+			getGroups(grupo, true);
 			grupo = grupo->NextSiblingElement("group");
 		}
 		cout << "Tamanho:" << endl;
 		cout << my_world.size() << endl;
-
-		/*
-		XMLElement* models = group->FirstChildElement("models");
-		XMLElement* model = models->FirstChildElement("model");
-
-		while (model != nullptr) {
-			modelos.push_back(model->Attribute("file"));
-			model = model->NextSiblingElement();
-		}*/
 
 		cout << "height= " << height << endl;
 		cout << "width = " << width << endl;
@@ -296,8 +305,6 @@ void parse_XML(std::string xmlfile) {
 		cout << "fov = " << fov << endl;
 		cout << "near = " << near << endl;
 		cout << "far = " << far << endl;
-		//cout << "model1 = " << modelos[0] << endl;
-
 	}
 	else {
 		cout << "Failed to load XML file" << endl;
@@ -307,21 +314,23 @@ void parse_XML(std::string xmlfile) {
 vector<float> getModels(vector<string> ms) {
 	vector<float> vertex;
 
-	for (int c = 0; c < ms.size(); c++) {
+	for (string fname : ms) {
 		std::ifstream myfile;
 		string path = fs::current_path().string();
 		string dirpath = path + "\\";
-		dirpath += ms[c];
+		dirpath += fname;
 		myfile.open(dirpath);
 		string line, seg;
 		int vertex_num = 0;
 
 		if (myfile.is_open()) {
-			cout << "Reading from: " << ms[c] << endl;
+			cout << "Reading from: " << fname << endl;
 
 			getline(myfile, seg);
 
 			vertex_num = stoi(seg);
+
+			vector<float> tmp;
 
 			for (int i = 0; i < vertex_num; i++) {
 				getline(myfile, line);
@@ -329,16 +338,17 @@ vector<float> getModels(vector<string> ms) {
 
 				for (int c = 0; c < 3; c++) {
 					getline(tmpss, seg, ',');
-					vertex.push_back(stof(seg));
+					tmp.push_back(stof(seg));
 				}
-			}
 
-			cout << "Num.Vertices" << "=>";
-			cout << vertex.size() << endl;
-			cout << ms[c] << endl;
+				vertex.push_back(tmp[0]);
+				vertex.push_back(tmp[1]);
+				vertex.push_back(tmp[2]);
+				tmp.clear();
+			}
 		}
 		else {
-			cout << "Failed to open " << ms[c] << endl;
+			cout << "Failed to open " << fname << endl;
 		}
 	}
 
@@ -348,7 +358,7 @@ vector<float> getModels(vector<string> ms) {
 	return vertex;
 }
 
-Group getGroups(XMLElement* xmlelement) {
+Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 	float x = 0;
 	float y = 0;
 	float z = 0;
@@ -357,8 +367,8 @@ Group getGroups(XMLElement* xmlelement) {
 	vector<string> modelos;
 
 	XMLElement* transformacao = xmlelement->FirstChildElement("transform");
-	XMLElement* translacao = transformacao->FirstChildElement("translate");
 
+	XMLElement* translacao = transformacao->FirstChildElement("translate");
 	if (translacao != nullptr) {
 
 		if (translacao->Attribute("x") != nullptr) {
@@ -371,7 +381,6 @@ Group getGroups(XMLElement* xmlelement) {
 			z = stof(translacao->Attribute("z"));
 		}
 		Transformation t = new Transformation("translate", x, y, z);
-		//cout << TransformationToString(t) << endl;
 		transformacoes.push_back(t);
 	}
 
@@ -391,10 +400,9 @@ Group getGroups(XMLElement* xmlelement) {
 			z = stof(rotation->Attribute("z"));
 		}
 		Transformation t = new Transformation("rotation", angle, x, y, z);
-		//cout << TransformationToString(t) << endl;
 		transformacoes.push_back(t);
-
 	}
+
 	XMLElement* scalation = transformacao->FirstChildElement("scale");
 	if (scalation != nullptr) {
 		if (scalation->Attribute("x") != nullptr) {
@@ -407,7 +415,6 @@ Group getGroups(XMLElement* xmlelement) {
 			z = stof(scalation->Attribute("z"));
 		}
 		Transformation t = new Transformation("scale", x, y, z);
-		//cout << TransformationToString(t) << endl;
 		transformacoes.push_back(t);
 	}
 
@@ -423,24 +430,19 @@ Group getGroups(XMLElement* xmlelement) {
 		model = model->NextSiblingElement();
 	}
 
-	XMLElement* childElement = xmlelement->FirstChildElement("group");
-
 	Group groupElement = Group(transformacoes, getModels(modelos));
 
-	while (childElement != nullptr) {
-		cout << "entrou" << endl;
-		Group chld = getGroups(childElement);
+	for (tinyxml2::XMLElement* child = xmlelement->FirstChildElement("group"); child != NULL; child = child->NextSiblingElement())
+	{
+		Group chld = getGroups(child, false);
 		//get the nested children group
 		groupElement.addChild(chld);
-		childElement = childElement->FirstChildElement("group");
 	}
 
 	cout << "modelos:" + getModelos(modelos) << endl;
 
-	if (testing_var == 0) {
+	if(top_lvl == true)
 		my_world.push_back(groupElement);
-		testing_var++;
-	}
 
 	return groupElement;
 }

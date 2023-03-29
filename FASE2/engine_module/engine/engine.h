@@ -160,7 +160,7 @@ public:
 	}
 };
 
-Group getGroups(tinyxml2::XMLElement* xmlelement);
+Group getGroups(tinyxml2::XMLElement* xmlelement, bool top_lvl);
 
 class Primitiva {
 
