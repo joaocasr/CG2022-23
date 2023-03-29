@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\User\Desktop\Lessons\CG\CG2022-23\FASE2\engine_module\engine\tinyxml2.cpp">
+    <ClCompile Include="D:\Github\CG2022-23\FASE2\engine_module\engine\tinyxml2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\User\Desktop\Lessons\CG\CG2022-23\FASE2\engine_module\engine\tinyxml2.h">
+    <ClInclude Include="D:\Github\CG2022-23\FASE2\engine_module\engine\tinyxml2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\User\Desktop\Lessons\CG\CG2022-23\FASE2\engine_module\engine\CMakeLists.txt" />
+    <CustomBuild Include="D:\Github\CG2022-23\FASE2\engine_module\engine\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{A9A1D088-ED80-35D8-B750-492A8657AF1C}</UniqueIdentifier>
+      <UniqueIdentifier>{09312961-3AEB-3FAE-B3BC-99BB173220F8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{AB4AD5BC-2015-3523-9159-245D88ED8E48}</UniqueIdentifier>
+      <UniqueIdentifier>{36F92F0D-33A1-3D2D-9F91-F75ECCF0303C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

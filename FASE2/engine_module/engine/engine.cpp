@@ -399,7 +399,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 		if (rotation->Attribute("z") != nullptr) {
 			z = stof(rotation->Attribute("z"));
 		}
-		Transformation t = new Transformation("rotation", angle, x, y, z);
+		Transformation t = new Transformation("rotation", x, y, z, angle);
 		transformacoes.push_back(t);
 	}
 
@@ -419,15 +419,17 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 	}
 
 	XMLElement* models = xmlelement->FirstChildElement("models");
-	XMLElement* model = models->FirstChildElement("model");
+	if (models != nullptr) {
+		XMLElement* model = models->FirstChildElement("model");
 
-	while (model != nullptr) {
+		while (model != nullptr) {
 
-		if (model->Attribute("file") != nullptr) {
-			allmodels.push_back(model->Attribute("file"));
-			modelos.push_back(model->Attribute("file"));
+			if (model->Attribute("file") != nullptr) {
+				allmodels.push_back(model->Attribute("file"));
+				modelos.push_back(model->Attribute("file"));
+			}
+			model = model->NextSiblingElement();
 		}
-		model = model->NextSiblingElement();
 	}
 
 	Group groupElement = Group(transformacoes, getModels(modelos));
