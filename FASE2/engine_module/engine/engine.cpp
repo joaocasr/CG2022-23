@@ -283,9 +283,9 @@ void parse_XML(std::string xmlfile) {
 		far = stof(projection->Attribute("far"));
 
 		//calculate camera starting angle and radius
-		G_radious = sqrt(pow(posCamx, 2.0f) + pow(posCamz, 2.0f));
+		G_radious = sqrt(pow(posCamx, 2.0f) + pow(posCamy, 2.0f) + pow(posCamz, 2.0f));
 		G_beta = atan(posCamy / G_radious);
-		G_alpha = acos(posCamz / G_radious);
+		G_alpha = acos(posCamz / (sqrt(pow(posCamx, 2.0f) + pow(posCamz, 2.0f))));
 
 		XMLElement* grupo = camera->NextSiblingElement("group");
 
