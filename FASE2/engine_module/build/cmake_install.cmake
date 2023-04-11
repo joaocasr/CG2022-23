@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/User/Desktop/Lessons/CG/CG2022-23/FASE2/engine_module/engine
+# Install script for directory: D:/Github/CG2022-23/FASE2/engine_module/engine
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/User/Desktop/Lessons/CG/CG2022-23/FASE2/engine_module/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/Github/CG2022-23/FASE2/engine_module/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

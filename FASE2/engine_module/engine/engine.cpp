@@ -10,7 +10,6 @@ int sizeTriangulos = 0;
 int mode = M_FIX;
 
 vector<string> allmodels;
-vector<Primitiva> primitivas;
 vector<Group> my_world;
 
 float width = 0, height = 0;
@@ -253,8 +252,14 @@ void parse_XML(std::string xmlfile) {
 		XMLElement* world = document.FirstChildElement("world");
 		XMLElement* window = world->FirstChildElement("window");
 		//define window size
-		width = stof(window->Attribute("width"));
-		height = stof(window->Attribute("height"));
+		if (window != nullptr) {
+			width = stof(window->Attribute("width"));
+			height = stof(window->Attribute("height"));
+		}
+		else {
+			width = 512.0f;
+			height = 512.0f;
+		}
 
 		XMLElement* camera = window->NextSiblingElement("camera");
 
@@ -270,17 +275,31 @@ void parse_XML(std::string xmlfile) {
 		lookCamy = stof(lookat->Attribute("y"));
 		lookCamz = stof(lookat->Attribute("z"));
 
-		XMLElement* up = lookat->NextSiblingElement("up");
+		XMLElement* up = camera->FirstChildElement("up");
 		//define camera vector
-		upCamx = stof(up->Attribute("x"));
-		upCamy = stof(up->Attribute("y"));
-		upCamz = stof(up->Attribute("z"));
+		if (up != nullptr) {
+			upCamx = stof(up->Attribute("x"));
+			upCamy = stof(up->Attribute("y"));
+			upCamz = stof(up->Attribute("z"));
+		}
+		else {
+			upCamx = 0.0f;
+			upCamy = 1.0f;
+			upCamz = 0.0f;
+		}
 
-		XMLElement* projection = up->NextSiblingElement("projection");
+		XMLElement* projection = camera->FirstChildElement("projection");
 		//define camera projection
-		fov = stof(projection->Attribute("fov"));
-		near = stof(projection->Attribute("near"));
-		far = stof(projection->Attribute("far"));
+		if (projection != nullptr) {
+			fov = stof(projection->Attribute("fov"));
+			near = stof(projection->Attribute("near"));
+			far = stof(projection->Attribute("far"));
+		}
+		else {
+			fov = 60.0f;
+			near = 1.0f;
+			far = 1000.0f;
+		}
 
 		//calculate camera starting angle and radius
 		G_radious = sqrt(pow(posCamx, 2.0f) + pow(posCamy, 2.0f) + pow(posCamz, 2.0f));
@@ -413,7 +432,8 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 
 	Group groupElement = Group(transformacoes, getModels(modelos));
 
-	for (tinyxml2::XMLElement* child = xmlelement->FirstChildElement("group"); child != NULL; child = child->NextSiblingElement())
+	for (tinyxml2::XMLElement* child = xmlelement->FirstChildElement("group"); 
+		child != NULL; child = child->NextSiblingElement("group"))
 	{
 		Group chld = getGroups(child, false);
 		//get the nested children group
@@ -435,10 +455,6 @@ string TransformationToString(Transformation t) {
 	else {
 		return t.transformation_name + ";" + to_string(t.trsx) + ";" + to_string(t.trsy) + ";" + to_string(t.trsz) + ";";
 	}
-}
-
-string PrimitivaToString(Primitiva p){
-	return p.filename;
 }
 
 string getTransformacoes(vector<Transformation> trans) {
