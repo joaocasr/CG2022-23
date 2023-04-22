@@ -1,0 +1,3 @@
+D:/Github/CG2022-23/FASE1/generator_module/build/CMakeFiles/generator.dir
+D:/Github/CG2022-23/FASE1/generator_module/build/CMakeFiles/ALL_BUILD.dir
+D:/Github/CG2022-23/FASE1/generator_module/build/CMakeFiles/ZERO_CHECK.dir
