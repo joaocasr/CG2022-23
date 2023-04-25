@@ -143,7 +143,7 @@ extern "C" {
 
 #if defined(_WIN32)
 # ifndef GLUT_BUILDING_LIB
-extern _CRTIMP void __cdecl exit(int);
+extern _CRTIMP void __cdecl _exit(int);
 # endif
 #else
 /* non-Win32 case. */

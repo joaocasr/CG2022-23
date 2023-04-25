@@ -1,6 +1,7 @@
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
+#include <GL/glew.h>
 #include <GL/glut.h>
 #endif
 
@@ -132,6 +133,7 @@ public:
 	vector<float> modelos;
 	vector<Transformation> transformacoes;
 	vector<Group> groupChild;
+	int bufIndex = -1;
 
 	Group(vector<Transformation> trans, vector<float> models, vector<Group> gchild) {
 		transformacoes = trans;
@@ -150,6 +152,14 @@ public:
 
 	vector<Transformation> getTransformations() {
 		return transformacoes;
+	}
+
+	int getBufIndex() {
+		return bufIndex;
+	}
+
+	void setBufIndex(int i) {
+		this->bufIndex = i;
 	}
 
 	vector<Group> getChild() {

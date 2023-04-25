@@ -4,10 +4,14 @@
 #define M_FIX 0
 #define M_FPS 1
 #define STEP ((M_PI*2) / 20)
+#define VBO_OFF 0
+#define VBO_BASIC 1
+#define VBO_INDEX 2
 using namespace tinyxml2;
 
 int sizeTriangulos = 0;
 int mode = M_FIX;
+int vbo_mode = VBO_OFF;
 
 vector<string> allmodels;
 vector<Group> my_world;
@@ -24,6 +28,9 @@ float G_radious = 5.0f;
 double frames;
 int timebase;
 static float t = 0;
+
+int groupCount = 0;
+GLuint *buffers;
 
 
 void framerate() {
@@ -210,6 +217,20 @@ void alignment(float * deriv) {
 	glMultMatrixf(matriz);
 }
 
+void prepareData_BasicVBO(vector<Group> groups) {
+	for (Group g : groups) {
+		glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()]);
+		glBufferData(GL_ARRAY_BUFFER, 
+			sizeof(float) * g.getModelos().size(), 
+			g.getModelos().data(),
+			GL_STATIC_DRAW);
+
+		//Children
+		if (g.getChild().size() > 0)
+			prepareData_BasicVBO(g.getChild());
+	}
+}
+
 void build_groups(vector<Group> groups) {
 	for (Group g : groups) {
 		// Transformations
@@ -249,12 +270,18 @@ void build_groups(vector<Group> groups) {
 
 		// Models
 		glColor3f(1.0f, 0.5f, 0.0f);
-		for (int c = 0; c < g.modelos.size();c += 9) {
-			glBegin(GL_TRIANGLES);
-			glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
-			glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
-			glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
-			glEnd();
+		if(vbo_mode == VBO_OFF)
+			for (int c = 0; c < g.modelos.size();c += 9) {
+				glBegin(GL_TRIANGLES);
+					glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
+					glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
+					glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
+				glEnd();
+			}
+		else if (vbo_mode == VBO_BASIC) {
+			glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()]);
+			glVertexPointer(3, GL_FLOAT, 0, 0);
+			glDrawArrays(GL_TRIANGLES, 0, g.modelos.size()/3);
 		}
 
 		//Children
@@ -348,12 +375,30 @@ int main(int argc, char** argv)
 
 	// put callback registry here
 	glutReshapeFunc(changeSize);
-	//glutIdleFunc(renderScene);
+	glutIdleFunc(renderScene);
 	glutDisplayFunc(renderScene);
 
 	// Callback registration for keyboard processing
 	glutKeyboardFunc(processKeys);
 	glutSpecialFunc(processSpecialKeys);
+
+	//VBO Stuff Inits
+#ifndef __APPLE__
+	glewInit();
+#endif
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	//VBO Preping
+	buffers = (GLuint*)calloc(groupCount, sizeof(GLuint));
+
+	if (!buffers) {
+		printf("Failed to allocate buffer memory!\nNot Using VBOs!\n");
+		vbo_mode = VBO_OFF;
+	}
+
+	glGenBuffers(groupCount, buffers);
+	prepareData_BasicVBO(my_world);
 
 	// some OpenGL settings
 	glEnable(GL_DEPTH_TEST);
@@ -448,6 +493,7 @@ void parse_XML(std::string xmlfile) {
 			getGroups(grupo, true);
 			grupo = grupo->NextSiblingElement("group");
 		}
+
 		cout << "Tamanho:" << endl;
 		cout << my_world.size() << endl;
 
@@ -614,6 +660,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 	}
 
 	Group groupElement = Group(transformacoes, getModels(modelos));
+	groupElement.setBufIndex(groupCount++); // Needed to know which VBO buffer to use for group
 
 	for (tinyxml2::XMLElement* child = xmlelement->FirstChildElement("group");
 		child != NULL; child = child->NextSiblingElement("group"))
