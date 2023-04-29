@@ -106,30 +106,30 @@ void getCatmullRomPoint(float t, float* p0, float* p1, float* p2, float* p3, flo
 
 void getGlobalCatmullRomPoint(float gt, float* pos, float* deriv, vector<float> curvepoints, int size) {
 
-	float t = gt * size; // this is the real global t
+	float t = gt * (size / 3); // this is the real global t
 	int index = floor(t);  // which segment
 	t = t - index; // where within  the segment
 
 	// indices store the points
 	int indices[4];
-	indices[0] = (index + size - 1) % size;
-	indices[1] = (indices[0] + 1) % size;
-	indices[2] = (indices[1] + 1) % size;
-	indices[3] = (indices[2] + 1) % size;
+	indices[0] = (index + (size / 3) - 1) % (size / 3);
+	indices[1] = (indices[0] + 1) % (size / 3);
+	indices[2] = (indices[1] + 1) % (size / 3);
+	indices[3] = (indices[2] + 1) % (size / 3);
 
 	//float p[POINT_COUNT][3] = { {-1,-1,0},{-1,1,0},{1,1,0},{0,0,0},{1,-1,0} };
 
 
-	float** p = new float* [size];
+	float** p = new float* [(size / 3)];
 
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < (size / 3); i++) {
 		int j = i * 3;
+		p[i] = new float[3];
 		p[i][0] = curvepoints[j];
 		p[i][1] = curvepoints[j + 1];
 		p[i][2] = curvepoints[j + 2];
 	}
 	getCatmullRomPoint(t, p[indices[0]], p[indices[1]], p[indices[2]], p[indices[3]], pos, deriv);
-
 	free(p);
 }
 
@@ -252,9 +252,13 @@ void build_groups(vector<Group> groups) {
 					getGlobalCatmullRomPoint(t, pos, deriv, tra.curvepoints, tra.curvepoints.size());
 					glTranslatef(pos[0], pos[1], pos[2]);
 
-					if (tra.align) alignment(deriv);
-
-					if(tra.time!=0) t += (1 / tra.time * 60); // dividir a circunferencia por fracoes de tempo?
+					if (tra.align) {
+						alignment(deriv);
+					}
+					if (tra.time != 0) t += (1 / tra.time * 60); // dividir a circunferencia por fracoes de tempo?
+				}
+				else {
+					glTranslatef(tra.trsx, tra.trsy, tra.trsz);
 				}
 			}
 			else if (tra.transformation_name.compare("rotate") == 0) {
@@ -262,7 +266,7 @@ void build_groups(vector<Group> groups) {
 				if (tra.time == -1) {
 					glRotatef(tra.angle, tra.trsx, tra.trsy, tra.trsz);
 				}
-				else{
+				else {
 					//number of seconds to perform a full 360 degrees rotation
 					int timesys = glutGet(GLUT_ELAPSED_TIME);
 					float angulo = (timesys / 1000.0) / (int)tra.time * 360;
