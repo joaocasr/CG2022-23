@@ -1,6 +1,7 @@
 #include "tinyxml2.h"
 #include "engine.h"
 
+
 #define M_FIX 0
 #define M_FPS 1
 #define STEP ((M_PI*2) / 20)
@@ -30,7 +31,7 @@ int timebase;
 static float t = 0;
 
 int groupCount = 0;
-GLuint *buffers;
+GLuint* buffers;
 
 
 void framerate() {
@@ -103,7 +104,7 @@ void getCatmullRomPoint(float t, float* p0, float* p1, float* p2, float* p3, flo
 	}
 }
 
-void getGlobalCatmullRomPoint(float gt, float* pos, float* deriv, vector<float> curvepoints,int size) {
+void getGlobalCatmullRomPoint(float gt, float* pos, float* deriv, vector<float> curvepoints, int size) {
 
 	float t = gt * size; // this is the real global t
 	int index = floor(t);  // which segment
@@ -118,14 +119,18 @@ void getGlobalCatmullRomPoint(float gt, float* pos, float* deriv, vector<float> 
 
 	//float p[POINT_COUNT][3] = { {-1,-1,0},{-1,1,0},{1,1,0},{0,0,0},{1,-1,0} };
 
-	float** p = (float**)malloc(size * sizeof(float));
 
-	for (int i = 0;i < size;i++) {
-		p[i][0] = curvepoints[i];
-		p[i][1] = curvepoints[i];
-		p[i][2] = curvepoints[i];
+	float** p = new float* [size];
+
+	for (int i = 0; i < size; i++) {
+		int j = i * 3;
+		p[i][0] = curvepoints[j];
+		p[i][1] = curvepoints[j + 1];
+		p[i][2] = curvepoints[j + 2];
 	}
 	getCatmullRomPoint(t, p[indices[0]], p[indices[1]], p[indices[2]], p[indices[3]], pos, deriv);
+
+	free(p);
 }
 
 void renderCatmullRomCurve(vector<float> curvepoints) {
@@ -135,7 +140,7 @@ void renderCatmullRomCurve(vector<float> curvepoints) {
 	for (int i = 0; i < 100; ++i) {
 		float pp[3];
 		float dv[3];
-		getGlobalCatmullRomPoint(i / 100.0, pp, dv,curvepoints,curvepoints.size());
+		getGlobalCatmullRomPoint(i / 100.0, pp, dv, curvepoints, curvepoints.size());
 		glVertex3f(pp[0], pp[1], pp[3]);
 	}
 	glEnd();
@@ -200,7 +205,7 @@ void renderScene(void)
 	glutSwapBuffers();
 }
 
-void alignment(float * deriv) {
+void alignment(float* deriv) {
 	float yi[3] = { 0,1,0 };
 	float x[3] = { deriv[0], deriv[1], deriv[2] };
 	normalize(x);
@@ -220,8 +225,8 @@ void alignment(float * deriv) {
 void prepareData_BasicVBO(vector<Group> groups) {
 	for (Group g : groups) {
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()]);
-		glBufferData(GL_ARRAY_BUFFER, 
-			sizeof(float) * g.getModelos().size(), 
+		glBufferData(GL_ARRAY_BUFFER,
+			sizeof(float) * g.getModelos().size(),
 			g.getModelos().data(),
 			GL_STATIC_DRAW);
 
@@ -239,7 +244,7 @@ void build_groups(vector<Group> groups) {
 		for (Transformation tra : g.getTransformations()) {
 			if (tra.transformation_name.compare("translate") == 0) {
 				if (tra.curvepoints.size() >= 12) {
-					//construcao de curvas de bezier requer a existencia de pelo menos 4 pontos
+					//construcao das Catmull-Rom cubic curves requer a existencia de pelo menos 4 pontos
 
 					float pos[3], deriv[3];
 					renderCatmullRomCurve(tra.curvepoints);
@@ -249,18 +254,18 @@ void build_groups(vector<Group> groups) {
 
 					if (tra.align) alignment(deriv);
 
-					t += (1 / tra.time); // dividir a circunferencia por fracoes de tempo?
+					if(tra.time!=0) t += (1 / tra.time * 60); // dividir a circunferencia por fracoes de tempo?
 				}
 			}
 			else if (tra.transformation_name.compare("rotate") == 0) {
 				// angle can be replaced with time, test now which one
-				if (tra.angle!=0) {
+				if (tra.time == -1) {
 					glRotatef(tra.angle, tra.trsx, tra.trsy, tra.trsz);
 				}
-				else if (tra.angle==0 && tra.time != 0) {
+				else{
 					//number of seconds to perform a full 360 degrees rotation
 					int timesys = glutGet(GLUT_ELAPSED_TIME);
-					float angulo = (timesys /1000.0) / (int)tra.time * 360;
+					float angulo = (timesys / 1000.0) / (int)tra.time * 360;
 					glRotatef(angulo, tra.trsx, tra.trsy, tra.trsz);
 				}
 			}
@@ -270,18 +275,18 @@ void build_groups(vector<Group> groups) {
 
 		// Models
 		glColor3f(1.0f, 0.5f, 0.0f);
-		if(vbo_mode == VBO_OFF)
+		if (vbo_mode == VBO_OFF)
 			for (int c = 0; c < g.modelos.size();c += 9) {
 				glBegin(GL_TRIANGLES);
-					glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
-					glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
-					glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
+				glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
+				glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
+				glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
 				glEnd();
 			}
 		else if (vbo_mode == VBO_BASIC) {
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()]);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
-			glDrawArrays(GL_TRIANGLES, 0, g.modelos.size()/3);
+			glDrawArrays(GL_TRIANGLES, 0, g.modelos.size() / 3);
 		}
 
 		//Children
@@ -572,7 +577,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 	float by = 0;
 	float bz = 0;
 	float angle = 0;
-	float time = 0;
+	float time = -1;
 	bool align = false;
 	vector<Transformation> transformacoes;
 	vector<string> modelos;
@@ -581,8 +586,8 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 	XMLElement* transformacao = xmlelement->FirstChildElement("transform");
 
 	for (XMLElement* tras = transformacao->FirstChildElement(); tras != nullptr; tras = tras->NextSiblingElement()) {
-		
-		if (tras != nullptr && tras->Attribute("time")==nullptr) {
+
+		if (tras != nullptr && tras->Attribute("time") == nullptr) {
 
 			if (tras->Attribute("x") != nullptr) {
 				x = stof(tras->Attribute("x"));
@@ -596,23 +601,22 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 			if (tras->Attribute("angle") != nullptr) {
 				angle = stof(tras->Attribute("angle"));
 			}
-			Transformation t = new Transformation(tras->Name(), x, y, z,curvepoints,time,align);
+			Transformation t = new Transformation(tras->Name(), x, y, z, time, align);
 
 			if (angle != 0)
 				t.setAngle(angle);
-
+			angle = 0;
+			time = -1;
 			transformacoes.push_back(t);
 		}
-		if (tras!= nullptr && tras->Attribute("time") != nullptr) {
+		if (tras != nullptr && tras->Attribute("time") != nullptr) {
 			if (tras->Attribute("time") != nullptr) {
 				time = stof(tras->Attribute("time"));
 			}
 			if (tras->Attribute("align") != nullptr) {
-				 for (int posbool = 0; posbool < strlen(tras->Attribute("align")); posbool++)
-					 putchar(tolower(tras->Attribute("align")[posbool]));
-				 if (strcmp(tras->Attribute("align"), "true") == 0)
-					 align = true;
-				 else align = false;
+				if (strcmp(tras->Attribute("align"), "true") == 0)
+					align = true;
+				else align = false;
 			}
 			if (tras->Attribute("x") != nullptr) {
 				x = stof(tras->Attribute("x"));
@@ -626,21 +630,34 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 			if (strcmp(tras->Name(), "translate") == 0) {
 				for (XMLElement* ponto = tras->FirstChildElement(); ponto != nullptr; ponto = ponto->NextSiblingElement()) {
 					if (ponto->Attribute("x") != nullptr) {
-						bx = stof(tras->Attribute("x"));
-						curvepoints.push_back(x);
+						bx = stof(ponto->Attribute("x"));
+						curvepoints.push_back(bx);
 					}
 					if (ponto->Attribute("y") != nullptr) {
-						by = stof(tras->Attribute("y"));
-						curvepoints.push_back(y);
+						by = stof(ponto->Attribute("y"));
+						curvepoints.push_back(by);
 					}
 					if (ponto->Attribute("z") != nullptr) {
-						bz = stof(tras->Attribute("z"));
-						curvepoints.push_back(z);
+						bz = stof(ponto->Attribute("z"));
+						curvepoints.push_back(bz);
 					}
 				}
-				Transformation t = new Transformation(tras->Name(), x, y, z, curvepoints, time, align);
+				Transformation t = new Transformation(tras->Name(), x, y, z, time, align);
+				t.setTime(time);
+				t.setAlign(align);
+				for (int p = 0;p < curvepoints.size();p++) {
+					t.addPoint(curvepoints[p]);
+				}
 				transformacoes.push_back(t);
+				time = -1;
 				curvepoints.clear();
+			}
+			else {
+				Transformation t = new Transformation(tras->Name(), x, y, z, time, align);
+				t.setTime(time);
+				t.setAlign(align);
+				time = -1;
+				transformacoes.push_back(t);
 			}
 		}
 	}
@@ -658,7 +675,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 			model = model->NextSiblingElement();
 		}
 	}
-
+	vector <float> pontos = getModels(modelos);
 	Group groupElement = Group(transformacoes, getModels(modelos));
 	groupElement.setBufIndex(groupCount++); // Needed to know which VBO buffer to use for group
 
@@ -706,6 +723,3 @@ string getModelos(vector<string> modelos) {
 	}
 	return models;
 }
-
-
-
