@@ -102,15 +102,14 @@ public:
 		trsz = 0;
 		angle = 0;
 	}
-	Transformation(string nome, float trsxx, float trsyy, float trszz, vector<float> points, float tempo, bool alinhar)
+	Transformation(string nome, float trsxx, float trsyy, float trszz, float tempo, bool alinhar)
 	{
 		transformation_name = nome;
 		trsx = trsxx;
 		trsy = trsyy;
 		trsz = trszz;
-		curvepoints = points;
 		align = alinhar;
-		time=tempo;
+		time = tempo;
 	}
 	Transformation(Transformation* t)
 	{
@@ -122,6 +121,16 @@ public:
 	void setAngle(float a) {
 		angle = a;
 	}
+	void addPoint(float p) {
+		curvepoints.push_back(p);
+	}
+	void setTime(float t) {
+		time = t;
+	}
+	void setAlign(bool b) {
+		align = b;
+	}
+
 };
 
 string TransformationToString(Transformation t);
@@ -189,4 +198,3 @@ string PrimitivaToString(Primitiva p);
 string getTransformacoes(vector<Transformation> t);
 string getModelos(vector<string> modelos);
 void build_groups(vector<Group> groups);
-
