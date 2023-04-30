@@ -5,7 +5,7 @@
 #include <GL/glut.h>
 #endif
 
-#include<vector>
+#include <vector>
 #include <string>
 #include <iostream>
 #include <stdlib.h>
@@ -17,7 +17,6 @@
 #include <filesystem>
 #include <string>
 #include <cstdlib>
-#include <iostream>
 #include "tinyxml2.h"
 using std::ofstream;
 namespace fs = std::filesystem;

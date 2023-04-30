@@ -60,6 +60,12 @@ int main(int args, char* argv[]) {
 		char* filename = argv[6];
 		buildTorus(rad1, rad2, slices, stacks, filename);
 	}
+	else if (strcmp(argv[1], "teapot") == 0) {
+		char* fpatch = argv[2];
+		int tesLvl = atoi(argv[3]);
+		char* filename = argv[4];
+		buildTeapot(fpatch, tesLvl, filename);
+	}
 	else {
 		std::cout << argv[0] << "\n";
 	}
@@ -593,6 +599,166 @@ void buildTorus(float rad1, float rad2, int slices, int stacks, char* filename) 
 	}
 
 	file.close();
+}
+
+void buildTeapot(char* fpatch, int tesLvl, char* filename) {
+	ifstream pfile;
+	pfile.open(fpatch);
+	if (pfile.is_open() != true) {
+		printf("Failed to open Patch File!\n");
+		_exit(1);
+	}
+
+	int patchNum, vertexNum;
+	string line, seg;
+
+	getline(pfile, line);
+	patchNum = stoi(line);
+
+	int *patch_index = (int*)malloc(patchNum * 16 * sizeof(int));
+
+	for (int i = 0; i < patchNum; i++) {
+		getline(pfile, line);
+		stringstream tmpss(line);
+
+		for (int c = 0; c < 16; c++) {
+			getline(tmpss, seg, ',');
+			patch_index[i * 16 + c] = stoi(seg);
+		}
+	}
+
+	getline(pfile, line);
+	vertexNum = stoi(line);
+
+	float* vertex = (float*)malloc(vertexNum * 3 * sizeof(float));
+
+	for (int i = 0; i < vertexNum; i++) {
+		getline(pfile, line);
+		stringstream tmpss(line);
+
+		for (int c = 0; c < 3; c++) {
+			getline(tmpss, seg, ',');
+			vertex[i * 3 + c] = stof(seg);
+		}
+	}
+
+	pfile.close();
+
+	float m[4][4] = { {-1.0f, 3.0f, -3.0f, 1.0f},
+					{3.0f, -6.0f, 3.0f, 0.0f},
+					{-3.0f, 3.0f, 0.0f, 0.0f},
+					{1.0f, 0.0f, 0.0f, 0.0f} };
+
+	Point p[4][4];
+	float step = 1.0f / tesLvl;
+	Point p1, p2, p3, p4;
+	vector<Point> points;
+
+	for(int i = 0; i < patchNum; i++) {
+		for (int l = 0; l < 4; l++)
+			for (int c = 0; c < 4; c++) {
+				int index = patch_index[l * 4 + c];
+				p[l][c] = new Point(vertex[3 * index + 0], vertex[3 * index + 1], vertex[3 * index + 2]);
+			}
+
+		Point res[4][4];
+		calcAMat(m[0], p[0], res[0]);
+
+		for (int j = 0; j < tesLvl; j++) {
+			float u = step * j;
+			float u_vec[4] = { powf(u, 3.0f), powf(u, 2.0f), u, 1.0f };
+			u = step * (j + 1);
+			float u_vec2[4] = { powf(u, 3.0f), powf(u, 2.0f), u, 1.0f };
+
+			Point res1[4], res2[4];
+
+			multMatrixVector(res[0], u_vec, res1);
+			multMatrixVector(res[0], u_vec2, res2);
+
+			for (int c = 0; c < tesLvl; c++) {
+				float v = step * c;
+
+				p1 = multVects(res1, v);
+				p2 = multVects(res2, v);
+
+				v = step * (c + 1);
+
+				p3 = multVects(res1, v);
+				p4 = multVects(res2, v);
+
+				points.push_back(p2);
+				points.push_back(p3);
+				points.push_back(p1);
+
+				points.push_back(p2);
+				points.push_back(p4);
+				points.push_back(p3);
+			}
+		}
+	}
+
+	ofstream file;
+	file.open(filename);
+	if (file.is_open() != true) {
+		printf("Failed to open output file!\n");
+		_exit(1);
+	}
+
+	file << to_string(points.size()) << "\n";
+	std::cout << "Writing: <" << to_string(points.size()) << "> Points!" << endl;
+
+	for (int c = 0; c < points.size(); c++)
+		file << PointToString(points[c]) << "\n";
+
+	file.close();
+	std::free(patch_index);
+	std::free(vertex);
+}
+
+void multMatrixVector(Point* m, float *vec, Point* res) {
+	for (int j = 0; j < 4; j++) {
+		res[j] = new Point();
+
+		for (int k = 0; k < 4; k++) {
+			m[j * 4 + k].mult(vec[k]);
+			res[j].add(m[j * 4 + k]);
+		}
+	}
+}
+
+void calcAMat(float* m, Point* points, Point* res) {
+	Point tmp[4][4];
+	for (int i = 0; i < 4; i++) 
+		for (int j = 0; j < 4; j++) {
+			tmp[i][j] = new Point();
+
+			for (int k = 0; k < 4; k++) {
+				points[k * 4 + j].mult(m[i * 4 + k]);
+				tmp[i][j].add(points[k * 4 + j]);
+			}
+		}
+
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++) {
+			res[i * 4 + j] = new Point();
+
+			for (int k = 0; k < 4; k++) {
+				tmp[i][k].mult(m[k * 4 + j]);
+				res[i * 4 + j].add(tmp[i][k]);
+			}
+		}
+}
+
+Point multVects(Point u[4], float v) {
+	Point res = new Point();
+	
+	for (int i = 0; i < 4; i++) {
+		res.x += u[i].x * powf(v, 3.0f);
+		res.y += u[i].y * powf(v, 2.0f);
+		res.z += u[i].z * v;
+	}
+
+	return res;
 }
 
 

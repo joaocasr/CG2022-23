@@ -9,6 +9,7 @@
 #include <filesystem>
 #include <math.h>
 #define M_PI 3.14159265358979323846
+using namespace std;
 using std::ofstream;
 namespace fs = std::filesystem;
 
@@ -18,6 +19,7 @@ void buildSphere(float radius, int slices, int stacks, const char* filename);
 void buildCone(float radius, int height, int slices, int stacks, const char* filename);
 void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks, const char* filename);
 void buildTorus(float rad1, float rad2, int slices, int stacks, char* filename);
+void buildTeapot(char* fpatch, int tesLvl, char* filename);
 
 class Point {
 
@@ -43,7 +45,23 @@ public:
 		y = p->y;
 		z = p->z;
 	}
+
+	void mult(float m) {
+		x *= m;
+		y *= m;
+		z *= m;
+	}
+
+	void add(Point p) {
+		x += p.x;
+		y += p.y;
+		z += p.z;
+	}
 };
+
+void multMatrixVector(Point* m, float* vec, Point* res);
+void calcAMat(float* m, Point* points, Point* res);
+Point multVects(Point u[4], float v);
 
 class Triangle {
 
