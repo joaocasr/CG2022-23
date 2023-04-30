@@ -5,7 +5,7 @@
 #include <GL/glut.h>
 #endif
 
-#include <vector>
+#include<vector>
 #include <string>
 #include <iostream>
 #include <stdlib.h>
@@ -17,6 +17,7 @@
 #include <filesystem>
 #include <string>
 #include <cstdlib>
+#include <iostream>
 #include "tinyxml2.h"
 using std::ofstream;
 namespace fs = std::filesystem;
@@ -194,7 +195,6 @@ public:
 };
 
 
-string PrimitivaToString(Primitiva p);
 string getTransformacoes(vector<Transformation> t);
 string getModelos(vector<string> modelos);
 void build_groups(vector<Group> groups);
