@@ -28,7 +28,7 @@ float G_radious = 5.0f;
 
 double frames;
 int timebase;
-static float t = 0;
+float gt = 0;
 
 int groupCount = 0;
 GLuint* buffers;
@@ -90,17 +90,23 @@ void getCatmullRomPoint(float t, float* p0, float* p1, float* p2, float* p3, flo
 						{ 1.0f, -2.5f,  2.0f, -0.5f},
 						{-0.5f,  0.0f,  0.5f,  0.0f},
 						{ 0.0f,  1.0f,  0.0f,  0.0f} };
+	float t3 = powf(t, 3.0f);
+	float t2 = powf(t, 2.0f);
+	float T[4] = { t3, t2, t, 1.0f };
+	float Td[4] = { 3 * t2, 2 * t, 1.0f, 0.0f };
 
 	for (int i = 0; i < 3; i++) {
-		float vecp[4] = { p0[i], p1[i], p2[i], p3[i] };
-		float veca[4];
+		float A[4];
+		float vec[4] = { p0[i], p1[i], p2[i], p3[i] };
+		multMatrixVector(&m[0][0], vec, A);
 
-		multMatrixVector((float*)m, vecp, veca);
+		pos[i] = 0;
+		deriv[i] = 0;
 
-		//P(t)
-		pos[i] = powf(t, 3.0) * veca[0] + powf(t, 2.0) * veca[1] + t * veca[2] + veca[3];
-		//P´(t)
-		deriv[i] = 3 * powf(t, 2.0) * veca[0] + 2 * t * veca[1] + veca[2];
+		for (int j = 0; j < 4; j++) {
+			pos[i] += T[j] * A[j];
+			deriv[i] += Td[j] * A[j];
+		}
 	}
 }
 
@@ -116,32 +122,36 @@ void getGlobalCatmullRomPoint(float gt, float* pos, float* deriv, vector<float> 
 	indices[1] = (indices[0] + 1) % (size / 3);
 	indices[2] = (indices[1] + 1) % (size / 3);
 	indices[3] = (indices[2] + 1) % (size / 3);
-
+	int a = 1;
 	//float p[POINT_COUNT][3] = { {-1,-1,0},{-1,1,0},{1,1,0},{0,0,0},{1,-1,0} };
 
 
-	float** p = new float* [(size / 3)];
-
-	for (int i = 0; i < (size / 3); i++) {
+	//float** p = new float* [(size / 3)];
+	float p[4][3];
+	for (int i = 0; i < (size/3) ; i++) {
 		int j = i * 3;
-		p[i] = new float[3];
 		p[i][0] = curvepoints[j];
-		p[i][1] = curvepoints[j + 1];
-		p[i][2] = curvepoints[j + 2];
+		p[i][1] = curvepoints[j+1];
+		p[i][2] = curvepoints[j+2];
 	}
+
 	getCatmullRomPoint(t, p[indices[0]], p[indices[1]], p[indices[2]], p[indices[3]], pos, deriv);
-	free(p);
+
+	//for (int i = 0; i < (size / 3); i++) {
+	//	free(p[i]);
+	//}
+
 }
 
 void renderCatmullRomCurve(vector<float> curvepoints) {
-
 	// draw curve using line segments with GL_LINE_LOOP
 	glBegin(GL_LINE_LOOP);
 	for (int i = 0; i < 100; ++i) {
 		float pp[3];
 		float dv[3];
-		getGlobalCatmullRomPoint(i / 100.0, pp, dv, curvepoints, curvepoints.size());
-		glVertex3f(pp[0], pp[1], pp[3]);
+		float r = i / 100.0;
+		getGlobalCatmullRomPoint(r, pp, dv, curvepoints, curvepoints.size());
+		glVertex3f(pp[0], pp[1], pp[2]);
 	}
 	glEnd();
 
@@ -247,6 +257,12 @@ void build_groups(vector<Group> groups) {
 					//construcao das Catmull-Rom cubic curves requer a existencia de pelo menos 4 pontos
 
 					float pos[3], deriv[3];
+					static float t = 0;
+					float deltat = 0.0f;
+					if (tra.time != 0) {
+						deltat = 1.0f / (tra.time * 1000) ;
+					}
+
 					renderCatmullRomCurve(tra.curvepoints);
 
 					getGlobalCatmullRomPoint(t, pos, deriv, tra.curvepoints, tra.curvepoints.size());
@@ -255,7 +271,8 @@ void build_groups(vector<Group> groups) {
 					if (tra.align) {
 						alignment(deriv);
 					}
-					if (tra.time != 0) t += (1 / tra.time * 60); // dividir a circunferencia por fracoes de tempo?
+
+					if (tra.time != 0) t += deltat;
 				}
 				else {
 					glTranslatef(tra.trsx, tra.trsy, tra.trsz);
