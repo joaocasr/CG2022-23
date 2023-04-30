@@ -60,7 +60,7 @@ int main(int args, char* argv[]) {
 		char* filename = argv[6];
 		buildTorus(rad1, rad2, slices, stacks, filename);
 	}
-	else if (strcmp(argv[1], "teapot") == 0) {
+	else if (strcmp(argv[1], "patch") == 0) {
 		char* fpatch = argv[2];
 		int tesLvl = atoi(argv[3]);
 		char* filename = argv[4];
@@ -686,6 +686,11 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 				p3 = multVects(res1, v);
 				p4 = multVects(res2, v);
 
+				p1.normalize();
+				p2.normalize();
+				p3.normalize();
+				p4.normalize();
+
 				points.push_back(p2);
 				points.push_back(p3);
 				points.push_back(p1);
@@ -756,6 +761,7 @@ Point multVects(Point u[4], float v) {
 		res.x += u[i].x * powf(v, 3.0f);
 		res.y += u[i].y * powf(v, 2.0f);
 		res.z += u[i].z * v;
+		res.w += u[i].w;
 	}
 
 	return res;

@@ -27,35 +27,48 @@ public:
 	float x;
 	float y;
 	float z;
+	float w;
 
 	Point()
 	{
 		x = 0;
 		y = 0;
 		z = 0;
+		w = 1.0f;
 	}
 	Point(float px, float py, float pz)
 	{
 		x = px;
 		y = py;
 		z = pz;
+		w = 1.0f;
 	}
 	Point(Point* p) {
 		x = p->x;
 		y = p->y;
 		z = p->z;
+		w = p->w;
 	}
 
 	void mult(float m) {
 		x *= m;
 		y *= m;
 		z *= m;
+		w *= m;
 	}
 
 	void add(Point p) {
 		x += p.x;
 		y += p.y;
 		z += p.z;
+		w += p.w;
+	}
+
+	void normalize() {
+		x = x / w;
+		y = y / w;
+		z = z / w;
+		w = 1.0f;
 	}
 };
 
