@@ -664,9 +664,10 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 		Point res[4][4];
 		calcAMat(m[0], p[0], res[0]);
 
-		for (int j = 0; j < tesLvl; j++) {
+		for (int j = 0; j < tesLvl-1; j++) {
 			float u = step * j;
 			float u_vec[4] = { powf(u, 3.0f), powf(u, 2.0f), u, 1.0f };
+
 			u = step * (j + 1);
 			float u_vec2[4] = { powf(u, 3.0f), powf(u, 2.0f), u, 1.0f };
 
@@ -677,19 +678,20 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 
 			for (int c = 0; c < tesLvl; c++) {
 				float v = step * c;
+				float v_vec[4] = { powf(v, 3.0f), powf(v, 2.0f), v, 1.0f };
+				float normal[3];
+
+				cross(v_vec, u_vec, normal);
+				normalize(normal);
 
 				p1 = multVects(res1, v);
 				p2 = multVects(res2, v);
 
 				v = step * (c + 1);
+				float v_vec2[4] = { powf(v, 3.0f), powf(v, 2.0f), v, 1.0f };
 
 				p3 = multVects(res1, v);
 				p4 = multVects(res2, v);
-
-				p1.normalize();
-				p2.normalize();
-				p3.normalize();
-				p4.normalize();
 
 				points.push_back(p2);
 				points.push_back(p3);
@@ -724,10 +726,8 @@ void multMatrixVector(Point* m, float *vec, Point* res) {
 	for (int j = 0; j < 4; j++) {
 		res[j] = new Point();
 
-		for (int k = 0; k < 4; k++) {
-			m[j * 4 + k].mult(vec[k]);
-			res[j].add(m[j * 4 + k]);
-		}
+		for (int k = 0; k < 4; k++)
+			res[j].matOp(vec[k], m[j * 4 + k]);
 	}
 }
 
@@ -737,20 +737,16 @@ void calcAMat(float* m, Point* points, Point* res) {
 		for (int j = 0; j < 4; j++) {
 			tmp[i][j] = new Point();
 
-			for (int k = 0; k < 4; k++) {
-				points[k * 4 + j].mult(m[i * 4 + k]);
-				tmp[i][j].add(points[k * 4 + j]);
-			}
+			for (int k = 0; k < 4; k++)
+				tmp[i][j].matOp(m[i * 4 + k], points[k * 4 + j]);
 		}
 
 	for (int i = 0; i < 4; i++)
 		for (int j = 0; j < 4; j++) {
 			res[i * 4 + j] = new Point();
 
-			for (int k = 0; k < 4; k++) {
-				tmp[i][k].mult(m[k * 4 + j]);
-				res[i * 4 + j].add(tmp[i][k]);
-			}
+			for (int k = 0; k < 4; k++)
+				res[i * 4 + j].matOp(m[k * 4 + j], tmp[i][k]);
 		}
 }
 
@@ -761,12 +757,21 @@ Point multVects(Point u[4], float v) {
 		res.x += u[i].x * powf(v, 3.0f);
 		res.y += u[i].y * powf(v, 2.0f);
 		res.z += u[i].z * v;
-		res.w += u[i].w;
 	}
 
 	return res;
 }
 
+void cross(float* a, float* b, float* res) {
+	res[0] = a[1] * b[2] - a[2] * b[1];
+	res[1] = a[2] * b[0] - a[0] * b[2];
+	res[2] = a[0] * b[1] - a[1] * b[0];
+}
+
+void normalize(float* a) {
+	float l = sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
+	a[0] = a[0] / l; a[1] = a[1] / l; a[2] = a[2] / l;
+}
 
 std::string PointToString(Point p) {
 	return to_string(p.x) + "," + to_string(p.y) + "," + to_string(p.z);
