@@ -12,7 +12,7 @@ using namespace tinyxml2;
 
 int sizeTriangulos = 0;
 int mode = M_FIX;
-int vbo_mode = VBO_OFF;
+int vbo_mode = VBO_BASIC;
 
 vector<string> allmodels;
 vector<Group> my_world;
@@ -299,9 +299,9 @@ void build_groups(vector<Group> groups) {
 		if (vbo_mode == VBO_OFF)
 			for (int c = 0; c < g.modelos.size();c += 9) {
 				glBegin(GL_TRIANGLES);
-				glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
-				glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
-				glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
+					glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
+					glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
+					glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
 				glEnd();
 			}
 		else if (vbo_mode == VBO_BASIC) {
@@ -607,79 +607,84 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 
 	XMLElement* transformacao = xmlelement->FirstChildElement("transform");
 
-	for (XMLElement* tras = transformacao->FirstChildElement(); tras != nullptr; tras = tras->NextSiblingElement()) {
+	if (transformacao != nullptr) {
+		for (XMLElement* tras = transformacao->FirstChildElement(); tras != nullptr; tras = tras->NextSiblingElement()) {
 
-		if (tras != nullptr && tras->Attribute("time") == nullptr) {
+			if (tras != nullptr && tras->Attribute("time") == nullptr) {
 
-			if (tras->Attribute("x") != nullptr) {
-				x = stof(tras->Attribute("x"));
-			}
-			if (tras->Attribute("y") != nullptr) {
-				y = stof(tras->Attribute("y"));
-			}
-			if (tras->Attribute("z") != nullptr) {
-				z = stof(tras->Attribute("z"));
-			}
-			if (tras->Attribute("angle") != nullptr) {
-				angle = stof(tras->Attribute("angle"));
-			}
-			Transformation t = new Transformation(tras->Name(), x, y, z, time, align);
-
-			if (angle != 0)
-				t.setAngle(angle);
-			angle = 0;
-			time = -1;
-			transformacoes.push_back(t);
-		}
-		if (tras != nullptr && tras->Attribute("time") != nullptr) {
-			if (tras->Attribute("time") != nullptr) {
-				time = stof(tras->Attribute("time"));
-			}
-			if (tras->Attribute("align") != nullptr) {
-				if (strcmp(tras->Attribute("align"), "true") == 0)
-					align = true;
-				else align = false;
-			}
-			if (tras->Attribute("x") != nullptr) {
-				x = stof(tras->Attribute("x"));
-			}
-			if (tras->Attribute("y") != nullptr) {
-				y = stof(tras->Attribute("y"));
-			}
-			if (tras->Attribute("z") != nullptr) {
-				z = stof(tras->Attribute("z"));
-			}
-			if (strcmp(tras->Name(), "translate") == 0) {
-				for (XMLElement* ponto = tras->FirstChildElement(); ponto != nullptr; ponto = ponto->NextSiblingElement()) {
-					if (ponto->Attribute("x") != nullptr) {
-						bx = stof(ponto->Attribute("x"));
-						curvepoints.push_back(bx);
-					}
-					if (ponto->Attribute("y") != nullptr) {
-						by = stof(ponto->Attribute("y"));
-						curvepoints.push_back(by);
-					}
-					if (ponto->Attribute("z") != nullptr) {
-						bz = stof(ponto->Attribute("z"));
-						curvepoints.push_back(bz);
-					}
+				if (tras->Attribute("x") != nullptr) {
+					x = stof(tras->Attribute("x"));
+				}
+				if (tras->Attribute("y") != nullptr) {
+					y = stof(tras->Attribute("y"));
+				}
+				if (tras->Attribute("z") != nullptr) {
+					z = stof(tras->Attribute("z"));
+				}
+				if (tras->Attribute("angle") != nullptr) {
+					angle = stof(tras->Attribute("angle"));
 				}
 				Transformation t = new Transformation(tras->Name(), x, y, z, time, align);
-				t.setTime(time);
-				t.setAlign(align);
-				for (int p = 0;p < curvepoints.size();p++) {
-					t.addPoint(curvepoints[p]);
-				}
-				transformacoes.push_back(t);
+
+				if (angle != 0)
+					t.setAngle(angle);
+				angle = 0;
 				time = -1;
-				curvepoints.clear();
+				transformacoes.push_back(t);
 			}
-			else {
-				Transformation t = new Transformation(tras->Name(), x, y, z, time, align);
-				t.setTime(time);
-				t.setAlign(align);
-				time = -1;
-				transformacoes.push_back(t);
+
+			if (tras != nullptr && tras->Attribute("time") != nullptr) {
+				if (tras->Attribute("time") != nullptr) {
+					time = stof(tras->Attribute("time"));
+				}
+				if (tras->Attribute("align") != nullptr) {
+					if (strcmp(tras->Attribute("align"), "true") == 0)
+						align = true;
+					else align = false;
+				}
+				if (tras->Attribute("x") != nullptr) {
+					x = stof(tras->Attribute("x"));
+				}
+				if (tras->Attribute("y") != nullptr) {
+					y = stof(tras->Attribute("y"));
+				}
+				if (tras->Attribute("z") != nullptr) {
+					z = stof(tras->Attribute("z"));
+				}
+
+				if (strcmp(tras->Name(), "translate") == 0) {
+					for (XMLElement* ponto = tras->FirstChildElement(); ponto != nullptr; ponto = ponto->NextSiblingElement()) {
+						if (ponto->Attribute("x") != nullptr) {
+							bx = stof(ponto->Attribute("x"));
+							curvepoints.push_back(bx);
+						}
+						if (ponto->Attribute("y") != nullptr) {
+							by = stof(ponto->Attribute("y"));
+							curvepoints.push_back(by);
+						}
+						if (ponto->Attribute("z") != nullptr) {
+							bz = stof(ponto->Attribute("z"));
+							curvepoints.push_back(bz);
+						}
+					}
+
+					Transformation t = new Transformation(tras->Name(), x, y, z, time, align);
+					t.setTime(time);
+					t.setAlign(align);
+					for (int p = 0; p < curvepoints.size(); p++) {
+						t.addPoint(curvepoints[p]);
+					}
+					transformacoes.push_back(t);
+					time = -1;
+					curvepoints.clear();
+				}
+				else {
+					Transformation t = new Transformation(tras->Name(), x, y, z, time, align);
+					t.setTime(time);
+					t.setAlign(align);
+					time = -1;
+					transformacoes.push_back(t);
+				}
 			}
 		}
 	}

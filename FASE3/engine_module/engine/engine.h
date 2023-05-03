@@ -93,7 +93,7 @@ public:
 	float trsz;
 	float angle = 0;
 	vector<float> curvepoints;
-	float time;
+	float time = -1;
 	bool align;
 
 	Transformation() {
