@@ -12,7 +12,7 @@ using namespace tinyxml2;
 
 int sizeTriangulos = 0;
 int mode = M_FIX;
-int vbo_mode = VBO_BASIC;
+int vbo_mode = VBO_OFF;
 
 vector<string> allmodels;
 vector<Group> my_world;
@@ -299,9 +299,9 @@ void build_groups(vector<Group> groups) {
 		if (vbo_mode == VBO_OFF)
 			for (int c = 0; c < g.modelos.size();c += 9) {
 				glBegin(GL_TRIANGLES);
-					glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
-					glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
-					glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
+				glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
+				glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
+				glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
 				glEnd();
 			}
 		else if (vbo_mode == VBO_BASIC) {
@@ -519,7 +519,7 @@ void parse_XML(std::string xmlfile) {
 			getGroups(grupo, true);
 			grupo = grupo->NextSiblingElement("group");
 		}
-
+		vector<Group> v = my_world;
 		cout << "Tamanho:" << endl;
 		cout << my_world.size() << endl;
 
@@ -547,6 +547,7 @@ vector<float> getModels(vector<string> ms) {
 	vector<float> vertex;
 
 	for (string fname : ms) {
+
 		std::ifstream myfile;
 		string path = fs::current_path().string();
 		string dirpath = path + "\\";
@@ -697,7 +698,12 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 		}
 	}
 	vector <float> pontos = getModels(modelos);
-	Group groupElement = Group(transformacoes, getModels(modelos));
+	Group groupElement = Group(transformacoes);
+	int pp = 0;
+	while (pp != pontos.size()) {
+		groupElement.addPointModel(pontos[pp]);
+		pp += 1;
+	}
 	groupElement.setBufIndex(groupCount++); // Needed to know which VBO buffer to use for group
 
 	for (tinyxml2::XMLElement* child = xmlelement->FirstChildElement("group");
