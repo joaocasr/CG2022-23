@@ -364,6 +364,28 @@ void processKeys(unsigned char c, int xx, int yy) {
 	posCamy = G_radious * sin(G_beta);
 	posCamz = G_radious * cos(G_beta) * cos(G_alpha);
 
+	if (c == 'v' || c == 'V') {
+		vbo_mode += 1;
+
+		if (vbo_mode > 1) //TODO CHANGE AFTER VBO INDEX IMPLEMENTED
+			vbo_mode = 0;
+
+		switch (vbo_mode)
+		{
+		case 0:
+			printf("VBO OFF\n");
+			break;
+		case 1:
+			printf("VBO BASIC\n");
+			break;
+		case 2:
+			printf("VBO INDEX\n");
+			break;
+		default:
+			break;
+		}
+	}
+
 	glutPostRedisplay();
 }
 
