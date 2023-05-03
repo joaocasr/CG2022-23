@@ -55,7 +55,7 @@ public:
 
 void multMatrixVector(Point* m, float* vec, Point* res);
 void calcAMat(float* m, Point* points, Point* res);
-Point multVects(Point u[4], float v);
+Point multVects(Point u[4], float v[4]);
 void cross(float* a, float* b, float* res);
 void normalize(float* a);
 

@@ -649,22 +649,23 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 					{-3.0f, 3.0f, 0.0f, 0.0f},
 					{1.0f, 0.0f, 0.0f, 0.0f} };
 
-	Point p[4][4];
 	float step = 1.0f / tesLvl;
 	Point p1, p2, p3, p4;
 	vector<Point> points;
 
 	for(int i = 0; i < patchNum; i++) {
+		Point p[4][4];
+
 		for (int l = 0; l < 4; l++)
 			for (int c = 0; c < 4; c++) {
-				int index = patch_index[l * 4 + c];
+				int index = patch_index[i * 16 + l * 4 + c];
 				p[l][c] = new Point(vertex[3 * index + 0], vertex[3 * index + 1], vertex[3 * index + 2]);
 			}
 
 		Point res[4][4];
 		calcAMat(m[0], p[0], res[0]);
 
-		for (int j = 0; j < tesLvl-1; j++) {
+		for (int j = 0; j < tesLvl; j++) {
 			float u = step * j;
 			float u_vec[4] = { powf(u, 3.0f), powf(u, 2.0f), u, 1.0f };
 
@@ -679,27 +680,23 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 			for (int c = 0; c < tesLvl; c++) {
 				float v = step * c;
 				float v_vec[4] = { powf(v, 3.0f), powf(v, 2.0f), v, 1.0f };
-				float normal[3];
 
-				cross(v_vec, u_vec, normal);
-				normalize(normal);
-
-				p1 = multVects(res1, v);
-				p2 = multVects(res2, v);
+				p1 = multVects(res1, v_vec);
+				p2 = multVects(res2, v_vec);
 
 				v = step * (c + 1);
 				float v_vec2[4] = { powf(v, 3.0f), powf(v, 2.0f), v, 1.0f };
 
-				p3 = multVects(res1, v);
-				p4 = multVects(res2, v);
-
-				points.push_back(p2);
-				points.push_back(p3);
-				points.push_back(p1);
+				p3 = multVects(res1, v_vec2);
+				p4 = multVects(res2, v_vec2);
 
 				points.push_back(p2);
 				points.push_back(p4);
 				points.push_back(p3);
+
+				points.push_back(p3);
+				points.push_back(p1);
+				points.push_back(p2);
 			}
 		}
 	}
@@ -750,14 +747,11 @@ void calcAMat(float* m, Point* points, Point* res) {
 		}
 }
 
-Point multVects(Point u[4], float v) {
+Point multVects(Point u[4], float v[4]) {
 	Point res = new Point();
-	
-	for (int i = 0; i < 4; i++) {
-		res.x += u[i].x * powf(v, 3.0f);
-		res.y += u[i].y * powf(v, 2.0f);
-		res.z += u[i].z * v;
-	}
+
+	for (int i = 0; i < 4; i++)
+		res.matOp(v[i], u[i]);
 
 	return res;
 }

@@ -12,7 +12,7 @@ using namespace tinyxml2;
 
 int sizeTriangulos = 0;
 int mode = M_FIX;
-int vbo_mode = VBO_OFF;
+int vbo_mode = VBO_BASIC;
 
 vector<string> allmodels;
 vector<Group> my_world;
@@ -299,9 +299,9 @@ void build_groups(vector<Group> groups) {
 		if (vbo_mode == VBO_OFF)
 			for (int c = 0; c < g.modelos.size();c += 9) {
 				glBegin(GL_TRIANGLES);
-				glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
-				glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
-				glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
+					glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
+					glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
+					glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
 				glEnd();
 			}
 		else if (vbo_mode == VBO_BASIC) {
