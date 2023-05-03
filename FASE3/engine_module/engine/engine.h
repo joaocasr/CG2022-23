@@ -144,15 +144,13 @@ public:
 	vector<Group> groupChild;
 	int bufIndex = -1;
 
-	Group(vector<Transformation> trans, vector<float> models, vector<Group> gchild) {
+	Group(vector<Transformation> trans, vector<Group> gchild) {
 		transformacoes = trans;
-		modelos = models;
 		groupChild = gchild;
 	}
 
-	Group(vector<Transformation> trans, vector<float> models) {
+	Group(vector<Transformation> trans) {
 		transformacoes = trans;
-		modelos = models;
 	}
 
 	vector<float> getModelos() {
@@ -177,6 +175,10 @@ public:
 
 	void addChild(Group child) {
 		groupChild.push_back(child);
+	}
+
+	void addPointModel(float p) {
+		modelos.push_back(p);
 	}
 };
 
