@@ -123,10 +123,7 @@ void getGlobalCatmullRomPoint(float gt, float* pos, float* deriv, vector<float> 
 	indices[2] = (indices[1] + 1) % (size / 3);
 	indices[3] = (indices[2] + 1) % (size / 3);
 	int a = 1;
-	//float p[POINT_COUNT][3] = { {-1,-1,0},{-1,1,0},{1,1,0},{0,0,0},{1,-1,0} };
 
-
-	//float** p = new float* [(size / 3)];
 	float p[4][3];
 	for (int i = 0; i < (size/3) ; i++) {
 		int j = i * 3;
@@ -136,11 +133,6 @@ void getGlobalCatmullRomPoint(float gt, float* pos, float* deriv, vector<float> 
 	}
 
 	getCatmullRomPoint(t, p[indices[0]], p[indices[1]], p[indices[2]], p[indices[3]], pos, deriv);
-
-	//for (int i = 0; i < (size / 3); i++) {
-	//	free(p[i]);
-	//}
-
 }
 
 void renderCatmullRomCurve(vector<float> curvepoints) {
