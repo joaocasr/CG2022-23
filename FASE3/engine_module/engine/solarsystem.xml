@@ -158,9 +158,9 @@
 				</models>
 			</group>
 			<group>
-				<transform> 
+				<transform>
 					<rotate x="1" y="0" z="0.5" angle="90" />
-					<scale x="2.7" y="2.7" z="0" />
+					<scale x="2.5" y="2.5" z="0" />
 				</transform>
 				<models>
 					<model file="torus.3d" />
@@ -273,6 +273,22 @@
 			</transform>
 			<models>
 				<model file="sphere.3d"/>
+			</models>
+		</group>
+		<!-- Comet -->
+		<group>
+			<transform>
+				<translate time = "4.2" align="true">
+					<point x = "60" y = "0" z = "-4" />
+					<point x = "0" y = "0" z = "2.5" />
+					<point x = "-60" y = "0" z = "-15" />
+					<point x = "0" y = "0" z = "-2.5" />
+				</translate>
+				<rotate angle="-90" x="1" y="0" z="0" />
+				<scale x="0.05" y="0.05" z="0.05" />
+			</transform>
+			<models> 
+				<model file="sphere.3d" />
 			</models>
 		</group>
 	</group>
