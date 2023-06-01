@@ -26,6 +26,9 @@ float G_alpha = 0.0f;
 float G_beta = 0.0f;
 float G_radious = 5.0f;
 
+float posLightx = 0, posLighty = 0, posLightz = 0;
+float dirLightx = 0, dirLighty = 0, dirLightz = 0;
+float cutoff = 0;
 double frames;
 int timebase;
 float gt = 0;
@@ -447,6 +450,20 @@ int main(int argc, char** argv)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glPolygonMode(GL_FRONT, GL_LINE);
 
+
+	glEnable(GL_LIGHTING);
+
+	// Set up light source
+	//GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f }; // Example light position
+	GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 0.0f }; // Direction along positive z-axis
+	
+	glLightfv(GL_LIGHT0, GL_POSITION, lightDirection);
+	//glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+	glEnable(GL_LIGHT0); // Enable light source 0
+
+
+
+
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 
 	// enter GLUT�s main cycle
@@ -520,14 +537,42 @@ void parse_XML(std::string xmlfile) {
 			fov = 60.0f;
 			near = 1.0f;
 			far = 1000.0f;
+		}	
+
+		XMLElement* lights = camera->NextSibling("lights");
+
+
+		XMLElement* light = lights->FirstChildElement("light");
+		//define camera position
+		if (light->Attribute("type") == "directional") {
+			dirLightx = stof(light->Attribute("dirx"));
+			dirLighty = stof(light->Attribute("diry"));
+			dirLightz = stof(light->Attribute("dirz"));
+		} 
+		else if (light->Attribute("type") == "point") {
+			posLightx = stof(light->Attribute("posx"));
+			posLighty = stof(light->Attribute("posy"));
+			posLightz = stof(light->Attribute("posz"));
 		}
+		else if (light->Attribute("type") == "spot") {
+			posLightx = stof(light->Attribute("posx"));
+			posLighty = stof(light->Attribute("posy"));
+			posLightz = stof(light->Attribute("posz"));
+			dirLightx = stof(light->Attribute("dirx"));
+			dirLighty = stof(light->Attribute("diry"));
+			dirLightz = stof(light->Attribute("dirz"));
+			cutoff = stof(light->Attribute("cutoff"));
+		}
+
+	
+
 
 		//calculate camera starting angle and radius
 		G_radious = sqrt(pow(posCamx, 2.0f) + pow(posCamy, 2.0f) + pow(posCamz, 2.0f));
 		G_beta = atan(posCamy / G_radious);
 		G_alpha = acos(posCamz / (sqrt(pow(posCamx, 2.0f) + pow(posCamz, 2.0f))));
 
-		XMLElement* grupo = camera->NextSiblingElement("group");
+		XMLElement* grupo = lights->NextSiblingElement("group");
 
 		while (grupo != nullptr) {
 			getGroups(grupo, true);
