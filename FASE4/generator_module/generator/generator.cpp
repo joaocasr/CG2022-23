@@ -4,6 +4,7 @@ using namespace std;
 std::string path = fs::current_path().string();
 
 vector<Triangle> triangulos;
+std::vector<Vector3> triangleNormals;
 int sizeTriangulos = 0;
 
 
@@ -274,6 +275,7 @@ void buildCube(int units, int grid, char* filename) {
 			sizeTriangulos += 4;
 		}
 	}
+	//calcula as normas de cada triangulo para a luz maybe
 
 	ofstream file;
 	fs::create_directory("models");
@@ -312,6 +314,9 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 	float deltaAlpha = 2 * pi / slices;
 	float deltaBeta = pi / stacks;
 
+	Point* topVertex = nullptr;
+	Point* bottomVertex = nullptr;
+
 	for (int i = -(stacks / 2); i < (stacks / 2); i++) {
 		float beta = i * deltaBeta;
 		float nextBeta = (i + 1) * deltaBeta;
@@ -325,6 +330,15 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 			p3 = new Point(radius * cos(nextBeta) * sin(alpha), radius * sin(nextBeta), radius * cos(nextBeta) * cos(alpha));
 			p4 = new Point(radius * cos(nextBeta) * sin(nextAlpha), radius * sin(nextBeta), radius * cos(nextBeta) * cos(nextAlpha));
 
+			// calcula vertex do topo e baixo da esfera para as coordenadas
+			if (i == -(stacks / 2)) {
+				topVertex = p1;
+			}
+			else if (i == (stacks / 2) - 1) {
+				bottomVertex = p3;
+			}
+			
+
 			t1 = new Triangle(p1, p2, p4);
 			t2 = new Triangle(p1, p4, p3);
 
@@ -334,6 +348,7 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 		}
 	}
 
+	triangleNormals = calculateTriangleNormals(triangulos);
 	ofstream file;
 	fs::create_directory("models");
 	file.open(dir);
@@ -765,6 +780,30 @@ void cross(float* a, float* b, float* res) {
 void normalize(float* a) {
 	float l = sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]);
 	a[0] = a[0] / l; a[1] = a[1] / l; a[2] = a[2] / l;
+}
+
+std::vector<Vector3> calculateTriangleNormals(const std::vector<Triangle*>& triangles)
+{
+	std::vector<Vector3> triangleNormals;
+
+	for (const Triangle* triangle : triangles) {
+		// Get the three points of the triangle
+		const Point* p1 = triangle->p1;
+		const Point* p2 = triangle->p2;
+		const Point* p3 = triangle->p3;
+
+		// Calculate the two edge vectors of the triangle
+		Vector3 edge1 = Vector3(*p2) - Vector3(*p1);
+		Vector3 edge2 = Vector3(*p3) - Vector3(*p1);
+
+		// Calculate the normal vector by taking the cross product of the two edges
+		Vector3 normal = edge1.cross(edge2).normalized();
+
+		// Store the normal vector in the triangleNormals vector
+		triangleNormals.push_back(normal);
+	}
+
+	return triangleNormals;
 }
 
 std::string PointToString(Point p) {
