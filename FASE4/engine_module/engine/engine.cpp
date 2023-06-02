@@ -12,10 +12,19 @@ using namespace tinyxml2;
 
 int sizeTriangulos = 0;
 int mode = M_FIX;
-int vbo_mode = VBO_BASIC;
+int vbo_mode = VBO_OFF;
 
 vector<string> allmodels;
 vector<Group> my_world;
+
+vector<Light> lightpoints;
+
+
+
+
+bool bpoint = false;
+bool bdirection = false;
+bool bspot = false;
 
 float width = 0, height = 0;
 float posCamx = 0, posCamy = 0, posCamz = 0;
@@ -128,11 +137,11 @@ void getGlobalCatmullRomPoint(float gt, float* pos, float* deriv, vector<float> 
 	int a = 1;
 
 	float p[4][3];
-	for (int i = 0; i < (size/3) ; i++) {
+	for (int i = 0; i < (size / 3); i++) {
 		int j = i * 3;
 		p[i][0] = curvepoints[j];
-		p[i][1] = curvepoints[j+1];
-		p[i][2] = curvepoints[j+2];
+		p[i][1] = curvepoints[j + 1];
+		p[i][2] = curvepoints[j + 2];
 	}
 
 	getCatmullRomPoint(t, p[indices[0]], p[indices[1]], p[indices[2]], p[indices[3]], pos, deriv);
@@ -184,8 +193,29 @@ void renderScene(void)
 	gluLookAt(posCamx, posCamy, posCamz,
 		lookCamx, lookCamy, lookCamz,
 		upCamx, upCamy, upCamz);
-	glColor3f(1.0f, 1.0f, 1.0f);
 
+	if (bpoint) {
+	
+		GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
+		glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+
+	}
+
+	if (bdirection) {
+
+		GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f }; 
+		glLightfv(GL_LIGHT0, GL_POSITION, lightDirection);
+
+	}if (bspot) {
+		GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
+		GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
+		glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+		glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDirection);
+		glLightf(GL_LIGHT0, GL_SPOT_CUTOFF,cutoff);
+
+	}
+
+	glColor3f(1.0f, 1.0f, 1.0f);
 	// Axis
 	glBegin(GL_LINES);
 	// X axis Red
@@ -230,11 +260,22 @@ void alignment(float* deriv) {
 void prepareData_BasicVBO(vector<Group> groups) {
 	for (Group g : groups) {
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()]);
+
+		int countpoints = 0;
+		vector<float> pontosaux;
+		for (Model m : g.modelos) {
+			countpoints += m.pontos.size();
+			for (float pp : m.pontos) {
+				pontosaux.push_back(pp);
+			}
+		}
+
 		glBufferData(GL_ARRAY_BUFFER,
-			sizeof(float) * g.getModelos().size(),
-			g.getModelos().data(),
+			sizeof(float) * countpoints,
+			pontosaux.data(),
 			GL_STATIC_DRAW);
 
+		pontosaux.clear();
 		//Children
 		if (g.getChild().size() > 0)
 			prepareData_BasicVBO(g.getChild());
@@ -255,7 +296,7 @@ void build_groups(vector<Group> groups) {
 					static float t = 0;
 					float deltat = 0.0f;
 					if (tra.time != 0) {
-						deltat = 1.0f / (tra.time * 1000) ;
+						deltat = 1.0f / (tra.time * 1000);
 					}
 
 					renderCatmullRomCurve(tra.curvepoints);
@@ -292,17 +333,42 @@ void build_groups(vector<Group> groups) {
 		// Models
 		glColor3f(1.0f, 0.5f, 0.0f);
 		if (vbo_mode == VBO_OFF)
-			for (int c = 0; c < g.modelos.size();c += 9) {
-				glBegin(GL_TRIANGLES);
-					glVertex3f(g.modelos[c], g.modelos[c + 1], g.modelos[c + 2]);
-					glVertex3f(g.modelos[c + 3], g.modelos[c + 4], g.modelos[c + 5]);
-					glVertex3f(g.modelos[c + 6], g.modelos[c + 7], g.modelos[c + 8]);
-				glEnd();
+			for (Model m : g.modelos) {
+				for (int c = 0; c < m.pontos.size();c += 9) {
+					glBegin(GL_TRIANGLES);
+					glVertex3f(m.pontos[c], m.pontos[c+1], m.pontos[c+2]);
+					glVertex3f(m.pontos[c+3], m.pontos[c + 4], m.pontos[c + 5]);
+					glVertex3f(m.pontos[c+6], m.pontos[c + 7], m.pontos[c + 8]);
+					glEnd();
+				}
+
+
+				glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
+				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
+				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
+				glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
+				glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
 			}
+
+			
 		else if (vbo_mode == VBO_BASIC) {
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()]);
 			glVertexPointer(3, GL_FLOAT, 0, 0);
-			glDrawArrays(GL_TRIANGLES, 0, g.modelos.size() / 3);
+			int countpoints = 0;
+			for (Model m : g.modelos) {
+				countpoints += m.pontos.size();
+			}
+
+			glDrawArrays(GL_TRIANGLES, 0, countpoints / 3);
+
+			//for (Model m : g.modelos) {
+				//glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
+				//glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
+				//glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
+				//glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
+				//glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
+			//}
+
 		}
 
 		//Children
@@ -450,16 +516,8 @@ int main(int argc, char** argv)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glPolygonMode(GL_FRONT, GL_LINE);
 
-
 	glEnable(GL_LIGHTING);
-
-	// Set up light source
-	//GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f }; // Example light position
-	GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 0.0f }; // Direction along positive z-axis
-	
-	glLightfv(GL_LIGHT0, GL_POSITION, lightDirection);
-	//glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-	glEnable(GL_LIGHT0); // Enable light source 0
+	glEnable(GL_LIGHT0);
 
 
 
@@ -537,47 +595,64 @@ void parse_XML(std::string xmlfile) {
 			fov = 60.0f;
 			near = 1.0f;
 			far = 1000.0f;
-		}	
-
-		XMLElement* lights = camera->NextSibling("lights");
-
-
-		XMLElement* light = lights->FirstChildElement("light");
-		//define camera position
-		if (light->Attribute("type") == "directional") {
-			dirLightx = stof(light->Attribute("dirx"));
-			dirLighty = stof(light->Attribute("diry"));
-			dirLightz = stof(light->Attribute("dirz"));
-		} 
-		else if (light->Attribute("type") == "point") {
-			posLightx = stof(light->Attribute("posx"));
-			posLighty = stof(light->Attribute("posy"));
-			posLightz = stof(light->Attribute("posz"));
 		}
-		else if (light->Attribute("type") == "spot") {
-			posLightx = stof(light->Attribute("posx"));
-			posLighty = stof(light->Attribute("posy"));
-			posLightz = stof(light->Attribute("posz"));
-			dirLightx = stof(light->Attribute("dirx"));
-			dirLighty = stof(light->Attribute("diry"));
-			dirLightz = stof(light->Attribute("dirz"));
-			cutoff = stof(light->Attribute("cutoff"));
-		}
-
+		
+		XMLElement* lights = camera->NextSiblingElement("lights");
 	
+		if (lights != nullptr) {
+
+			XMLElement* light = lights->FirstChildElement("light");
 
 
+			while (light != nullptr) {
+				if (strcmp(light->Attribute("type"),"directional")==0) {
+					dirLightx = stof(light->Attribute("dirx"));
+					dirLighty = stof(light->Attribute("diry"));
+					dirLightz = stof(light->Attribute("dirz"));
+					bdirection = true;
+				}
+				else if (strcmp(light->Attribute("type"), "point") == 0) {
+					posLightx = stof(light->Attribute("posx"));
+					posLighty = stof(light->Attribute("posy"));
+					posLightz = stof(light->Attribute("posz"));
+					bpoint = true;
+				}
+				else if (strcmp(light->Attribute("type"), "spot") == 0) {
+					posLightx = stof(light->Attribute("posx"));
+					posLighty = stof(light->Attribute("posy"));
+					posLightz = stof(light->Attribute("posz"));
+					dirLightx = stof(light->Attribute("dirx"));
+					dirLighty = stof(light->Attribute("diry"));
+					dirLightz = stof(light->Attribute("dirz"));
+					cutoff = stof(light->Attribute("cutoff"));
+					bspot = true;
+				}
+
+				light = light->NextSiblingElement("light");
+			}
+
+		}
+		cout << "SAIUUU 1" << endl;
+
+		
 		//calculate camera starting angle and radius
 		G_radious = sqrt(pow(posCamx, 2.0f) + pow(posCamy, 2.0f) + pow(posCamz, 2.0f));
 		G_beta = atan(posCamy / G_radious);
 		G_alpha = acos(posCamz / (sqrt(pow(posCamx, 2.0f) + pow(posCamz, 2.0f))));
 
-		XMLElement* grupo = lights->NextSiblingElement("group");
+		XMLElement* grupo;
+		if(lights!=nullptr)
+			grupo = lights->NextSiblingElement("group");
+
+		else grupo = camera->NextSiblingElement("group");
 
 		while (grupo != nullptr) {
 			getGroups(grupo, true);
 			grupo = grupo->NextSiblingElement("group");
 		}
+
+		cout << "SAIUUU 2" << endl;
+
 		vector<Group> v = my_world;
 		cout << "Tamanho:" << endl;
 		cout << my_world.size() << endl;
@@ -596,27 +671,38 @@ void parse_XML(std::string xmlfile) {
 		cout << "fov = " << fov << endl;
 		cout << "near = " << near << endl;
 		cout << "far = " << far << endl;
+
+		cout << "dirLightx = " << dirLightx << endl;
+		cout << "dirLighty = " << dirLighty << endl;
+		cout << "dirLightz = " << dirLightz << endl;
+		
+		cout << "posLightx = " << posLightx << endl;
+		cout << "posLighty = " << posLighty << endl;
+		cout << "posLightz = " << posLightz << endl;
+
 	}
 	else {
 		cout << "Failed to load XML file" << endl;
 	}
 }
 
-vector<float> getModels(vector<string> ms) {
+vector<Model> getModels(vector<Model> modelos) {
 	vector<float> vertex;
 
-	for (string fname : ms) {
+	vector<Model> modelosaux;
+
+	for (Model fname : modelos) {
 
 		std::ifstream myfile;
 		string path = fs::current_path().string();
 		string dirpath = path + "\\";
-		dirpath += fname;
+		dirpath += fname.getNameModel();
 		myfile.open(dirpath);
 		string line, seg;
 		int vertex_num = 0;
 
 		if (myfile.is_open()) {
-			cout << "Reading from: " << fname << endl;
+			cout << "Reading from: " << fname.getNameModel() << endl;
 
 			getline(myfile, seg);
 
@@ -633,21 +719,21 @@ vector<float> getModels(vector<string> ms) {
 					tmp.push_back(stof(seg));
 				}
 
-				vertex.push_back(tmp[0]);
-				vertex.push_back(tmp[1]);
-				vertex.push_back(tmp[2]);
+				fname.addPointModel(tmp[0]);
+				fname.addPointModel(tmp[1]);
+				fname.addPointModel(tmp[2]);
 				tmp.clear();
 			}
+			modelosaux.push_back(fname);
 		}
 		else {
-			cout << "Failed to open " << fname << endl;
+			cout << "Failed to open " << fname.getNameModel() << endl;
 		}
 	}
 
 	cout << "Primitivas" << "=>";
-	cout << ms.size() << endl;
 
-	return vertex;
+	return modelosaux;
 }
 
 Group getGroups(XMLElement* xmlelement, bool top_lvl) {
@@ -661,7 +747,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 	float time = -1;
 	bool align = false;
 	vector<Transformation> transformacoes;
-	vector<string> modelos;
+	vector<Model> modelos;
 	vector<float> curvepoints;
 
 	XMLElement* transformacao = xmlelement->FirstChildElement("transform");
@@ -756,17 +842,87 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 
 			if (model->Attribute("file") != nullptr) {
 				allmodels.push_back(model->Attribute("file"));
-				modelos.push_back(model->Attribute("file"));
+				Model mod =Model(model->Attribute("file"));
+
+				XMLElement* color = model->FirstChildElement("color");
+				if (color != nullptr) {
+					float Rambiente = 0; float Gambiente = 0; float Bambiente = 0;
+					float Rdiffuse = 0; float Gdiffuse = 0; float Bdiffuse = 0;
+					float Rspecular = 0; float Gspecular = 0; float Bspecular = 0;
+					float Remissive = 0; float Gemissive = 0; float Bemissive = 0;
+					float shiny=0;
+
+
+
+					XMLElement* diffuse = color->FirstChildElement("diffuse");
+					if (diffuse->Attribute("R") != nullptr) {
+						Rdiffuse = stof(diffuse->Attribute("R"));
+					}
+					if (diffuse->Attribute("G") != nullptr) {
+						Gdiffuse = stof(diffuse->Attribute("G"));
+					}
+					if (diffuse->Attribute("B") != nullptr) {
+						Bdiffuse = stof(diffuse->Attribute("B"));
+					}
+					mod.setDRGB(Rdiffuse, Gdiffuse, Bdiffuse);
+
+
+
+					XMLElement* ambient = diffuse->NextSiblingElement("ambient");
+					if (ambient->Attribute("R") != nullptr) {
+						Rambiente = stof(ambient->Attribute("R"));
+					}
+					if (ambient->Attribute("G") != nullptr) {
+						Gambiente = stof(ambient->Attribute("G"));
+					}
+					if (ambient->Attribute("B") != nullptr) {
+						Bambiente = stof(ambient->Attribute("B"));
+					}
+					mod.setARGB(Rambiente, Gambiente, Bambiente);
+
+
+					XMLElement*  specular = ambient->NextSiblingElement("specular");
+					if (specular->Attribute("R") != nullptr) {
+						Rspecular = stof(specular->Attribute("R"));
+					}
+					if (specular->Attribute("G") != nullptr) {
+						Gspecular = stof(specular->Attribute("G"));
+					}
+					if (specular->Attribute("B") != nullptr) {
+						Bspecular = stof(specular->Attribute("B"));
+					}
+					mod.setSRGB(Rspecular, Gspecular, Bspecular);
+
+					XMLElement* emissive = specular->NextSiblingElement("emissive");
+					if (emissive->Attribute("R") != nullptr) {
+						Remissive = stof(emissive->Attribute("R"));
+					}
+					if (emissive->Attribute("G") != nullptr) {
+						Gemissive = stof(emissive->Attribute("G"));
+					}
+					if (emissive->Attribute("B") != nullptr) {
+						Bemissive = stof(emissive->Attribute("B"));
+					}
+					mod.setERGB(Remissive, Gemissive, Bemissive);
+					
+					XMLElement* shininess = emissive->NextSiblingElement("shininess");
+					if (shininess->Attribute("value") != nullptr) {
+						shiny = stof(shininess->Attribute("value"));
+					}
+					mod.setShiny(shiny);
+
+
+				}
+				modelos.push_back(mod);
 			}
 			model = model->NextSiblingElement();
 		}
 	}
-	vector <float> pontos = getModels(modelos);
+	vector <Model> allmodelos = getModels(modelos);
 	Group groupElement = Group(transformacoes);
 	int pp = 0;
-	while (pp != pontos.size()) {
-		groupElement.addPointModel(pontos[pp]);
-		pp += 1;
+	for (Model modelozinho: allmodelos) {
+		groupElement.addModel(modelozinho);
 	}
 	groupElement.setBufIndex(groupCount++); // Needed to know which VBO buffer to use for group
 
@@ -778,13 +934,14 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 		groupElement.addChild(chld);
 	}
 
-	cout << "modelos:" + getModelos(modelos) << endl;
 
 	if (top_lvl == true)
 		my_world.push_back(groupElement);
 
 	return groupElement;
 }
+
+
 
 string TransformationToString(Transformation t) {
 	if (t.transformation_name == "rotation") {
