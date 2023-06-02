@@ -186,7 +186,9 @@ void changeSize(int w, int h)
 void renderScene(void)
 {
 	// clear buffers
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 	// set camera
 	glLoadIdentity();
@@ -195,25 +197,38 @@ void renderScene(void)
 		upCamx, upCamy, upCamz);
 
 	if (bpoint) {
-	
-		GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
+
+		GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 1.0f };
 		glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 
 	}
 
 	if (bdirection) {
-
-		GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f }; 
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 0.0f };
 		glLightfv(GL_LIGHT0, GL_POSITION, lightDirection);
+
 
 	}if (bspot) {
 		GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
 		GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
 		glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 		glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDirection);
-		glLightf(GL_LIGHT0, GL_SPOT_CUTOFF,cutoff);
+		glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, cutoff);
 
 	}
+
+	GLfloat ambientaux[4] = {50.0f,50.0f,0.0f,1.0f};
+	GLfloat diffuseaux[4]= { 200.0f,200.0f,0.0f,1.0f };
+	GLfloat specularaux[4] = { 0.0f,0.0f,0.0f,1.0f };
+	GLfloat emissiveaux[4] = { 0.0f,0.0f,0.0f,1.0f };
+	
+	glMaterialfv(GL_FRONT, GL_AMBIENT, ambientaux);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuseaux);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, specularaux);
+	glMaterialfv(GL_FRONT, GL_EMISSION, emissiveaux);
+	glMaterialf(GL_FRONT, GL_SHININESS, 0.0f);
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 	// Axis
@@ -233,6 +248,7 @@ void renderScene(void)
 	glEnd();
 
 	build_groups(my_world);
+
 
 	framerate();
 
@@ -330,26 +346,21 @@ void build_groups(vector<Group> groups) {
 				glScalef(tra.trsx, tra.trsy, tra.trsz);
 		}
 
-		// Models
-		glColor3f(1.0f, 0.5f, 0.0f);
-		if (vbo_mode == VBO_OFF)
+
+		if (vbo_mode == VBO_OFF) {
 			for (Model m : g.modelos) {
-				for (int c = 0; c < m.pontos.size();c += 9) {
+				
+				for (int c = 0; c < m.pontos.size(); c += 9) {
 					glBegin(GL_TRIANGLES);
-					glVertex3f(m.pontos[c], m.pontos[c+1], m.pontos[c+2]);
-					glVertex3f(m.pontos[c+3], m.pontos[c + 4], m.pontos[c + 5]);
-					glVertex3f(m.pontos[c+6], m.pontos[c + 7], m.pontos[c + 8]);
+					glVertex3f(m.pontos[c], m.pontos[c + 1], m.pontos[c + 2]);
+					glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
+					glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
 					glEnd();
 				}
 
 
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
-				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
-				glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
-				glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
 			}
-
+		}
 			
 		else if (vbo_mode == VBO_BASIC) {
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()]);
@@ -516,11 +527,8 @@ int main(int argc, char** argv)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glPolygonMode(GL_FRONT, GL_LINE);
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-
-
-
+	
+	
 
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 
