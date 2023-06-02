@@ -136,10 +136,67 @@ public:
 
 string TransformationToString(Transformation t);
 
+class Model {
+
+public:
+	string modelo;
+	vector<float> pontos;
+	float ambient[4];
+	float diffuse[4];
+	float specular[4];
+	float emissive[4];
+	float shininess;
+
+	Model(string nome) {
+		modelo = nome;
+	}
+
+	string getNameModel() {
+		return modelo;
+	}
+
+	void setDRGB(float dr, float dg, float db ){
+		diffuse[0] = dr;
+		diffuse[1] = dg;
+		diffuse[2] = db;
+		diffuse[3] = 1.0f;
+
+	}
+
+	void setARGB(float ar, float ag, float ab) {
+		ambient[0] = ar;
+		ambient[1] = ag;
+		ambient[2] = ab;
+		ambient[3] = 1.0f;
+	}
+
+	void setSRGB(float sr, float sg, float sb) {
+		specular[0] = sr;
+		specular[1] = sg;
+		specular[2] = sb;
+		specular[3] = 1.0f;
+	}
+
+	void setERGB(float er, float eg, float eb) {
+		emissive[0] = er;
+		emissive[1] = eg;
+		emissive[2] = eb;
+		emissive[3] = 1.0f;
+	}
+
+	void setShiny(float shiny) {
+		shininess = shiny;
+	}
+
+	void addPointModel(float p) {
+		pontos.push_back(p);
+	}
+};
+
 class Group {
 
 public:
-	vector<float> modelos;
+	vector<Model> modelos;
 	vector<Transformation> transformacoes;
 	vector<Group> groupChild;
 	int bufIndex = -1;
@@ -153,7 +210,7 @@ public:
 		transformacoes = trans;
 	}
 
-	vector<float> getModelos() {
+	vector<Model> getModelos() {
 		return modelos;
 	}
 
@@ -177,8 +234,8 @@ public:
 		groupChild.push_back(child);
 	}
 
-	void addPointModel(float p) {
-		modelos.push_back(p);
+	void addModel(Model m) {
+		modelos.push_back(m);
 	}
 };
 
@@ -196,6 +253,44 @@ public:
 	}
 };
 
+class Light {
+
+public:
+	string type;
+	float posLightx = -1;
+	float posLighty = 0;
+	float posLightz = 0;
+	float dirLightx = 0;
+	float dirLighty = 0;
+	float dirLightz = 0;
+	float cutoff = 0;
+
+	Light(string tipo, float posx , float posy,float posz ,float dirx ,float diry ,float dirz ,float cutff ) { //SPOT
+		type = tipo;
+		posLightx = posx;
+		posLighty = posy;
+		posLightz = posz;
+		dirLightx = dirx;
+		dirLighty = diry;
+		dirLightz = dirz;
+		cutoff = cutff;
+	}
+
+	Light(string tipo, float posx, float posy, float posz) { //POINT
+		type = tipo;
+		posLightx = posx;
+		posLighty = posy;
+		posLightz = posz;
+	}
+
+	Light(float dirx, float diry, float dirz,string tipo) { //DIRECTIONAL
+		type = tipo;
+		dirLightx = dirx;
+		dirLighty = diry;
+		dirLightz = dirz;
+	}
+
+};
 
 string getTransformacoes(vector<Transformation> t);
 string getModelos(vector<string> modelos);
