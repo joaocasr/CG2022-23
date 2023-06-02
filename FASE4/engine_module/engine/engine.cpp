@@ -42,9 +42,8 @@ double frames;
 int timebase;
 float gt = 0;
 
-int groupCount = 0;
+int icount = 0;
 GLuint* buffers;
-
 
 void framerate() {
 	char title[50];
@@ -189,26 +188,21 @@ void renderScene(void)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 	// set camera
 	glLoadIdentity();
 	gluLookAt(posCamx, posCamy, posCamz,
 		lookCamx, lookCamy, lookCamz,
 		upCamx, upCamy, upCamz);
 
+	
 	if (bpoint) {
-
-		GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 1.0f };
+		GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
 		glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-
 	}
 
 	if (bdirection) {
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-		GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 0.0f };
+		GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
 		glLightfv(GL_LIGHT0, GL_POSITION, lightDirection);
-
 
 	}if (bspot) {
 		GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
@@ -218,18 +212,15 @@ void renderScene(void)
 		glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, cutoff);
 
 	}
+		
+	float dark[] = { 0.2, 0.2, 0.2, 1.0 };
+	float white[] = { 0.8, 0.8, 0.8, 1.0 };
+	float red[] = { 0.8, 0.2, 0.2, 1.0 };
 
-	GLfloat ambientaux[4] = {50.0f,50.0f,0.0f,1.0f};
-	GLfloat diffuseaux[4]= { 200.0f,200.0f,0.0f,1.0f };
-	GLfloat specularaux[4] = { 0.0f,0.0f,0.0f,1.0f };
-	GLfloat emissiveaux[4] = { 0.0f,0.0f,0.0f,1.0f };
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	glMaterialf(GL_FRONT, GL_SHININESS, 128);
 	
-	glMaterialfv(GL_FRONT, GL_AMBIENT, ambientaux);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuseaux);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, specularaux);
-	glMaterialfv(GL_FRONT, GL_EMISSION, emissiveaux);
-	glMaterialf(GL_FRONT, GL_SHININESS, 0.0f);
-
 	glColor3f(1.0f, 1.0f, 1.0f);
 	// Axis
 	glBegin(GL_LINES);
@@ -248,7 +239,6 @@ void renderScene(void)
 	glEnd();
 
 	build_groups(my_world);
-
 
 	framerate();
 
@@ -290,8 +280,28 @@ void prepareData_BasicVBO(vector<Group> groups) {
 			sizeof(float) * countpoints,
 			pontosaux.data(),
 			GL_STATIC_DRAW);
-
 		pontosaux.clear();
+
+
+		glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()+1]);
+
+
+		int countpoints = 0;
+		vector<float> pontosaux;
+		for (Model m : g.modelos) {
+			countpoints += m.normais.size();
+			for (float pp : m.normais) {
+				pontosaux.push_back(pp);
+			}
+		}
+
+		glBufferData(GL_ARRAY_BUFFER,
+			sizeof(float) * countpoints,
+			pontosaux.data(),
+			GL_STATIC_DRAW);
+		pontosaux.clear();
+
+
 		//Children
 		if (g.getChild().size() > 0)
 			prepareData_BasicVBO(g.getChild());
@@ -346,29 +356,53 @@ void build_groups(vector<Group> groups) {
 				glScalef(tra.trsx, tra.trsy, tra.trsz);
 		}
 
-
-		if (vbo_mode == VBO_OFF) {
+		// Models
+		glColor3f(1.0f, 0.5f, 0.0f);
+		if (vbo_mode == VBO_OFF)
 			for (Model m : g.modelos) {
-				
-				for (int c = 0; c < m.pontos.size(); c += 9) {
+				for (int c = 0; c < m.pontos.size();c += 18) {
 					glBegin(GL_TRIANGLES);
-					glVertex3f(m.pontos[c], m.pontos[c + 1], m.pontos[c + 2]);
-					glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
+
+					//not sure tho
+
+					glNormal3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
+					glVertex3f(m.pontos[c], m.pontos[c+1], m.pontos[c+2]);
+					
+
+					glNormal3f(m.pontos[c + 9], m.pontos[c + 10], m.pontos[c + 11]);
 					glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
+
+
+					glNormal3f(m.pontos[c + 15], m.pontos[c + 16], m.pontos[c + 17]);
+					glVertex3f(m.pontos[c + 12], m.pontos[c + 13], m.pontos[c + 14]);
+
+
+
 					glEnd();
+					glEnable(GL_NORMALIZE);
 				}
 
 
+				//glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
+				//glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
+				//glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
+				//glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
+				//glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
 			}
-		}
+
 			
 		else if (vbo_mode == VBO_BASIC) {
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()]);
+			glVertexPointer(3, GL_FLOAT, 0, 0);
+
 			glVertexPointer(3, GL_FLOAT, 0, 0);
 			int countpoints = 0;
 			for (Model m : g.modelos) {
 				countpoints += m.pontos.size();
 			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()+1]);
+			glNormalPointer(GL_FLOAT, 0, 0);
 
 			glDrawArrays(GL_TRIANGLES, 0, countpoints / 3);
 
@@ -508,16 +542,17 @@ int main(int argc, char** argv)
 #endif
 
 	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 
 	//VBO Preping
-	buffers = (GLuint*)calloc(groupCount, sizeof(GLuint));
+	buffers = (GLuint*)calloc(icount, sizeof(GLuint));
 
 	if (!buffers) {
 		printf("Failed to allocate buffer memory!\nNot Using VBOs!\n");
 		vbo_mode = VBO_OFF;
 	}
 
-	glGenBuffers(groupCount, buffers);
+	glGenBuffers(icount, buffers);
 	prepareData_BasicVBO(my_world);
 
 	// some OpenGL settings
@@ -527,8 +562,22 @@ int main(int argc, char** argv)
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glPolygonMode(GL_FRONT, GL_LINE);
 
-	
-	
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+	float dark[4] = { 0.2, 0.2, 0.2, 1.0 };
+	float white[4] = { 1.0, 1.0, 1.0, 1.0 };
+	float black[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
+
+
+
+
 
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 
@@ -640,8 +689,6 @@ void parse_XML(std::string xmlfile) {
 			}
 
 		}
-		cout << "SAIUUU 1" << endl;
-
 		
 		//calculate camera starting angle and radius
 		G_radious = sqrt(pow(posCamx, 2.0f) + pow(posCamy, 2.0f) + pow(posCamz, 2.0f));
@@ -658,8 +705,6 @@ void parse_XML(std::string xmlfile) {
 			getGroups(grupo, true);
 			grupo = grupo->NextSiblingElement("group");
 		}
-
-		cout << "SAIUUU 2" << endl;
 
 		vector<Group> v = my_world;
 		cout << "Tamanho:" << endl;
@@ -730,6 +775,14 @@ vector<Model> getModels(vector<Model> modelos) {
 				fname.addPointModel(tmp[0]);
 				fname.addPointModel(tmp[1]);
 				fname.addPointModel(tmp[2]);
+
+				//coordenadas das normais
+				
+				fname.addPointNormal(tmp[3]);
+				fname.addPointNormal(tmp[4]);
+				fname.addPointNormal(tmp[5]);
+
+
 				tmp.clear();
 			}
 			modelosaux.push_back(fname);
@@ -932,7 +985,9 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 	for (Model modelozinho: allmodelos) {
 		groupElement.addModel(modelozinho);
 	}
-	groupElement.setBufIndex(groupCount++); // Needed to know which VBO buffer to use for group
+	groupElement.setBufIndex(icount); // Needed to know which VBO buffer to use for group
+	icount += 2;
+	
 
 	for (tinyxml2::XMLElement* child = xmlelement->FirstChildElement("group");
 		child != NULL; child = child->NextSiblingElement("group"))
