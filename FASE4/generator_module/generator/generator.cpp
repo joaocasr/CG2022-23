@@ -4,7 +4,6 @@ using namespace std;
 std::string path = fs::current_path().string();
 
 vector<Triangle> triangulos;
-std::vector<Vector3> triangleNormals;
 int sizeTriangulos = 0;
 
 
@@ -101,10 +100,10 @@ void buildPlane(int units, int divs, char* filename) {
 			py2 = 0;
 
 			//pontos do plano
-			p1 = new Point(px1, py1, pz1);
-			p2 = new Point(px2, py1, pz1);
-			p3 = new Point(px1, py1, pz2);
-			p4 = new Point(px2, py1, pz2);
+			p1 = new Point(px1, py1, pz1, 0, 1, 0, j * stepy, i * stepx);
+			p2 = new Point(px2, py1, pz1, 0, 1, 0, j * stepy, i * stepx);
+			p3 = new Point(px1, py1, pz2, 0, 1, 0, j * stepy, i * stepx);
+			p4 = new Point(px2, py1, pz2, 0, 1, 0, j * stepy, i * stepx);
 
 			//triangulos do plano
 			t1 = new Triangle(p1, p3, p4);
@@ -170,22 +169,22 @@ void buildCube(int units, int grid, char* filename) {
 			//plano de frente
 			pz2 = finalz;
 
-			//pontos de um quadrado do plano de trás
-			p1 = new Point(px1, py1, pz1);
-			p3 = new Point(px2, py1, pz1);
-			p2 = new Point(px1, py2, pz1); //ponto de cima   
-			p4 = new Point(px2, py2, pz1); //ponto de cima  
+			//pontos de um quadrado do plano de tras
+			p1 = new Point(px1, py1, pz1, 0, 0, -1, j * stepy, i * stepx);
+			p3 = new Point(px2, py1, pz1, 0, 0, -1, j * stepy, i * stepx);
+			p2 = new Point(px1, py2, pz1, 0, 0, -1, j * stepy, i * stepx); //ponto de cima   
+			p4 = new Point(px2, py2, pz1, 0, 0, -1, j * stepy, i * stepx); //ponto de cima  
 
 			//pontos de um quadrado do plano de frente
-			p5 = new Point(px1, py1, pz2);
-			p7 = new Point(px2, py1, pz2);
-			p6 = new Point(px1, py2, pz2); //ponto de cima 
-			p8 = new Point(px2, py2, pz2); //ponto de cima  
+			p5 = new Point(px1, py1, pz2, 0, 0, 1, j * stepy, i * stepx);
+			p7 = new Point(px2, py1, pz2, 0, 0, 1, j * stepy, i * stepx);
+			p6 = new Point(px1, py2, pz2, 0, 0, 1, j * stepy, i * stepx); //ponto de cima 
+			p8 = new Point(px2, py2, pz2, 0, 0, 1, j * stepy, i * stepx); //ponto de cima  
 
 
 			//triangulos do plano de tras
-			t1 = new Triangle(p3, p1, p2);//triangulo inferior
-			t2 = new Triangle(p3, p2, p4);//trinangulo superior
+			t1 = new Triangle(p3, p1, p2); //triangulo inferior
+			t2 = new Triangle(p3, p2, p4); //trinangulo superior
 
 			//triangulo do plano de frente
 			t3 = new Triangle(p5, p7, p8);
@@ -211,16 +210,16 @@ void buildCube(int units, int grid, char* filename) {
 			py2 = finaly;
 
 			//pontos do quadro do plano inferior
-			p1 = new Point(px1, py1, pz1);
-			p3 = new Point(px2, py1, pz1);
-			p5 = new Point(px1, py1, pz2);
-			p7 = new Point(px2, py1, pz2);
+			p1 = new Point(px1, py1, pz1, 0, -1, 0, j * stepy, i * stepx);
+			p3 = new Point(px2, py1, pz1, 0, -1, 0, j * stepy, i * stepx);
+			p5 = new Point(px1, py1, pz2, 0, -1, 0, j * stepy, i * stepx);
+			p7 = new Point(px2, py1, pz2, 0, -1, 0, j * stepy, i * stepx);
 
 			//pontos do quadro do plano superior
-			p2 = new Point(px1, py2, pz1);
-			p4 = new Point(px2, py2, pz1);
-			p6 = new Point(px1, py2, pz2);
-			p8 = new Point(px2, py2, pz2);
+			p2 = new Point(px1, py2, pz1, 0, 1, 0, j * stepy, i * stepx);
+			p4 = new Point(px2, py2, pz1, 0, 1, 0, j * stepy, i * stepx);
+			p6 = new Point(px1, py2, pz2, 0, 1, 0, j * stepy, i * stepx);
+			p8 = new Point(px2, py2, pz2, 0, 1, 0, j * stepy, i * stepx);
 
 			//triangulos do plano perpendicular ao semieixo negativo Oy
 			t1 = new Triangle(p7, p5, p1);
@@ -250,15 +249,15 @@ void buildCube(int units, int grid, char* filename) {
 			px2 = finalx;
 
 			//pontos de um quadrado do plano de trás
-			p1 = new Point(px1, py1, pz1);
-			p2 = new Point(px1, py2, pz1);
-			p5 = new Point(px1, py1, pz2);
-			p6 = new Point(px1, py2, pz2);
+			p1 = new Point(px1, py1, pz1, -1, 0, 0, j * stepy, i * stepx);
+			p2 = new Point(px1, py2, pz1, -1, 0, 0, j * stepy, i * stepx);
+			p5 = new Point(px1, py1, pz2, -1, 0, 0, j * stepy, i * stepx);
+			p6 = new Point(px1, py2, pz2, -1, 0, 0, j * stepy, i * stepx);
 
-			p3 = new Point(px2, py1, pz1);
-			p4 = new Point(px2, py2, pz1);
-			p7 = new Point(px2, py1, pz2);
-			p8 = new Point(px2, py2, pz2);
+			p3 = new Point(px2, py1, pz1, 1, 0, 0, j * stepy, i * stepx);
+			p4 = new Point(px2, py2, pz1, 1, 0, 0, j * stepy, i * stepx);
+			p7 = new Point(px2, py1, pz2, 1, 0, 0, j * stepy, i * stepx);
+			p8 = new Point(px2, py2, pz2, 1, 0, 0, j * stepy, i * stepx);
 
 			//triangulos do plano perpendicular ao semieixo negativo Ox
 			t1 = new Triangle(p1, p5, p6);
@@ -275,7 +274,6 @@ void buildCube(int units, int grid, char* filename) {
 			sizeTriangulos += 4;
 		}
 	}
-	//calcula as normas de cada triangulo para a luz maybe
 
 	ofstream file;
 	fs::create_directory("models");
@@ -320,15 +318,25 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 	for (int i = -(stacks / 2); i < (stacks / 2); i++) {
 		float beta = i * deltaBeta;
 		float nextBeta = (i + 1) * deltaBeta;
+		float texY = float(i + stacks / 2) / float(stacks);
 
 		for (int j = 0; j < slices; j++) {
 			float alpha = j * deltaAlpha;
 			float nextAlpha = (j + 1) * deltaAlpha;
+			float texX = float(j) / float(slices);
 
 			p1 = new Point(radius * cos(beta) * sin(alpha), radius * sin(beta), radius * cos(beta) * cos(alpha));
+			normalize(p1);
+			p1->setTex(texX, texY);
 			p2 = new Point(radius * cos(beta) * sin(nextAlpha), radius * sin(beta), radius * cos(beta) * cos(nextAlpha));
+			normalize(p2);
+			p2->setTex(texX, texY);
 			p3 = new Point(radius * cos(nextBeta) * sin(alpha), radius * sin(nextBeta), radius * cos(nextBeta) * cos(alpha));
+			normalize(p3);
+			p3->setTex(texX, texY);
 			p4 = new Point(radius * cos(nextBeta) * sin(nextAlpha), radius * sin(nextBeta), radius * cos(nextBeta) * cos(nextAlpha));
+			normalize(p4);
+			p4->setTex(texX, texY);
 
 			// calcula vertex do topo e baixo da esfera para as coordenadas
 			if (i == -(stacks / 2)) {
@@ -348,7 +356,6 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 		}
 	}
 
-	triangleNormals = calculateTriangleNormals(triangulos);
 	ofstream file;
 	fs::create_directory("models");
 	file.open(dir);
@@ -782,32 +789,15 @@ void normalize(float* a) {
 	a[0] = a[0] / l; a[1] = a[1] / l; a[2] = a[2] / l;
 }
 
-std::vector<Vector3> calculateTriangleNormals(const std::vector<Triangle*>& triangles)
-{
-	std::vector<Vector3> triangleNormals;
-
-	for (const Triangle* triangle : triangles) {
-		// Get the three points of the triangle
-		const Point* p1 = triangle->p1;
-		const Point* p2 = triangle->p2;
-		const Point* p3 = triangle->p3;
-
-		// Calculate the two edge vectors of the triangle
-		Vector3 edge1 = Vector3(*p2) - Vector3(*p1);
-		Vector3 edge2 = Vector3(*p3) - Vector3(*p1);
-
-		// Calculate the normal vector by taking the cross product of the two edges
-		Vector3 normal = edge1.cross(edge2).normalized();
-
-		// Store the normal vector in the triangleNormals vector
-		triangleNormals.push_back(normal);
-	}
-
-	return triangleNormals;
+void normalize(Point *p) {
+	float l = sqrt(p->x * p->x + p->y * p->y + p->z * p->z);
+	p->setNormal(p->x / l, p->y / l, p->z / l);
 }
 
 std::string PointToString(Point p) {
-	return to_string(p.x) + "," + to_string(p.y) + "," + to_string(p.z);
+	return to_string(p.x) + "," + to_string(p.y) + "," + to_string(p.z) + "," + 
+		to_string(p.normX) + "," + to_string(p.normY) + "," + to_string(p.normZ) + "," + 
+		to_string(p.texX) + "," + to_string(p.texY);
 }
 
 

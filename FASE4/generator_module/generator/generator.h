@@ -27,29 +27,75 @@ public:
 	float x;
 	float y;
 	float z;
+	float normX;
+	float normY;
+	float normZ;
+	float texX;
+	float texY;
 
 	Point()
 	{
-		x = 0;
-		y = 0;
-		z = 0;
+		x = 0.0f;
+		y = 0.0f;
+		z = 0.0f;
+		normX = 0.0f;
+		normY = 0.0f;
+		normZ = 0.0f;
+		texX = 0.0f;
+		texX = 0.0f;
 	}
 	Point(float px, float py, float pz)
 	{
 		x = px;
 		y = py;
 		z = pz;
+		normX = 0.0f;
+		normY = 0.0f;
+		normZ = 0.0f;
+		texX = 0.0f;
+		texY = 0.0f;
+	}
+	Point(float px, float py, float pz, float nx, float ny, float nz, float tx, float ty)
+	{
+		x = px;
+		y = py;
+		z = pz;
+		normX = nx;
+		normY = ny;
+		normZ = nz;
+		texX = tx;
+		texY = ty;
 	}
 	Point(Point* p) {
 		x = p->x;
 		y = p->y;
 		z = p->z;
+		normX = p->normX;
+		normY = p->normY;
+		normZ = p->normZ;
+		texX = p->texX;
+		texY = p->texY;
 	}
 
 	void matOp(float m, Point p) {
 		x += p.x * m;
 		y += p.y * m;
 		z += p.z * m;
+	}
+
+	void setNormal(float nx, float ny, float nz) {
+		normX = nx;
+		normY = ny;
+		normZ = nz;
+	}
+	void setNormal(float normal[3]) {
+		normX = normal[0];
+		normY = normal[1];
+		normZ = normal[2];
+	}
+	void setTex(float tx, float ty) {
+		texX = tx;
+		texY = ty;
 	}
 };
 
@@ -58,6 +104,7 @@ void calcAMat(float* m, Point* points, Point* res);
 Point multVects(Point u[4], float v[4]);
 void cross(float* a, float* b, float* res);
 void normalize(float* a);
+void normalize(Point *p);
 
 class Triangle {
 
