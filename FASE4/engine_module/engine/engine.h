@@ -141,11 +141,11 @@ class Model {
 public:
 	string modelo;
 	vector<float> pontos;
-	float ambient[4];
-	float diffuse[4];
-	float specular[4];
-	float emissive[4];
-	float shininess;
+	GLfloat ambient[4];
+	GLfloat diffuse[4];
+	GLfloat specular[4];
+	GLfloat emissive[4];
+	GLfloat shininess;
 
 	Model(string nome) {
 		modelo = nome;
@@ -159,7 +159,7 @@ public:
 		diffuse[0] = dr;
 		diffuse[1] = dg;
 		diffuse[2] = db;
-		diffuse[3] = 1.0f;
+		diffuse[3] = 0.0f;
 
 	}
 
@@ -167,21 +167,21 @@ public:
 		ambient[0] = ar;
 		ambient[1] = ag;
 		ambient[2] = ab;
-		ambient[3] = 1.0f;
+		ambient[3] = 0.0f;
 	}
 
 	void setSRGB(float sr, float sg, float sb) {
 		specular[0] = sr;
 		specular[1] = sg;
 		specular[2] = sb;
-		specular[3] = 1.0f;
+		specular[3] = 0.0f;
 	}
 
 	void setERGB(float er, float eg, float eb) {
 		emissive[0] = er;
 		emissive[1] = eg;
 		emissive[2] = eb;
-		emissive[3] = 1.0f;
+		emissive[3] = 0.0f;
 	}
 
 	void setShiny(float shiny) {
