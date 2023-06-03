@@ -395,9 +395,9 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 
 	for (int c = 0; c < slices; c++) {
 		//Lower circle
-		p1 = new Point(radius * sin(alpha + step), 0.0f, radius * cos(alpha + step));
-		p2 = new Point(radius * sin(alpha), 0.0f, radius * cos(alpha));
-		p3 = new Point(0.0f, 0.0f, 0.0f);
+		p1 = new Point(radius * sin(alpha + step), 0.0f, radius * cos(alpha + step), 0.0f, -1.0f, 0.0f, 0.0f, 0.0f); //TODO CHANGE TEX COORDINATES
+		p2 = new Point(radius * sin(alpha), 0.0f, radius * cos(alpha), 0.0f, -1.0f, 0.0f, 0.0f, 0.0f);
+		p3 = new Point(0.0f, 0.0f, 0.0f, 0.0f, -11.0f, 0.0f, 0.0f, 0.0f);
 
 		triangulos.push_back(new Triangle(p1, p2, p3));
 
@@ -411,12 +411,23 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 	for (int i = 0; i < slices; i++) {
 		curHeight = 0.0f;
 		curRad = radius;
+		float texX = float(i) / slices;
 
 		for (int j = 0; j < stacks - 1; j++) {
+			float texY = float(j) / stacks;
+
 			p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
+			normalize(p1);
+			p1->setTex(texX, texY);
 			p2 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
+			normalize(p2);
+			p2->setTex(texX, texY);
 			p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight + stackStep, (curRad - radStep) * cos(alpha + step));
+			normalize(p3);
+			p3->setTex(texX, texY);
 			p4 = new Point((curRad - radStep) * sin(alpha), curHeight + stackStep, (curRad - radStep) * cos(alpha));
+			normalize(p4);
+			p4->setTex(texX, texY);
 
 			triangulos.push_back(new Triangle(p1, p2, p3));
 			triangulos.push_back(new Triangle(p3, p4, p1));
@@ -431,9 +442,9 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 	alpha = 0.0f;
 
 	for (int c = 0; c < slices; c++) {
-		p1 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
-		p2 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
-		p3 = new Point(0.0f, height, 0.0f);
+		p1 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f); //TODO CHANGE TEX COORDINATES
+		p2 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+		p3 = new Point(0.0f, height, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
 
 		triangulos.push_back(new Triangle(p3, p2, p1));
 
@@ -478,16 +489,16 @@ void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks,
 
 	for (int c = 0; c < slices; c++) {
 		//Lower circle
-		p1 = new Point(b_rad * sin(alpha + step), -h_height, b_rad * cos(alpha + step));
-		p2 = new Point(b_rad * sin(alpha), -h_height, b_rad * cos(alpha));
-		p3 = new Point(0.0f, -h_height, 0.0f);
+		p1 = new Point(b_rad * sin(alpha + step), -h_height, b_rad * cos(alpha + step), 0.0f, -1.0f, 0.0f, 0.0f, 0.0f); //TODO CHANGE TEX COORDINATES
+		p2 = new Point(b_rad * sin(alpha), -h_height, b_rad * cos(alpha), 0.0f, -1.0f, 0.0f, 0.0f, 0.0f);
+		p3 = new Point(0.0f, -h_height, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f);
 
 		triangulos.push_back(new Triangle(p1, p2, p3));
 
 		//Upper circle
-		p1 = new Point(t_rad * sin(alpha + step), h_height, t_rad * cos(alpha + step));
-		p2 = new Point(t_rad * sin(alpha), h_height, t_rad * cos(alpha));
-		p3 = new Point(0.0f, h_height, 0.0f);
+		p1 = new Point(t_rad * sin(alpha + step), h_height, t_rad * cos(alpha + step), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f); //TODO CHANGE TEX COORDINATES
+		p2 = new Point(t_rad * sin(alpha), h_height, t_rad * cos(alpha), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+		p3 = new Point(0.0f, h_height, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
 
 		triangulos.push_back(new Triangle(p3, p2, p1));
 
@@ -501,14 +512,24 @@ void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks,
 	if (t_rad > b_rad)
 		for (int i = 0; i < slices; i++) {
 			curHeight = static_cast<float>(height) / 2;
-
 			curRad = t_rad;
+			float texX = float(i) / slices;
 
 			for (int j = 0; j < stacks; j++) {
+				float texY = float(j) / stacks;
+
 				p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
+				normalize(p1);
+				p1->setTex(texX, texY);
 				p2 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
+				normalize(p2);
+				p2->setTex(texX, texY);
 				p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight - stackStep, (curRad - radStep) * cos(alpha + step));
+				normalize(p3);
+				p3->setTex(texX, texY);
 				p4 = new Point((curRad - radStep) * sin(alpha), curHeight - stackStep, (curRad - radStep) * cos(alpha));
+				normalize(p4);
+				p4->setTex(texX, texY);
 
 				triangulos.push_back(new Triangle(p3, p2, p1));
 				triangulos.push_back(new Triangle(p1, p4, p3));
@@ -522,14 +543,24 @@ void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks,
 	else
 		for (int i = 0; i < slices; i++) {
 			curHeight = -(static_cast<float>(height) / 2);
-
 			curRad = b_rad;
+			float texX = float(i) / slices;
 
 			for (int j = 0; j < stacks; j++) {
+				float texY = float(j) / stacks;
+
 				p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
+				normalize(p1);
+				p1->setTex(texX, texY);
 				p2 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
+				normalize(p2);
+				p2->setTex(texX, texY);
 				p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight + stackStep, (curRad - radStep) * cos(alpha + step));
+				normalize(p3);
+				p3->setTex(texX, texY);
 				p4 = new Point((curRad - radStep) * sin(alpha), curHeight + stackStep, (curRad - radStep) * cos(alpha));
+				normalize(p4);
+				p4->setTex(texX, texY);
 
 				triangulos.push_back(new Triangle(p1, p2, p3));
 				triangulos.push_back(new Triangle(p3, p4, p1));
@@ -578,22 +609,35 @@ void buildTorus(float rad1, float rad2, int slices, int stacks, char* filename) 
 
 	for (int i = 0; i < slices; i++) {
 		alpha = i * deltaAlpha;
+		float texX = float(i) / slices;
 
 		for (int j = 0; j < stacks; j++) {
 			beta = j * deltaBeta;
+			float texY = float(j) / stacks;
 
 			p1 = new Point((rad1 + rad2 * cos(beta)) * cos(alpha),
 				rad2 * sin(beta),
 				(rad1 + rad2 * cos(beta)) * sin(alpha));
+			normalize(p1);
+			p1->setTex(texX, texY);
+
 			p2 = new Point((rad1 + rad2 * cos(beta)) * cos(alpha + deltaAlpha), 
 				rad2 * sin(beta),
 				(rad1 + rad2 * cos(beta)) * sin(alpha + deltaAlpha));
+			normalize(p2);
+			p2->setTex(texX, texY);
+
 			p3 = new Point((rad1 + rad2 * cos(beta + deltaBeta)) * cos(alpha + deltaAlpha),
 				rad2 * sin(beta + deltaBeta),
 				(rad1 + rad2 * cos(beta + deltaBeta)) * sin(alpha + deltaAlpha));
+			normalize(p3);
+			p3->setTex(texX, texY);
+
 			p4 = new Point((rad1 + rad2 * cos(beta + deltaBeta)) * cos(alpha), 
 				rad2 * sin(beta + deltaBeta),
 				(rad1 + rad2 * cos(beta + deltaBeta)) * sin(alpha));
+			normalize(p4);
+			p4->setTex(texX, texY);
 
 			triangulos.push_back(new Triangle(p3, p2, p1));
 			triangulos.push_back(new Triangle(p1, p4, p3));
@@ -672,7 +716,7 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 					{1.0f, 0.0f, 0.0f, 0.0f} };
 
 	float step = 1.0f / tesLvl;
-	Point p1, p2, p3, p4;
+	Point p1, p2, p3, p4, pu1, pv1, pu2, pv2;
 	vector<Point> points;
 
 	for(int i = 0; i < patchNum; i++) {
@@ -686,31 +730,70 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 
 		Point res[4][4];
 		calcAMat(m[0], p[0], res[0]);
+		float normal[3];
 
 		for (int j = 0; j < tesLvl; j++) {
 			float u = step * j;
 			float u_vec[4] = { powf(u, 3.0f), powf(u, 2.0f), u, 1.0f };
+			float u_vecDriv[4] = { 3.0f * powf(u, 2.0f), 2.0f * u, 1.0f, 0.0f };
 
 			u = step * (j + 1);
 			float u_vec2[4] = { powf(u, 3.0f), powf(u, 2.0f), u, 1.0f };
+			float u_vecDriv2[4] = { 3.0f * powf(u, 2.0f), 2.0f * u, 1.0f, 0.0f };
 
-			Point res1[4], res2[4];
+			Point res1[4], res2[4], res1driv[4], res2driv[4];
 
 			multMatrixVector(res[0], u_vec, res1);
 			multMatrixVector(res[0], u_vec2, res2);
+			multMatrixVector(res[0], u_vecDriv, res1driv);
+			multMatrixVector(res[0], u_vecDriv2, res2driv);
 
 			for (int c = 0; c < tesLvl; c++) {
 				float v = step * c;
 				float v_vec[4] = { powf(v, 3.0f), powf(v, 2.0f), v, 1.0f };
+				float v_vecDriv[4] = { 3.0f * powf(v, 2.0f), 2.0f * v, 1.0f, 0.0f };
 
+				//pontos u
+				pu1 = multVects(res1driv, v_vec); // For p1
+				pu2 = multVects(res2driv, v_vec); // For p2
+
+				//ponto v
+				pv1 = multVects(res1, v_vecDriv); // For both p1 & p2
+
+				cross(&pu1, &pv1, normal);
+				normalize(normal);
 				p1 = multVects(res1, v_vec);
+				p1.setNormal(normal[0], normal[1], normal[2]);
+				p1.setTex(float(j) / tesLvl, float(c) / tesLvl);
+
+				cross(&pu2, &pv1, normal);
+				normalize(normal);
 				p2 = multVects(res2, v_vec);
+				p2.setNormal(normal[0], normal[1], normal[2]);
+				p2.setTex(float(j) / tesLvl, float(c) / tesLvl);
 
 				v = step * (c + 1);
 				float v_vec2[4] = { powf(v, 3.0f), powf(v, 2.0f), v, 1.0f };
+				float v_vecDriv2[4] = { 3.0f * powf(v, 2.0f), 2.0f * v, 1.0f, 0.0f };
 
+				//pontos u
+				pu1 = multVects(res1driv, v_vec2); // For p3
+				pu2 = multVects(res2driv, v_vec2); // For p4
+
+				//ponto v
+				pv2 = multVects(res2, v_vecDriv2); // For both p3 & p4
+
+				cross(&pu1, &pv1, normal);
+				normalize(normal);
 				p3 = multVects(res1, v_vec2);
+				p3.setNormal(normal[0], normal[1], normal[2]);
+				p3.setTex(float(j) / tesLvl, float(c) / tesLvl);
+
+				cross(&pu2, &pv1, normal);
+				normalize(normal);
 				p4 = multVects(res2, v_vec2);
+				p3.setNormal(normal[0], normal[1], normal[2]);
+				p4.setTex(float(j) / tesLvl, float(c) / tesLvl);
 
 				points.push_back(p2);
 				points.push_back(p4);
@@ -782,6 +865,12 @@ void cross(float* a, float* b, float* res) {
 	res[0] = a[1] * b[2] - a[2] * b[1];
 	res[1] = a[2] * b[0] - a[0] * b[2];
 	res[2] = a[0] * b[1] - a[1] * b[0];
+}
+
+void cross(Point* a, Point* b, float* res) {
+	res[0] = a->y * b->z - a->z * b->y;
+	res[1] = a->z * b->x - a->x * b->z;
+	res[2] = a->x * b->y - a->y * b->x;
 }
 
 void normalize(float* a) {
