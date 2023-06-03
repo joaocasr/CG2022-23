@@ -166,7 +166,6 @@ public:
 		diffuse[1] = dg / 255.0f;
 		diffuse[2] = db / 255.0f;
 		diffuse[3] = 1.0f;
-
 	}
 
 	void setARGB(float ar, float ag, float ab) {

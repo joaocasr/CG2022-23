@@ -28,9 +28,6 @@ float G_alpha = 0.0f;
 float G_beta = 0.0f;
 float G_radious = 5.0f;
 
-float posLightx = 0, posLighty = 0, posLightz = 0;
-float dirLightx = 0, dirLighty = 0, dirLightz = 0;
-float cutoff = 0;
 double frames;
 int timebase;
 float gt = 0;
@@ -207,25 +204,30 @@ void renderScene(void)
 	glEnd();
 	if (lightpoints.size()) glEnable(GL_LIGHTING);
 
+	glColor3f(1.0f, 1.0f, 1.0f);
+
 	int lcount = 0;
 	for (Light l : lightpoints) {
-		lcount++;
+		if (lcount > 7)
+			break;
+
 		if (strcmp(l.type.c_str(), "point") == 0) {
-			float lightPosition[4] = { posLightx, posLighty, posLightz, 1.0f };
+			float lightPosition[4] = { l.posLightx, l.posLighty, l.posLightz, 1.0f };
 			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightPosition);
 		}
 		else if (strcmp(l.type.c_str(), "directional") == 0) {
-			float lightDirection[4] = { dirLightx, dirLighty, dirLightz, 0.0f };
+			float lightDirection[4] = { l.dirLightx, l.dirLighty, l.dirLightz, 0.0f };
 			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightDirection);
 
 		}
 		else if (strcmp(l.type.c_str(), "spot") == 0) {
-			float lightPosition[4] = { posLightx, posLighty, posLightz, 1.0f };
-			float lightDirection[4] = { dirLightx, dirLighty, dirLightz, 0.0f };
+			float lightPosition[4] = { l.posLightx, l.posLighty, l.posLightz, 1.0f };
+			float lightDirection[4] = { l.dirLightx, l.dirLighty, l.dirLightz, 0.0f };
 			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightPosition);
 			glLightfv(GL_LIGHT0 + lcount, GL_SPOT_DIRECTION, lightDirection);
-			glLightf(GL_LIGHT0 + lcount, GL_SPOT_CUTOFF, cutoff);
+			glLightf(GL_LIGHT0 + lcount, GL_SPOT_CUTOFF, l.cutoff);
 		}
+		lcount++;
 	}
 
 	build_groups(my_world);
@@ -521,18 +523,21 @@ int main(int argc, char** argv)
 	glEnable(GL_BLEND);
 	if (lightpoints.size()) {
 		glEnable(GL_LIGHTING);
+
+		// controls global ambient light
+		float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
+		glShadeModel(GL_SMOOTH);
+
 		for (int i = 0; i < lightpoints.size(); i++) {
 			if (i > 7)
 				break;
 
 			glEnable(GL_LIGHT0 + i);
-
-			// controls global ambient light
-			float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 		}
 	}
-	glEnable(GL_TEXTURE_2D);
+
+	//glEnable(GL_TEXTURE_2D);
 
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 
@@ -615,8 +620,11 @@ void parse_XML(std::string xmlfile) {
 
 		if (lights != nullptr) {
 
-			XMLElement* light = lights->FirstChildElement("light");
+			float posLightx = 0, posLighty = 0, posLightz = 0;
+			float dirLightx = 0, dirLighty = 0, dirLightz = 0;
+			float cutoff = 0;
 
+			XMLElement* light = lights->FirstChildElement("light");
 
 			while (light != nullptr) {
 				if (strcmp(light->Attribute("type"), "directional") == 0) {
@@ -624,7 +632,7 @@ void parse_XML(std::string xmlfile) {
 					dirLighty = stof(light->Attribute("diry"));
 					dirLightz = stof(light->Attribute("dirz"));
 
-					Light l = Light("directional", dirLightx, dirLighty, dirLightz);
+					Light l = Light(dirLightx, dirLighty, dirLightz, "directional");
 					lightpoints.push_back(l);
 				}
 				else if (strcmp(light->Attribute("type"), "point") == 0) {
@@ -632,7 +640,7 @@ void parse_XML(std::string xmlfile) {
 					posLighty = stof(light->Attribute("posy"));
 					posLightz = stof(light->Attribute("posz"));
 
-					Light l = Light(posLightx, posLightx, posLightx, "point");
+					Light l = Light("point", posLightx, posLighty, posLightz);
 					lightpoints.push_back(l);
 				}
 				else if (strcmp(light->Attribute("type"), "spot") == 0) {
@@ -644,7 +652,7 @@ void parse_XML(std::string xmlfile) {
 					dirLightz = stof(light->Attribute("dirz"));
 					cutoff = stof(light->Attribute("cutoff"));
 
-					Light l = Light("spot", posLightx, posLightx, posLightx, dirLightx, dirLighty, dirLightz, cutoff);
+					Light l = Light("spot", posLightx, posLighty, posLightz, dirLightx, dirLighty, dirLightz, cutoff);
 					lightpoints.push_back(l);
 				}
 
@@ -687,14 +695,6 @@ void parse_XML(std::string xmlfile) {
 		cout << "fov = " << fov << endl;
 		cout << "near = " << near << endl;
 		cout << "far = " << far << endl;
-
-		cout << "dirLightx = " << dirLightx << endl;
-		cout << "dirLighty = " << dirLighty << endl;
-		cout << "dirLightz = " << dirLightz << endl;
-
-		cout << "posLightx = " << posLightx << endl;
-		cout << "posLighty = " << posLighty << endl;
-		cout << "posLightz = " << posLightz << endl;
 
 	}
 	else {

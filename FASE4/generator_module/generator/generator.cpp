@@ -397,7 +397,7 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 		//Lower circle
 		p1 = new Point(radius * sin(alpha + step), 0.0f, radius * cos(alpha + step), 0.0f, -1.0f, 0.0f, 0.0f, 0.0f); //TODO CHANGE TEX COORDINATES
 		p2 = new Point(radius * sin(alpha), 0.0f, radius * cos(alpha), 0.0f, -1.0f, 0.0f, 0.0f, 0.0f);
-		p3 = new Point(0.0f, 0.0f, 0.0f, 0.0f, -11.0f, 0.0f, 0.0f, 0.0f);
+		p3 = new Point(0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f);
 
 		triangulos.push_back(new Triangle(p1, p2, p3));
 
@@ -442,9 +442,17 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 	alpha = 0.0f;
 
 	for (int c = 0; c < slices; c++) {
-		p1 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f); //TODO CHANGE TEX COORDINATES
-		p2 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
-		p3 = new Point(0.0f, height, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+		float texX = float(c) / slices;
+
+		p1 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step)); //TODO CHANGE TEX COORDINATES
+		normalize(p1);
+		p1->setTex(texX, stacks - 1 / stacks);
+		p2 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
+		normalize(p2);
+		p2->setTex(texX, stacks - 1 / stacks);
+		p3 = new Point(0.0f, height, 0.0f);
+		normalize(p3);
+		p3->setTex(texX, 1.0f);
 
 		triangulos.push_back(new Triangle(p3, p2, p1));
 
