@@ -189,24 +189,39 @@ void renderScene(void)
 		lookCamx, lookCamy, lookCamz,
 		upCamx, upCamy, upCamz);
 
-
+	if (lightpoints.size()) glDisable(GL_LIGHTING);
+	// Axis
+	glBegin(GL_LINES);
+		// X axis Red
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f(100.0f, 0.0f, 0.0f);
+		//Y Axis Green
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 100.0f, 0.0f);
+		//Z axis Blue
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 100.0f);
+	glEnd();
 	if (lightpoints.size()) glEnable(GL_LIGHTING);
 
 	int lcount = 0;
 	for (Light l : lightpoints) {
 		lcount++;
 		if (strcmp(l.type.c_str(), "point") == 0) {
-			float lightPosition[4] = { posLightx, posLighty, posLightz, 0.0f };
+			float lightPosition[4] = { posLightx, posLighty, posLightz, 1.0f };
 			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightPosition);
 		}
 		else if (strcmp(l.type.c_str(), "directional") == 0) {
-			float lightDirection[4] = { dirLightx, dirLighty, dirLightz, 1.0f };
+			float lightDirection[4] = { dirLightx, dirLighty, dirLightz, 0.0f };
 			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightDirection);
 
 		}
 		else if (strcmp(l.type.c_str(), "spot") == 0) {
-			float lightPosition[4] = { posLightx, posLighty, posLightz, 0.0f };
-			float lightDirection[4] = { dirLightx, dirLighty, dirLightz, 1.0f };
+			float lightPosition[4] = { posLightx, posLighty, posLightz, 1.0f };
+			float lightDirection[4] = { dirLightx, dirLighty, dirLightz, 0.0f };
 			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightPosition);
 			glLightfv(GL_LIGHT0 + lcount, GL_SPOT_DIRECTION, lightDirection);
 			glLightf(GL_LIGHT0 + lcount, GL_SPOT_CUTOFF, cutoff);
@@ -479,6 +494,7 @@ int main(int argc, char** argv)
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
+	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	//VBO Preping
 	buffers = (GLuint*)calloc(icount, sizeof(GLuint));

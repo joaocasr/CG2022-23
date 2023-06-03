@@ -807,7 +807,14 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 	}
 
 	ofstream file;
-	file.open(filename);
+
+	fs::create_directory("models");
+
+	std::string dir = path;
+	dir += "\\models\\";
+	dir += filename;
+	file.open(dir);
+
 	if (file.is_open() != true) {
 		printf("Failed to open output file!\n");
 		_exit(1);
