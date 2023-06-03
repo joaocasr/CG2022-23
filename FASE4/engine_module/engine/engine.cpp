@@ -12,7 +12,7 @@ using namespace tinyxml2;
 
 int sizeTriangulos = 0;
 int mode = M_FIX;
-int vbo_mode = VBO_BASIC;
+int vbo_mode = VBO_OFF;
 
 vector<string> allmodels;
 vector<Group> my_world;
@@ -183,43 +183,30 @@ void renderScene(void)
 
 	// set camera
 	glLoadIdentity();
+
+
 	gluLookAt(posCamx, posCamy, posCamz,
 		lookCamx, lookCamy, lookCamz,
 		upCamx, upCamy, upCamz);
 
-	if (lightpoints.size()) glDisable(GL_LIGHTING);
-	// Axis
-	glBegin(GL_LINES);
-		// X axis Red
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(-100.0f, 0.0f, 0.0f);
-		glVertex3f(100.0f, 0.0f, 0.0f);
-		//Y Axis Green
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(0.0f, -100.0f, 0.0f);
-		glVertex3f(0.0f, 100.0f, 0.0f);
-		//Z axis Blue
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(0.0f, 0.0f, -100.0f);
-		glVertex3f(0.0f, 0.0f, 100.0f);
-	glEnd();
+
 	if (lightpoints.size()) glEnable(GL_LIGHTING);
 
 	int lcount = 0;
 	for (Light l : lightpoints) {
 		lcount++;
 		if (strcmp(l.type.c_str(), "point") == 0) {
-			float lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
+			float lightPosition[4] = { posLightx, posLighty, posLightz, 0.0f };
 			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightPosition);
 		}
 		else if (strcmp(l.type.c_str(), "directional") == 0) {
-			float lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
+			float lightDirection[4] = { dirLightx, dirLighty, dirLightz, 1.0f };
 			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightDirection);
 
 		}
 		else if (strcmp(l.type.c_str(), "spot") == 0) {
-			float lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
-			float lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
+			float lightPosition[4] = { posLightx, posLighty, posLightz, 0.0f };
+			float lightDirection[4] = { dirLightx, dirLighty, dirLightz, 1.0f };
 			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightPosition);
 			glLightfv(GL_LIGHT0 + lcount, GL_SPOT_DIRECTION, lightDirection);
 			glLightf(GL_LIGHT0 + lcount, GL_SPOT_CUTOFF, cutoff);
@@ -261,7 +248,7 @@ void prepareData_BasicVBO(vector<Group> groups) {
 				m.pontos.data(),
 				GL_STATIC_DRAW);
 
-			glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()+1]);
+			glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex() + 1]);
 
 			glBufferData(GL_ARRAY_BUFFER,
 				sizeof(float) * m.normais.size(),
@@ -335,17 +322,20 @@ void build_groups(vector<Group> groups) {
 
 				for (int c = 0; c < m.pontos.size();c += 9) {
 					glBegin(GL_TRIANGLES);
-						glVertex3f(m.pontos[c], m.pontos[c+1], m.pontos[c+2]);
-						glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
-						glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
 
-						glNormal3f(m.normais[c], m.normais[c + 1], m.normais[c + 2]);
-						glNormal3f(m.normais[c + 3], m.normais[c + 4], m.normais[c + 5]);
-						glNormal3f(m.normais[c + 6], m.normais[c + 7], m.normais[c + 8]);
+					glNormal3f(m.normais[c], m.normais[c + 1], m.normais[c + 2]);
+					glVertex3f(m.pontos[c], m.pontos[c + 1], m.pontos[c + 2]);
+
+					glNormal3f(m.normais[c + 3], m.normais[c + 4], m.normais[c + 5]);
+					glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
+
+					glNormal3f(m.normais[c + 6], m.normais[c + 7], m.normais[c + 8]);
+					glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
+
 					glEnd();
 				}
 			}
-		else if (vbo_mode == VBO_BASIC) 
+		else if (vbo_mode == VBO_BASIC)
 			for (Model m : g.modelos) {
 				glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
 				glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
@@ -356,7 +346,7 @@ void build_groups(vector<Group> groups) {
 				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()]);
 				glVertexPointer(3, GL_FLOAT, 0, 0);
 
-				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()+1]);
+				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex() + 1]);
 				glNormalPointer(GL_FLOAT, 0, 0);
 
 				glDrawArrays(GL_TRIANGLES, 0, m.pontos.size() / 3);
@@ -601,16 +591,16 @@ void parse_XML(std::string xmlfile) {
 			near = 1.0f;
 			far = 1000.0f;
 		}
-		
+
 		XMLElement* lights = camera->NextSiblingElement("lights");
-	
+
 		if (lights != nullptr) {
 
 			XMLElement* light = lights->FirstChildElement("light");
 
 
 			while (light != nullptr) {
-				if (strcmp(light->Attribute("type"),"directional")==0) {
+				if (strcmp(light->Attribute("type"), "directional") == 0) {
 					dirLightx = stof(light->Attribute("dirx"));
 					dirLighty = stof(light->Attribute("diry"));
 					dirLightz = stof(light->Attribute("dirz"));
@@ -634,8 +624,8 @@ void parse_XML(std::string xmlfile) {
 					dirLighty = stof(light->Attribute("diry"));
 					dirLightz = stof(light->Attribute("dirz"));
 					cutoff = stof(light->Attribute("cutoff"));
-					
-					Light l = Light("spot", posLightx, posLightx, posLightx, dirLightx, dirLighty, dirLightz,cutoff);
+
+					Light l = Light("spot", posLightx, posLightx, posLightx, dirLightx, dirLighty, dirLightz, cutoff);
 					lightpoints.push_back(l);
 				}
 
@@ -643,14 +633,14 @@ void parse_XML(std::string xmlfile) {
 			}
 
 		}
-		
+
 		//calculate camera starting angle and radius
 		G_radious = sqrt(pow(posCamx, 2.0f) + pow(posCamy, 2.0f) + pow(posCamz, 2.0f));
 		G_beta = atan(posCamy / G_radious);
 		G_alpha = acos(posCamz / (sqrt(pow(posCamx, 2.0f) + pow(posCamz, 2.0f))));
 
 		XMLElement* grupo;
-		if(lights!=nullptr)
+		if (lights != nullptr)
 			grupo = lights->NextSiblingElement("group");
 
 		else grupo = camera->NextSiblingElement("group");
@@ -682,7 +672,7 @@ void parse_XML(std::string xmlfile) {
 		cout << "dirLightx = " << dirLightx << endl;
 		cout << "dirLighty = " << dirLighty << endl;
 		cout << "dirLightz = " << dirLightz << endl;
-		
+
 		cout << "posLightx = " << posLightx << endl;
 		cout << "posLighty = " << posLighty << endl;
 		cout << "posLightz = " << posLightz << endl;
@@ -730,7 +720,7 @@ vector<Model> getModels(vector<Model> modelos) {
 				fname.addPointModel(tmp[2]);
 
 				//coordenadas das normais
-				
+
 				fname.addPointNormal(tmp[3]);
 				fname.addPointNormal(tmp[4]);
 				fname.addPointNormal(tmp[5]);
@@ -861,7 +851,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 
 			if (model->Attribute("file") != nullptr) {
 				allmodels.push_back(model->Attribute("file"));
-				Model mod =Model(model->Attribute("file"));
+				Model mod = Model(model->Attribute("file"));
 
 				XMLElement* color = model->FirstChildElement("color");
 				if (color != nullptr) {
@@ -869,7 +859,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 					float Rdiffuse = 0; float Gdiffuse = 0; float Bdiffuse = 0;
 					float Rspecular = 0; float Gspecular = 0; float Bspecular = 0;
 					float Remissive = 0; float Gemissive = 0; float Bemissive = 0;
-					float shiny=0;
+					float shiny = 0;
 
 
 
@@ -900,7 +890,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 					mod.setARGB(Rambiente, Gambiente, Bambiente);
 
 
-					XMLElement*  specular = ambient->NextSiblingElement("specular");
+					XMLElement* specular = ambient->NextSiblingElement("specular");
 					if (specular->Attribute("R") != nullptr) {
 						Rspecular = stof(specular->Attribute("R"));
 					}
@@ -923,7 +913,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 						Bemissive = stof(emissive->Attribute("B"));
 					}
 					mod.setERGB(Remissive, Gemissive, Bemissive);
-					
+
 					XMLElement* shininess = emissive->NextSiblingElement("shininess");
 					if (shininess->Attribute("value") != nullptr) {
 						shiny = stof(shininess->Attribute("value"));
@@ -941,7 +931,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 	vector <Model> allmodelos = getModels(modelos);
 	Group groupElement = Group(transformacoes);
 	int pp = 0;
-	for (Model modelozinho: allmodelos) {
+	for (Model modelozinho : allmodelos) {
 		groupElement.addModel(modelozinho);
 	}
 
