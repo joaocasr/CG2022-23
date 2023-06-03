@@ -158,32 +158,32 @@ public:
 		return modelo;
 	}
 
-	void setDRGB(float dr, float dg, float db ){
-		diffuse[0] = dr;
-		diffuse[1] = dg;
-		diffuse[2] = db;
+	void setDRGB(float dr, float dg, float db) {
+		diffuse[0] = dr / 255.0f;
+		diffuse[1] = dg / 255.0f;
+		diffuse[2] = db / 255.0f;
 		diffuse[3] = 1.0f;
 
 	}
 
 	void setARGB(float ar, float ag, float ab) {
-		ambient[0] = ar;
-		ambient[1] = ag;
-		ambient[2] = ab;
+		ambient[0] = ar / 255.0f;
+		ambient[1] = ag / 255.0f;
+		ambient[2] = ab / 255.0f;
 		ambient[3] = 1.0f;
 	}
 
 	void setSRGB(float sr, float sg, float sb) {
-		specular[0] = sr;
-		specular[1] = sg;
-		specular[2] = sb;
+		specular[0] = sr / 255.0f;
+		specular[1] = sg / 255.0f;
+		specular[2] = sb / 255.0f;
 		specular[3] = 1.0f;
 	}
 
 	void setERGB(float er, float eg, float eb) {
-		emissive[0] = er;
-		emissive[1] = eg;
-		emissive[2] = eb;
+		emissive[0] = er / 255.0f;
+		emissive[1] = eg / 255.0f;
+		emissive[2] = eb / 255.0f;
 		emissive[3] = 1.0f;
 	}
 
@@ -210,6 +210,7 @@ public:
 	void setBufIndex(int i) {
 		this->bufIndex = i;
 	}
+
 };
 
 class Group {
@@ -275,7 +276,7 @@ public:
 	float dirLightz = 0;
 	float cutoff = 0;
 
-	Light(string tipo, float posx , float posy,float posz ,float dirx ,float diry ,float dirz ,float cutff ) { //SPOT
+	Light(string tipo, float posx, float posy, float posz, float dirx, float diry, float dirz, float cutff) { //SPOT
 		type = tipo;
 		posLightx = posx;
 		posLighty = posy;
@@ -293,7 +294,7 @@ public:
 		posLightz = posz;
 	}
 
-	Light(float dirx, float diry, float dirz,string tipo) { //DIRECTIONAL
+	Light(float dirx, float diry, float dirz, string tipo) { //DIRECTIONAL
 		type = tipo;
 		dirLightx = dirx;
 		dirLighty = diry;
