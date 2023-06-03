@@ -19,13 +19,6 @@ vector<Group> my_world;
 
 vector<Light> lightpoints;
 
-
-
-
-bool bpoint = false;
-bool bdirection = false;
-bool bspot = false;
-
 float width = 0, height = 0;
 float posCamx = 0, posCamy = 0, posCamz = 0;
 float lookCamx = 0, lookCamy = 0, lookCamz = 0;
@@ -194,23 +187,24 @@ void renderScene(void)
 		lookCamx, lookCamy, lookCamz,
 		upCamx, upCamy, upCamz);
 
-	
-	if (bpoint) {
-		GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
-		glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-	}
+	for (Light l : lightpoints) {
+		if (strcmp(l.type.c_str(), "point") == 0) {
+			GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
+			glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+		}
 
-	if (bdirection) {
-		GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
-		glLightfv(GL_LIGHT0, GL_POSITION, lightDirection);
+		if (strcmp(l.type.c_str(), "directional") == 0) {
+			GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
+			glLightfv(GL_LIGHT0, GL_POSITION, lightDirection);
 
-	}if (bspot) {
-		GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
-		GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
-		glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-		glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDirection);
-		glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, cutoff);
-
+		}
+		if (strcmp(l.type.c_str(), "spot") == 0) {
+			GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
+			GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
+			glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+			glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDirection);
+			glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, cutoff);
+		}
 	}
 		
 	float dark[] = { 0.2, 0.2, 0.2, 1.0 };
@@ -286,8 +280,7 @@ void prepareData_BasicVBO(vector<Group> groups) {
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()+1]);
 
 
-		int countpoints = 0;
-		vector<float> pontosaux;
+		countpoints = 0;
 		for (Model m : g.modelos) {
 			countpoints += m.normais.size();
 			for (float pp : m.normais) {
@@ -360,21 +353,21 @@ void build_groups(vector<Group> groups) {
 		glColor3f(1.0f, 0.5f, 0.0f);
 		if (vbo_mode == VBO_OFF)
 			for (Model m : g.modelos) {
-				for (int c = 0; c < m.pontos.size();c += 18) {
+				for (int c = 0; c < m.pontos.size();c += 9) {
 					glBegin(GL_TRIANGLES);
 
 					//not sure tho
 
-					glNormal3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
+					glNormal3f(m.normais[c], m.normais[c + 1], m.normais[c + 2]);
 					glVertex3f(m.pontos[c], m.pontos[c+1], m.pontos[c+2]);
 					
 
-					glNormal3f(m.pontos[c + 9], m.pontos[c + 10], m.pontos[c + 11]);
+					glNormal3f(m.normais[c + 3], m.normais[c + 4], m.normais[c + 5]);
+					glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
+
+
+					glNormal3f(m.normais[c +6], m.normais[c + 7], m.normais[c + 8]);
 					glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
-
-
-					glNormal3f(m.pontos[c + 15], m.pontos[c + 16], m.pontos[c + 17]);
-					glVertex3f(m.pontos[c + 12], m.pontos[c + 13], m.pontos[c + 14]);
 
 
 
@@ -666,13 +659,17 @@ void parse_XML(std::string xmlfile) {
 					dirLightx = stof(light->Attribute("dirx"));
 					dirLighty = stof(light->Attribute("diry"));
 					dirLightz = stof(light->Attribute("dirz"));
-					bdirection = true;
+
+					Light l = Light("directional", dirLightx, dirLighty, dirLightz);
+					lightpoints.push_back(l);
 				}
 				else if (strcmp(light->Attribute("type"), "point") == 0) {
 					posLightx = stof(light->Attribute("posx"));
 					posLighty = stof(light->Attribute("posy"));
 					posLightz = stof(light->Attribute("posz"));
-					bpoint = true;
+
+					Light l = Light(posLightx, posLightx, posLightx, "point");
+					lightpoints.push_back(l);
 				}
 				else if (strcmp(light->Attribute("type"), "spot") == 0) {
 					posLightx = stof(light->Attribute("posx"));
@@ -682,7 +679,9 @@ void parse_XML(std::string xmlfile) {
 					dirLighty = stof(light->Attribute("diry"));
 					dirLightz = stof(light->Attribute("dirz"));
 					cutoff = stof(light->Attribute("cutoff"));
-					bspot = true;
+					
+					Light l = Light("spot", posLightx, posLightx, posLightx, dirLightx, dirLighty, dirLightz,cutoff);
+					lightpoints.push_back(l);
 				}
 
 				light = light->NextSiblingElement("light");
