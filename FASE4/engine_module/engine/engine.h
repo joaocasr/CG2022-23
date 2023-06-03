@@ -5,6 +5,8 @@
 #include <GL/glut.h>
 #endif
 
+#include <IL/il.h>
+
 #include<vector>
 #include <string>
 #include <iostream>
@@ -140,6 +142,7 @@ class Model {
 
 public:
 	string modelo;
+	string textureimg="none";
 	vector<float> pontos;
 	vector<float> normais;
 	vector<float> tex;
@@ -189,6 +192,10 @@ public:
 
 	void setShiny(float shiny) {
 		shininess = shiny;
+	}
+
+	void setTextureImg(string img) {
+		textureimg = img;
 	}
 
 	void addPointModel(float p) {

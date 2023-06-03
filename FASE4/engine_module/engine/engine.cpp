@@ -462,6 +462,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 	glutPostRedisplay();
 }
 
+
 int main(int argc, char** argv)
 {
 	std::string xmlfile;
@@ -491,6 +492,8 @@ int main(int argc, char** argv)
 #ifndef __APPLE__
 	glewInit();
 #endif
+
+
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
@@ -529,7 +532,7 @@ int main(int argc, char** argv)
 			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 		}
 	}
-
+	glEnable(GL_TEXTURE_2D);
 
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 
@@ -938,6 +941,12 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 
 
 				}
+				
+				XMLElement* texture = model->FirstChildElement("texture");
+				if (texture != nullptr) {
+					mod.setTextureImg(texture->Attribute("file"));
+				}
+				
 				modelos.push_back(mod);
 			}
 			model = model->NextSiblingElement();
