@@ -12,7 +12,7 @@ using namespace tinyxml2;
 
 int sizeTriangulos = 0;
 int mode = M_FIX;
-int vbo_mode = VBO_OFF;
+int vbo_mode = VBO_BASIC;
 
 vector<string> allmodels;
 vector<Group> my_world;
@@ -187,50 +187,44 @@ void renderScene(void)
 		lookCamx, lookCamy, lookCamz,
 		upCamx, upCamy, upCamz);
 
-	for (Light l : lightpoints) {
-		if (strcmp(l.type.c_str(), "point") == 0) {
-			GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
-			glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-		}
-
-		if (strcmp(l.type.c_str(), "directional") == 0) {
-			GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
-			glLightfv(GL_LIGHT0, GL_POSITION, lightDirection);
-
-		}
-		if (strcmp(l.type.c_str(), "spot") == 0) {
-			GLfloat lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
-			GLfloat lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
-			glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-			glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDirection);
-			glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, cutoff);
-		}
-	}
-		
-	float dark[] = { 0.2, 0.2, 0.2, 1.0 };
-	float white[] = { 0.8, 0.8, 0.8, 1.0 };
-	float red[] = { 0.8, 0.2, 0.2, 1.0 };
-
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-	glMaterialf(GL_FRONT, GL_SHININESS, 128);
-	
-	glColor3f(1.0f, 1.0f, 1.0f);
+	if (lightpoints.size()) glDisable(GL_LIGHTING);
 	// Axis
 	glBegin(GL_LINES);
-	// X axis Red
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-100.0f, 0.0f, 0.0f);
-	glVertex3f(100.0f, 0.0f, 0.0f);
-	//Y Axis Green
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, -100.0f, 0.0f);
-	glVertex3f(0.0f, 100.0f, 0.0f);
-	//Z axis Blue
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, -100.0f);
-	glVertex3f(0.0f, 0.0f, 100.0f);
+		// X axis Red
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f(100.0f, 0.0f, 0.0f);
+		//Y Axis Green
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 100.0f, 0.0f);
+		//Z axis Blue
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
+	if (lightpoints.size()) glEnable(GL_LIGHTING);
+
+	int lcount = 0;
+	for (Light l : lightpoints) {
+		lcount++;
+		if (strcmp(l.type.c_str(), "point") == 0) {
+			float lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
+			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightPosition);
+		}
+		else if (strcmp(l.type.c_str(), "directional") == 0) {
+			float lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
+			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightDirection);
+
+		}
+		else if (strcmp(l.type.c_str(), "spot") == 0) {
+			float lightPosition[] = { posLightx, posLighty, posLightz, 0.0f };
+			float lightDirection[] = { dirLightx, dirLighty, dirLightz, 1.0f };
+			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightPosition);
+			glLightfv(GL_LIGHT0 + lcount, GL_SPOT_DIRECTION, lightDirection);
+			glLightf(GL_LIGHT0 + lcount, GL_SPOT_CUTOFF, cutoff);
+		}
+	}
 
 	build_groups(my_world);
 
@@ -259,41 +253,21 @@ void alignment(float* deriv) {
 
 void prepareData_BasicVBO(vector<Group> groups) {
 	for (Group g : groups) {
-		glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()]);
-
-		int countpoints = 0;
-		vector<float> pontosaux;
 		for (Model m : g.modelos) {
-			countpoints += m.pontos.size();
-			for (float pp : m.pontos) {
-				pontosaux.push_back(pp);
-			}
+			glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()]);
+
+			glBufferData(GL_ARRAY_BUFFER,
+				sizeof(float) * m.pontos.size(),
+				m.pontos.data(),
+				GL_STATIC_DRAW);
+
+			glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()+1]);
+
+			glBufferData(GL_ARRAY_BUFFER,
+				sizeof(float) * m.normais.size(),
+				m.normais.data(),
+				GL_STATIC_DRAW);
 		}
-
-		glBufferData(GL_ARRAY_BUFFER,
-			sizeof(float) * countpoints,
-			pontosaux.data(),
-			GL_STATIC_DRAW);
-		pontosaux.clear();
-
-
-		glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()+1]);
-
-
-		countpoints = 0;
-		for (Model m : g.modelos) {
-			countpoints += m.normais.size();
-			for (float pp : m.normais) {
-				pontosaux.push_back(pp);
-			}
-		}
-
-		glBufferData(GL_ARRAY_BUFFER,
-			sizeof(float) * countpoints,
-			pontosaux.data(),
-			GL_STATIC_DRAW);
-		pontosaux.clear();
-
 
 		//Children
 		if (g.getChild().size() > 0)
@@ -350,64 +324,43 @@ void build_groups(vector<Group> groups) {
 		}
 
 		// Models
-		glColor3f(1.0f, 0.5f, 0.0f);
 		if (vbo_mode == VBO_OFF)
 			for (Model m : g.modelos) {
+				//Materials
+				glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
+				glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
+				glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
+				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
+				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
+
 				for (int c = 0; c < m.pontos.size();c += 9) {
 					glBegin(GL_TRIANGLES);
+						glVertex3f(m.pontos[c], m.pontos[c+1], m.pontos[c+2]);
+						glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
+						glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
 
-					//not sure tho
-
-					glNormal3f(m.normais[c], m.normais[c + 1], m.normais[c + 2]);
-					glVertex3f(m.pontos[c], m.pontos[c+1], m.pontos[c+2]);
-					
-
-					glNormal3f(m.normais[c + 3], m.normais[c + 4], m.normais[c + 5]);
-					glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
-
-
-					glNormal3f(m.normais[c +6], m.normais[c + 7], m.normais[c + 8]);
-					glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
-
-
-
+						glNormal3f(m.normais[c], m.normais[c + 1], m.normais[c + 2]);
+						glNormal3f(m.normais[c + 3], m.normais[c + 4], m.normais[c + 5]);
+						glNormal3f(m.normais[c + 6], m.normais[c + 7], m.normais[c + 8]);
 					glEnd();
-					glEnable(GL_NORMALIZE);
 				}
-
-
-				//glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
-				//glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
-				//glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
-				//glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
-				//glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
 			}
-
-			
-		else if (vbo_mode == VBO_BASIC) {
-			glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()]);
-			glVertexPointer(3, GL_FLOAT, 0, 0);
-
-			glVertexPointer(3, GL_FLOAT, 0, 0);
-			int countpoints = 0;
+		else if (vbo_mode == VBO_BASIC) 
 			for (Model m : g.modelos) {
-				countpoints += m.pontos.size();
+				glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
+				glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
+				glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
+				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
+				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
+
+				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()]);
+				glVertexPointer(3, GL_FLOAT, 0, 0);
+
+				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()+1]);
+				glNormalPointer(GL_FLOAT, 0, 0);
+
+				glDrawArrays(GL_TRIANGLES, 0, m.pontos.size() / 3);
 			}
-
-			glBindBuffer(GL_ARRAY_BUFFER, buffers[g.getBufIndex()+1]);
-			glNormalPointer(GL_FLOAT, 0, 0);
-
-			glDrawArrays(GL_TRIANGLES, 0, countpoints / 3);
-
-			//for (Model m : g.modelos) {
-				//glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
-				//glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
-				//glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
-				//glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
-				//glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
-			//}
-
-		}
 
 		//Children
 		if (g.getChild().size() > 0)
@@ -552,27 +505,29 @@ int main(int argc, char** argv)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glPolygonMode(GL_FRONT, GL_LINE);
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	glEnable(GL_RESCALE_NORMAL);
 
-	float dark[4] = { 0.2, 0.2, 0.2, 1.0 };
-	float white[4] = { 1.0, 1.0, 1.0, 1.0 };
-	float black[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	glEnable(GL_BLEND);
+	if (lightpoints.size()) {
+		glEnable(GL_LIGHTING);
+		for (int i = 0; i < lightpoints.size(); i++) {
+			if (i > 7)
+				break;
 
-	glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+			glEnable(GL_LIGHT0 + i);
 
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, black);
-
-
-
+			// controls global ambient light
+			float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
+		}
+	}
 
 
 	timebase = glutGet(GLUT_ELAPSED_TIME);
+
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// enter GLUT�s main cycle
 	glutMainLoop();
@@ -744,7 +699,6 @@ vector<Model> getModels(vector<Model> modelos) {
 	vector<Model> modelosaux;
 
 	for (Model fname : modelos) {
-
 		std::ifstream myfile;
 		string path = fs::current_path().string();
 		string dirpath = path + "\\";
@@ -766,7 +720,7 @@ vector<Model> getModels(vector<Model> modelos) {
 				getline(myfile, line);
 				stringstream tmpss(line);
 
-				for (int c = 0; c < 3; c++) {
+				for (int c = 0; c < 8; c++) {
 					getline(tmpss, seg, ',');
 					tmp.push_back(stof(seg));
 				}
@@ -781,9 +735,14 @@ vector<Model> getModels(vector<Model> modelos) {
 				fname.addPointNormal(tmp[4]);
 				fname.addPointNormal(tmp[5]);
 
+				//Texture
+				fname.addPointTex(tmp[6]);
+				fname.addPointTex(tmp[7]);
 
 				tmp.clear();
 			}
+			fname.setBufIndex(icount++); // Needed to know which VBO buffer to use for group
+			icount++;
 			modelosaux.push_back(fname);
 		}
 		else {
@@ -978,15 +937,13 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 			model = model->NextSiblingElement();
 		}
 	}
+
 	vector <Model> allmodelos = getModels(modelos);
 	Group groupElement = Group(transformacoes);
 	int pp = 0;
 	for (Model modelozinho: allmodelos) {
 		groupElement.addModel(modelozinho);
 	}
-	groupElement.setBufIndex(icount); // Needed to know which VBO buffer to use for group
-	icount += 2;
-	
 
 	for (tinyxml2::XMLElement* child = xmlelement->FirstChildElement("group");
 		child != NULL; child = child->NextSiblingElement("group"))

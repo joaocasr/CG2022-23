@@ -142,11 +142,13 @@ public:
 	string modelo;
 	vector<float> pontos;
 	vector<float> normais;
+	vector<float> tex;
 	float ambient[4];
 	float diffuse[4];
 	float specular[4];
 	float emissive[4];
 	float shininess;
+	int bufIndex = -1;
 
 	Model(string nome) {
 		modelo = nome;
@@ -197,7 +199,17 @@ public:
 		normais.push_back(p);
 	}
 
+	void addPointTex(float p) {
+		tex.push_back(p);
+	}
 
+	int getBufIndex() {
+		return bufIndex;
+	}
+
+	void setBufIndex(int i) {
+		this->bufIndex = i;
+	}
 };
 
 class Group {
@@ -206,7 +218,6 @@ public:
 	vector<Model> modelos;
 	vector<Transformation> transformacoes;
 	vector<Group> groupChild;
-	int bufIndex = -1;
 
 	Group(vector<Transformation> trans, vector<Group> gchild) {
 		transformacoes = trans;
@@ -223,15 +234,6 @@ public:
 
 	vector<Transformation> getTransformations() {
 		return transformacoes;
-	}
-
-	int getBufIndex() {
-		return bufIndex;
-	}
-
-
-	void setBufIndex(int i) {
-		this->bufIndex = i;
 	}
 
 	vector<Group> getChild() {
