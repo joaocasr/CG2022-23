@@ -1,0 +1,346 @@
+<world>
+    <window width="512" height="512" />
+    <camera> 
+	    <position x="50" y="50" z="50" />
+	    <lookAt x="0" y="0" z="0" />
+	    <up x="0" y="1" z="0" />
+        <projection fov="60" near="1" far="1000" />
+    </camera>
+	<lights> 
+		<light type="point" posx="0" posy="0" posz="0" />
+	</lights>
+	<!--Sun-->
+	<group>
+		<transform> 
+            		<scale x="20" y="20" z="20" />
+        	</transform>
+		<models>
+			<model file="sphere.3d">
+				<texture file = "textures/sun.jpg" />
+			</model>
+		</models>
+		 <!-- Mercury -->
+		 <group>
+			<transform>
+          			<rotate time="2.40" x = "0.0" y ="1.0" z ="0.0" /> <!--rotacao sobre o sol -->
+				<translate x="-1.8" y="0" z="1.8" />
+				<rotate time="1392" x = "0.00052" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+				<scale x="0.0216" y="0.0216" z="0.0216" />
+			</transform>
+			<models>
+				<model file="sphere.3d">
+					<texture file = "textures/mercury.jpg" />
+				</model>
+			</models>
+		</group>
+		<!-- Venus -->
+		<group>
+			<transform>
+                		<rotate time="6.15" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do sol -->
+				<translate x="-3.0" y="0" z="3.0" />
+                		<rotate time="5832" x = "-0.045" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+				<scale x="0.0531" y="0.0531" z="0.0531" />
+			</transform>
+			<models>
+				<model file="sphere.3d">
+					<texture file = "textures/venus.jpg" />
+				</model>
+			</models>
+		</group>
+		<!-- Earth -->
+		<group>
+			<transform>
+                		<rotate time="10" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do sol-->
+				<translate x="-4.0" y="0" z="4.0" />
+                		<rotate time="24" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+				<scale x="0.0555" y="0.0555" z="0.0555" />
+			</transform>
+			<models>
+				<model file="sphere.3d">
+					<texture file = "textures/earth.jpg" />
+				</model>
+			</models>
+			<!-- Moon -->
+			<group>
+				<transform>
+                			<rotate time="27.3" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta-->
+					<translate x="-1.562802456801457" y="0.3495855806969056" z="1.2820609824747564" /> <!-- alpha: 5.399421988971284 | radius: 2.0514 -->
+                			<rotate time="27.3" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.25" y="0.25" z="0.25" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+		</group>
+		 <!-- Mars -->
+		 <group>
+			<transform>
+                		<rotate time="18.8" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do sol-->
+				<translate x="-7,0" y="0" z="7,0" />
+                		<rotate time="24.36" x = "0.47" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->				
+				<scale x="0.0333" y="0.0333" z="0.0333" />
+			</transform>
+			<models>
+				<model file="sphere.3d">
+					<texture file = "textures/mars.jpg" />
+				</model>
+			</models>
+		</group>
+		<!-- Jupiter -->
+		<group>
+			<transform>
+                		<rotate time="118.68" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do sol apos translacao -->
+				<translate x="-11.14" y="0" z="11.14" /> <!-- alpha: -0.01634671852610481 | radius: 6.8 -->
+                		<rotate time="10" x = "0.05" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+				<scale x="0.6111" y="0.6111" z="0.6111" />
+			</transform>
+			<models>
+				<model file="sphere.3d">
+					<texture file = "textures/jupiter.jpg" />
+				</model>
+			</models>
+			<!-- Europa -->
+			<group>
+				<transform>
+                			<rotate time="82.46" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta-->
+					<translate x="-1.9739134754677707" y="-0.6058151146019737" z="-0.32106354244377094" /> <!-- alpha: 4.551147722545702 | radius: 2.0896 -->
+                			<rotate time="83.63" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.0222" y="0.0222" z="0.0222" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+			<!-- Io -->
+			<group>
+				<transform>
+                			<rotate time="22.46" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta--> 
+					<translate x="1.3009021831337488" y="-0.9117855918605499" z="1.290616435814047" /> <!-- alpha: 0.7893671463847127 | radius: 2.0468 -->
+                			<rotate time="32.63" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.03181" y="0.03181" z="0.03181" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+			<!-- Ganymede -->
+			<group>
+				<transform>
+                			<rotate time="36.23" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta-->  
+					<translate x="-1.6360631702462545" y="0.18780201298969929" z="1.3716172741988903" /> <!-- alpha: 5.410089129623691 | radius: 2.1432 -->
+                			<rotate time="46.32" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.03704" y="0.03704" z="0.03704" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />					
+					</model>
+				</models>
+			</group>
+			<!-- Callisto -->
+			<group>
+				<transform> 
+                			<rotate time="27.53" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta--> 
+					<translate x="-0.7902424269980806" y="0.4610331189744719" z="-2.057125987823996" /> <!-- alpha: 3.5083599438343995 | radius: 2.2514 -->
+                			<rotate time="42.24" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.03448" y="0.03448" z="0.03448" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+		</group>
+		<!-- Saturn -->
+		<group>
+			<transform>
+                		<rotate time="294.6" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do sol--> 
+				<translate x="-12.35" y="0" z="12.35" />
+                		<rotate time="10.3" x = "0.50" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->				
+				<scale x="0.4888" y="0.4888" z="0.4888" />
+			</transform>
+			<models>
+				<model file="sphere.3d">
+					<texture file = "textures/saturn.jpg" />
+				</model>
+			</models>
+			<!-- Titan -->
+			<group>
+				<transform>
+                			<rotate time="55.34" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta--> 
+					<translate x="-0.623182250994466" y="-0.44433399546510904" z="2.0202819957915485" /> <!-- alpha: -0.29920281941546634 | radius: 2.1604 -->
+                			<rotate time="23.44" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.04425" y="0.04425" z="0.04425" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+			<group>
+				<transform>
+					<rotate x="1" y="0" z="0.5" angle="90" />
+					<scale x="1.5" y="0.5" z="1.5" />
+				</transform>
+				<models>
+					<model file="torus.3d">
+						<texture file="saturn_ring.png" />
+					</model>
+				</models>
+			</group>
+		</group>
+		<!-- Uranus -->
+		<group>
+			<transform>
+                		<rotate time="840.1" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do sol-->
+				<translate x="-13.1" y="0" z="13.1" />
+                		<rotate time="17" x = "-7.30" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma--> 
+				<scale x="0.2052" y="0.2052" z="0.2052" />
+			</transform>
+			<models>
+				<model file="sphere.3d">
+					<texture file = "textures/uranus.jpg" />
+				</model>
+			</models>
+			<!-- Miranda -->
+			<group>
+				<transform>
+                			<rotate time="23.34" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta--> 
+					<translate x="0.98943899321693" y="-0.30295734745001557" z="0.02647147007475641" /> <!-- alpha: -4.739136619271513 | radius: 1.03512 -->
+                			<rotate time="13.44" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.0037728" y="0.0037728" z="0.0037728" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+			<!-- Ariel -->
+			<group>
+				<transform>
+                			<rotate time="23.34" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta--> 
+					<translate x="-0.06895170372620689" y="-0.24934606877077728" z="-1.5061026479432975" /> <!-- alpha: 3.187342251872174 | radius: 1.52816 -->
+                			<rotate time="13.44" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.0092624" y="0.0092624" z="0.0092624" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+			<!-- Umbriel -->
+			<group>
+				<transform> 
+                			<rotate time="13.13" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta--> 
+					<translate x="0.5658399564594316" y="1.1761745075093901" z="-1.683758543128744" /> <!-- alpha: 2.8173922121456716 | radius: 2.1304 -->
+                			<rotate time="14.14" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.0093552" y="0.0093552" z="0.0093552" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+			<!-- Titania -->
+			<group>
+				<transform> 
+                			<rotate time="34.45" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta--> 
+					<translate x="-1.423712709885508" y="-0.1104434509015812" z="3.1815037580149763" /> <!-- alpha: 5.8624150037967375 | radius: 3.48728 -->
+                			<rotate time="11.33" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.0126144" y="0.0126144" z="0.0126144" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+			<!-- Oberon -->
+			<group>
+				<transform> 
+                			<rotate time="54.43" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta--> 
+					<translate x="0.15274979821996085" y="-0.6680450275971876" z="4.617586071298124" /> <!-- alpha: -6.2501173545660915 | radius: 4.66816 -->
+                			<rotate time="31.31" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="0.0121824" y="0.0121824" z="0.0121824" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+		</group>
+		<!-- Neptune -->
+		<group>
+			<transform>
+                		<rotate time="1647.9" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do sol-->
+				<translate x="-14.78" y="0" z="14.78" />
+                		<rotate time="16" x = "0.538" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+				<scale x="0.1887" y="0.1887" z="0.1887" />
+			</transform>
+			<models>
+				<model file="sphere.3d">
+					<texture file = "textures/neptune.jpg" />
+				</model>
+			</models>
+			<!-- Triton -->
+			<group>
+				<transform>
+                			<rotate time="54.43" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do planeta-->
+					<translate x="10.7182539421744" y="-6.168509809381747" z="10.5726732268913" /> <!-- alpha: -5.4909495624328155 | radius: 16.27 -->
+                			<rotate time="31.31" x = "0.43" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+					<scale x="2.05e-05" y="2.05e-05" z="2.05e-05" />
+				</transform>
+				<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+				</models>
+			</group>
+		</group>
+		<!-- Pluto -->
+		<group>
+			<transform>
+                		<rotate time="2485.9" x = "0.0" y ="1.0" z ="0.0" /> <!-- rotacao em torno do sol-->
+				<translate x="-15.54" y="0" z="15.54" />
+                		<rotate time="144" x = "-1.57" y ="1.0" z ="0.0" /> <!-- rotacao sobre si mesma-->
+				<scale x="0.01" y="0.01" z="0.01" />
+			</transform>
+			<models>
+					<model file="sphere.3d">
+					<texture file = "textures/moon.jpg" />
+					</model>
+			</models>
+		</group>
+		<!-- Comet -->
+		<group>
+			<transform>
+				<translate time = "4.2" align="true">
+					<point x = "60" y = "0" z = "-4" />
+					<point x = "0" y = "0" z = "2.5" />
+					<point x = "-60" y = "0" z = "-15" />
+					<point x = "0" y = "0" z = "-2.5" />
+				</translate>
+				<rotate angle="-90" x="1" y="0" z="0" />
+				<scale x="0.05" y="0.05" z="0.05" />
+			</transform>
+			<models> 
+				<model file="sphere.3d">
+					<texture file = "textures/comet.png" />
+				</model>
+			</models>
+		</group>
+	</group>
+</world>
