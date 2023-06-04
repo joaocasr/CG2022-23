@@ -407,6 +407,7 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 	alpha = 0.0f;
 	float curHeight;
 	float curRad;
+	float ratio = float(height) / radius;
 
 	for (int i = 0; i < slices; i++) {
 		curHeight = 0.0f;
@@ -415,18 +416,38 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 
 		for (int j = 0; j < stacks - 1; j++) {
 			float texY = float(j) / stacks;
+			float tmp[3];
 
 			p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
-			normalize(p1);
+			tmp[0] = p1->x;
+			tmp[1] = ratio * curRad;
+			tmp[2] = p1->z;
+			normalize(tmp);
+			p1->setNormal(tmp);
 			p1->setTex(texX, texY);
+
 			p2 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
-			normalize(p2);
+			tmp[0] = p2->x;
+			tmp[1] = ratio * curRad;
+			tmp[2] = p2->z;
+			normalize(tmp);
+			p2->setNormal(tmp);
 			p2->setTex(texX, texY);
+
 			p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight + stackStep, (curRad - radStep) * cos(alpha + step));
-			normalize(p3);
+			tmp[0] = p3->x;
+			tmp[1] = ratio * curRad;
+			tmp[2] = p3->z;
+			normalize(tmp);
+			p3->setNormal(tmp);
 			p3->setTex(texX, texY);
+
 			p4 = new Point((curRad - radStep) * sin(alpha), curHeight + stackStep, (curRad - radStep) * cos(alpha));
-			normalize(p4);
+			tmp[0] = p4->x;
+			tmp[1] = ratio * curRad;
+			tmp[2] = p4->z;
+			normalize(tmp);
+			p4->setNormal(tmp);
 			p4->setTex(texX, texY);
 
 			triangulos.push_back(new Triangle(p1, p2, p3));
