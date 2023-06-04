@@ -787,7 +787,8 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 				pu2 = multVects(res2driv, v_vec); // For p2
 
 				//ponto v
-				pv1 = multVects(res1, v_vecDriv); // For both p1 & p2
+				pv1 = multVects(res1, v_vecDriv); // For p1
+				pv2 = multVects(res2, v_vecDriv); // For p2
 
 				cross(&pu1, &pv1, normal);
 				normalize(normal);
@@ -795,11 +796,11 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 				p1.setNormal(normal[0], normal[1], normal[2]);
 				p1.setTex(float(j) / tesLvl, float(c) / tesLvl);
 
-				cross(&pu2, &pv1, normal);
+				cross(&pu2, &pv2, normal);
 				normalize(normal);
 				p2 = multVects(res2, v_vec);
 				p2.setNormal(normal[0], normal[1], normal[2]);
-				p2.setTex(float(j) / tesLvl, float(c) / tesLvl);
+				p2.setTex(float(j+1) / tesLvl, float(c) / tesLvl);
 
 				v = step * (c + 1);
 				float v_vec2[4] = { powf(v, 3.0f), powf(v, 2.0f), v, 1.0f };
@@ -810,19 +811,20 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 				pu2 = multVects(res2driv, v_vec2); // For p4
 
 				//ponto v
-				pv2 = multVects(res2, v_vecDriv2); // For both p3 & p4
+				pv1 = multVects(res1, v_vecDriv2); // For p3
+				pv2 = multVects(res2, v_vecDriv2); // For p4
 
 				cross(&pu1, &pv1, normal);
 				normalize(normal);
 				p3 = multVects(res1, v_vec2);
 				p3.setNormal(normal[0], normal[1], normal[2]);
-				p3.setTex(float(j) / tesLvl, float(c) / tesLvl);
+				p3.setTex(float(j) / tesLvl, float(c + 1) / tesLvl);
 
-				cross(&pu2, &pv1, normal);
+				cross(&pu2, &pv2, normal);
 				normalize(normal);
 				p4 = multVects(res2, v_vec2);
-				p3.setNormal(normal[0], normal[1], normal[2]);
-				p4.setTex(float(j) / tesLvl, float(c) / tesLvl);
+				p4.setNormal(normal[0], normal[1], normal[2]);
+				p4.setTex(float(j + 1) / tesLvl, float(c + 1) / tesLvl);
 
 				points.push_back(p2);
 				points.push_back(p4);
