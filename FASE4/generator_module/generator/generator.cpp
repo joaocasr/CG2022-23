@@ -403,9 +403,12 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 	Point* p1, * p2, * p3, * p4;
 
 	for (int c = 0; c < slices; c++) {
+		float texX = float(c) / slices;
+		float texX2 = float(c + 1) / slices;
+
 		//Lower circle
-		p1 = new Point(radius * sin(alpha + step), 0.0f, radius * cos(alpha + step), 0.0f, -1.0f, 0.0f, 0.0f, 0.0f); //TODO CHANGE TEX COORDINATES
-		p2 = new Point(radius * sin(alpha), 0.0f, radius * cos(alpha), 0.0f, -1.0f, 0.0f, 0.0f, 0.0f);
+		p1 = new Point(radius * sin(alpha + step), 0.0f, radius * cos(alpha + step), 0.0f, -1.0f, 0.0f, texX2, 0.0f); //TODO CHANGE TEX COORDINATES
+		p2 = new Point(radius * sin(alpha), 0.0f, radius * cos(alpha), 0.0f, -1.0f, 0.0f, texX, 0.0f);
 		p3 = new Point(0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f);
 
 		triangulos.push_back(new Triangle(p1, p2, p3));
@@ -478,7 +481,7 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 		float texX2 = float(c + 1) / slices;
 		float tmp[3];
 
-		p1 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step)); //TODO CHANGE TEX COORDINATES
+		p1 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step)); //TODO TEX COORDS NOT RIGHT
 		tmp[0] = p1->x;
 		tmp[1] = ratio * curRad;
 		tmp[2] = p1->z;
@@ -541,16 +544,19 @@ void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks,
 	Point* p1, * p2, * p3, * p4;
 
 	for (int c = 0; c < slices; c++) {
+		float texX = float(c) / slices;
+		float texX2 = float(c + 1) / slices;
+
 		//Lower circle
-		p1 = new Point(b_rad * sin(alpha + step), -h_height, b_rad * cos(alpha + step), 0.0f, -1.0f, 0.0f, 0.0f, 0.0f); //TODO CHANGE TEX COORDINATES
-		p2 = new Point(b_rad * sin(alpha), -h_height, b_rad * cos(alpha), 0.0f, -1.0f, 0.0f, 0.0f, 0.0f);
+		p1 = new Point(b_rad * sin(alpha + step), -h_height, b_rad * cos(alpha + step), 0.0f, -1.0f, 0.0f, texX2, 0.0f);
+		p2 = new Point(b_rad * sin(alpha), -h_height, b_rad * cos(alpha), 0.0f, -1.0f, 0.0f, texX, 0.0f);
 		p3 = new Point(0.0f, -h_height, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f);
 
 		triangulos.push_back(new Triangle(p1, p2, p3));
 
 		//Upper circle
-		p1 = new Point(t_rad * sin(alpha + step), h_height, t_rad * cos(alpha + step), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f); //TODO CHANGE TEX COORDINATES
-		p2 = new Point(t_rad * sin(alpha), h_height, t_rad * cos(alpha), 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+		p1 = new Point(t_rad * sin(alpha + step), h_height, t_rad * cos(alpha + step), 0.0f, 1.0f, 0.0f, texX2, 0.0f); 
+		p2 = new Point(t_rad * sin(alpha), h_height, t_rad * cos(alpha), 0.0f, 1.0f, 0.0f, texX, 0.0f);
 		p3 = new Point(0.0f, h_height, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
 
 		triangulos.push_back(new Triangle(p3, p2, p1));
@@ -567,22 +573,24 @@ void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks,
 			curHeight = static_cast<float>(height) / 2;
 			curRad = t_rad;
 			float texX = float(i) / slices;
+			float texX2 = float(i + 1) / slices;
 
 			for (int j = 0; j < stacks; j++) {
 				float texY = float(j) / stacks;
+				float texY2 = float(j + 1) / stacks;
 
 				p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
 				normalize(p1);
 				p1->setTex(texX, texY);
 				p2 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
 				normalize(p2);
-				p2->setTex(texX, texY);
+				p2->setTex(texX2, texY);
 				p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight - stackStep, (curRad - radStep) * cos(alpha + step));
 				normalize(p3);
-				p3->setTex(texX, texY);
+				p3->setTex(texX2, texY2);
 				p4 = new Point((curRad - radStep) * sin(alpha), curHeight - stackStep, (curRad - radStep) * cos(alpha));
 				normalize(p4);
-				p4->setTex(texX, texY);
+				p4->setTex(texX, texY2);
 
 				triangulos.push_back(new Triangle(p3, p2, p1));
 				triangulos.push_back(new Triangle(p1, p4, p3));
@@ -598,22 +606,24 @@ void buildCylinder(float b_rad, float t_rad, int height, int slices, int stacks,
 			curHeight = -(static_cast<float>(height) / 2);
 			curRad = b_rad;
 			float texX = float(i) / slices;
+			float texX2 = float(i + 1) / slices;
 
 			for (int j = 0; j < stacks; j++) {
 				float texY = float(j) / stacks;
+				float texY2 = float(j + 1) / stacks;
 
 				p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
 				normalize(p1);
 				p1->setTex(texX, texY);
 				p2 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step));
 				normalize(p2);
-				p2->setTex(texX, texY);
+				p2->setTex(texX2, texY);
 				p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight + stackStep, (curRad - radStep) * cos(alpha + step));
 				normalize(p3);
-				p3->setTex(texX, texY);
+				p3->setTex(texX2, texY2);
 				p4 = new Point((curRad - radStep) * sin(alpha), curHeight + stackStep, (curRad - radStep) * cos(alpha));
 				normalize(p4);
-				p4->setTex(texX, texY);
+				p4->setTex(texX, texY2);
 
 				triangulos.push_back(new Triangle(p1, p2, p3));
 				triangulos.push_back(new Triangle(p3, p4, p1));
@@ -786,6 +796,9 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 		float normal[3];
 
 		for (int j = 0; j < tesLvl; j++) {
+			float texX = float(j) / tesLvl;
+			float texX2 = float(j + 1) / tesLvl;
+
 			float u = step * j;
 			float u_vec[4] = { powf(u, 3.0f), powf(u, 2.0f), u, 1.0f };
 			float u_vecDriv[4] = { 3.0f * powf(u, 2.0f), 2.0f * u, 1.0f, 0.0f };
@@ -802,6 +815,9 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 			multMatrixVector(res[0], u_vecDriv2, res2driv);
 
 			for (int c = 0; c < tesLvl; c++) {
+				float texY = float(c) / tesLvl;
+				float texY2 = float(c + 1) / tesLvl;
+
 				float v = step * c;
 				float v_vec[4] = { powf(v, 3.0f), powf(v, 2.0f), v, 1.0f };
 				float v_vecDriv[4] = { 3.0f * powf(v, 2.0f), 2.0f * v, 1.0f, 0.0f };
@@ -818,13 +834,13 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 				normalize(normal);
 				p1 = multVects(res1, v_vec);
 				p1.setNormal(normal[0], normal[1], normal[2]);
-				p1.setTex(float(j) / tesLvl, float(c) / tesLvl);
+				p1.setTex(texX, texY);
 
 				cross(&pu2, &pv2, normal);
 				normalize(normal);
 				p2 = multVects(res2, v_vec);
 				p2.setNormal(normal[0], normal[1], normal[2]);
-				p2.setTex(float(j+1) / tesLvl, float(c) / tesLvl);
+				p2.setTex(texX2, texY);
 
 				v = step * (c + 1);
 				float v_vec2[4] = { powf(v, 3.0f), powf(v, 2.0f), v, 1.0f };
@@ -842,13 +858,13 @@ void buildTeapot(char* fpatch, int tesLvl, char* filename) {
 				normalize(normal);
 				p3 = multVects(res1, v_vec2);
 				p3.setNormal(normal[0], normal[1], normal[2]);
-				p3.setTex(float(j) / tesLvl, float(c + 1) / tesLvl);
+				p3.setTex(texX, texY2);
 
 				cross(&pu2, &pv2, normal);
 				normalize(normal);
 				p4 = multVects(res2, v_vec2);
 				p4.setNormal(normal[0], normal[1], normal[2]);
-				p4.setTex(float(j + 1) / tesLvl, float(c + 1) / tesLvl);
+				p4.setTex(texX2, texY2);
 
 				points.push_back(p2);
 				points.push_back(p4);
