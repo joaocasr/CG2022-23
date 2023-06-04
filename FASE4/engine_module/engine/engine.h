@@ -143,7 +143,7 @@ class Model {
 
 public:
 	string modelo;
-	string textureimg = "none";
+	string textureimg="none";
 	vector<float> pontos;
 	vector<float> normais;
 	vector<float> tex;
