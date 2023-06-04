@@ -89,7 +89,12 @@ void buildPlane(int units, int divs, char* filename) {
 	Triangle* t1, * t2;
 
 	for (int i = 0; -finalz + i * stepz < finalz; i++) {
+		float texY = float(i) / divs;
+		float texY2 = float(i + 1) / divs;
+
 		for (int j = 0; -finalx + j * stepx < finalx; j++) {
+			float texX = float(j) / divs;
+			float texX2 = float(j + 1) / divs;
 
 			px1 = -finalx + (j * stepx);
 			px2 = -finalx + ((j + 1) * stepx);
@@ -100,10 +105,10 @@ void buildPlane(int units, int divs, char* filename) {
 			py2 = 0;
 
 			//pontos do plano
-			p1 = new Point(px1, py1, pz1, 0, 1, 0, float(i) / divs, float(j) / divs);
-			p2 = new Point(px2, py1, pz1, 0, 1, 0, float(i) / divs, float(j + 1) * 1.0f / divs);
-			p3 = new Point(px1, py1, pz2, 0, 1, 0, float(i + 1) / divs, float(j) * 1.0f / divs);
-			p4 = new Point(px2, py1, pz2, 0, 1, 0, float(i + 1) / divs, float(j + 1) * 1.0f / divs);
+			p1 = new Point(px1, py1, pz1, 0, 1, 0, texX, texY);
+			p2 = new Point(px2, py1, pz1, 0, 1, 0, texX2, texY);
+			p3 = new Point(px1, py1, pz2, 0, 1, 0, texX, texY2);
+			p4 = new Point(px2, py1, pz2, 0, 1, 0, texX2, texY2);
 
 			//triangulos do plano
 			t1 = new Triangle(p1, p3, p4);
@@ -157,7 +162,12 @@ void buildCube(int units, int grid, char* filename) {
 	//para z constante
 	//vamos desenhar os dois planos paralelos que são perpendiculares ao eixo OZ
 	for (int i = 0; -finalx + i * stepx < finalx; i++) {
+		float texX = float(i) / grid;
+		float texX2 = float(i + 1) / grid;
+
 		for (int j = 0; -finaly + j * stepy < finaly; j++) {
+			float texY = float(j) / grid;
+			float texY2 = float(j + 1) / grid;
 
 			px1 = -finalx + (i * stepx);
 			px2 = -finalx + ((i + 1) * stepx);
@@ -169,16 +179,16 @@ void buildCube(int units, int grid, char* filename) {
 			pz2 = finalz;
 
 			//pontos de um quadrado do plano de tras
-			p1 = new Point(px1, py1, pz1, 0, 0, -1, j * stepy, i * stepx);
-			p3 = new Point(px2, py1, pz1, 0, 0, -1, j * stepy, i * stepx);
-			p2 = new Point(px1, py2, pz1, 0, 0, -1, j * stepy, i * stepx); //ponto de cima   
-			p4 = new Point(px2, py2, pz1, 0, 0, -1, j * stepy, i * stepx); //ponto de cima  
+			p1 = new Point(px1, py1, pz1, 0, 0, -1, texX, texY);
+			p3 = new Point(px2, py1, pz1, 0, 0, -1, texX2, texY);
+			p2 = new Point(px1, py2, pz1, 0, 0, -1, texX, texY2); //ponto de cima   
+			p4 = new Point(px2, py2, pz1, 0, 0, -1, texX2, texY2); //ponto de cima  
 
 			//pontos de um quadrado do plano de frente
-			p5 = new Point(px1, py1, pz2, 0, 0, 1, j * stepy, i * stepx);
-			p7 = new Point(px2, py1, pz2, 0, 0, 1, j * stepy, i * stepx);
-			p6 = new Point(px1, py2, pz2, 0, 0, 1, j * stepy, i * stepx); //ponto de cima 
-			p8 = new Point(px2, py2, pz2, 0, 0, 1, j * stepy, i * stepx); //ponto de cima  
+			p5 = new Point(px1, py1, pz2, 0, 0, 1, texX, texY);
+			p7 = new Point(px2, py1, pz2, 0, 0, 1, texX2, texY);
+			p6 = new Point(px1, py2, pz2, 0, 0, 1, texX, texY2); //ponto de cima 
+			p8 = new Point(px2, py2, pz2, 0, 0, 1, texX2, texY2); //ponto de cima  
 
 
 			//triangulos do plano de tras
@@ -198,7 +208,12 @@ void buildCube(int units, int grid, char* filename) {
 	}
 
 	for (int i = 0; -finalz + i * stepz < finalz; i++) {
+		float texY = float(i) / grid;
+		float texY2 = float(i + 1) / grid;
+
 		for (int j = 0; -finalx + j * stepx < finalx; j++) {
+			float texX = float(j) / grid;
+			float texX2 = float(j + 1) / grid;
 
 			px1 = -finalx + (j * stepx);
 			px2 = -finalx + ((j + 1) * stepx);
@@ -209,16 +224,16 @@ void buildCube(int units, int grid, char* filename) {
 			py2 = finaly;
 
 			//pontos do quadro do plano inferior
-			p1 = new Point(px1, py1, pz1, 0, -1, 0, j * stepy, i * stepx);
-			p3 = new Point(px2, py1, pz1, 0, -1, 0, j * stepy, i * stepx);
-			p5 = new Point(px1, py1, pz2, 0, -1, 0, j * stepy, i * stepx);
-			p7 = new Point(px2, py1, pz2, 0, -1, 0, j * stepy, i * stepx);
+			p1 = new Point(px1, py1, pz1, 0, -1, 0, texX, texY);
+			p3 = new Point(px2, py1, pz1, 0, -1, 0, texX2, texY);
+			p5 = new Point(px1, py1, pz2, 0, -1, 0, texX, texY2);
+			p7 = new Point(px2, py1, pz2, 0, -1, 0, texX2, texY2);
 
 			//pontos do quadro do plano superior
-			p2 = new Point(px1, py2, pz1, 0, 1, 0, j * stepy, i * stepx);
-			p4 = new Point(px2, py2, pz1, 0, 1, 0, j * stepy, i * stepx);
-			p6 = new Point(px1, py2, pz2, 0, 1, 0, j * stepy, i * stepx);
-			p8 = new Point(px2, py2, pz2, 0, 1, 0, j * stepy, i * stepx);
+			p2 = new Point(px1, py2, pz1, 0, 1, 0, texX, texY);
+			p4 = new Point(px2, py2, pz1, 0, 1, 0, texX2, texY);
+			p6 = new Point(px1, py2, pz2, 0, 1, 0, texX, texY2);
+			p8 = new Point(px2, py2, pz2, 0, 1, 0, texX2, texY2);
 
 			//triangulos do plano perpendicular ao semieixo negativo Oy
 			t1 = new Triangle(p7, p5, p1);
@@ -236,7 +251,12 @@ void buildCube(int units, int grid, char* filename) {
 		}
 	}
 	for (int i = 0; -finalz + i * stepz < finalz; i++) {
+		float texX = float(i) / grid;
+		float texX2 = float(i + 1) / grid;
+
 		for (int j = 0; -finaly + j * stepy < finaly; j++) {
+			float texY = float(j) / grid;
+			float texY2 = float(j + 1) / grid;
 
 			pz1 = -finalz + (i * stepz);
 			pz2 = -finalz + ((i + 1) * stepz);
@@ -248,15 +268,15 @@ void buildCube(int units, int grid, char* filename) {
 			px2 = finalx;
 
 			//pontos de um quadrado do plano de trás
-			p1 = new Point(px1, py1, pz1, -1, 0, 0, j * stepy, i * stepx);
-			p2 = new Point(px1, py2, pz1, -1, 0, 0, j * stepy, i * stepx);
-			p5 = new Point(px1, py1, pz2, -1, 0, 0, j * stepy, i * stepx);
-			p6 = new Point(px1, py2, pz2, -1, 0, 0, j * stepy, i * stepx);
+			p1 = new Point(px1, py1, pz1, -1, 0, 0, texX, texY);
+			p2 = new Point(px1, py2, pz1, -1, 0, 0, texX, texY2);
+			p5 = new Point(px1, py1, pz2, -1, 0, 0, texX2, texY);
+			p6 = new Point(px1, py2, pz2, -1, 0, 0, texX2, texY2);
 
-			p3 = new Point(px2, py1, pz1, 1, 0, 0, j * stepy, i * stepx);
-			p4 = new Point(px2, py2, pz1, 1, 0, 0, j * stepy, i * stepx);
-			p7 = new Point(px2, py1, pz2, 1, 0, 0, j * stepy, i * stepx);
-			p8 = new Point(px2, py2, pz2, 1, 0, 0, j * stepy, i * stepx);
+			p3 = new Point(px2, py1, pz1, 1, 0, 0, texX, texY);
+			p4 = new Point(px2, py2, pz1, 1, 0, 0, texX, texY2);
+			p7 = new Point(px2, py1, pz2, 1, 0, 0, texX2, texY);
+			p8 = new Point(px2, py2, pz2, 1, 0, 0, texX2, texY2);
 
 			//triangulos do plano perpendicular ao semieixo negativo Ox
 			t1 = new Triangle(p1, p5, p6);
@@ -311,40 +331,30 @@ void buildSphere(float radius, int slices, int stacks, const char* filename)
 	float deltaAlpha = 2 * pi / slices;
 	float deltaBeta = pi / stacks;
 
-	Point* topVertex = nullptr;
-	Point* bottomVertex = nullptr;
-
 	for (int i = -(stacks / 2); i < (stacks / 2); i++) {
 		float beta = i * deltaBeta;
 		float nextBeta = (i + 1) * deltaBeta;
-		float texY = float(i + stacks / 2) / float(stacks);
+		float texY = float(i + stacks / 2.0f) / float(stacks);
+		float texY2 = float(i + 1 + stacks / 2.0f) / float(stacks);
 
 		for (int j = 0; j < slices; j++) {
 			float alpha = j * deltaAlpha;
 			float nextAlpha = (j + 1) * deltaAlpha;
 			float texX = float(j) / float(slices);
+			float texX2 = float(j + 1) / float(slices);
 
 			p1 = new Point(radius * cos(beta) * sin(alpha), radius * sin(beta), radius * cos(beta) * cos(alpha));
 			normalize(p1);
 			p1->setTex(texX, texY);
 			p2 = new Point(radius * cos(beta) * sin(nextAlpha), radius * sin(beta), radius * cos(beta) * cos(nextAlpha));
 			normalize(p2);
-			p2->setTex(texX, texY);
+			p2->setTex(texX2, texY);
 			p3 = new Point(radius * cos(nextBeta) * sin(alpha), radius * sin(nextBeta), radius * cos(nextBeta) * cos(alpha));
 			normalize(p3);
-			p3->setTex(texX, texY);
+			p3->setTex(texX, texY2);
 			p4 = new Point(radius * cos(nextBeta) * sin(nextAlpha), radius * sin(nextBeta), radius * cos(nextBeta) * cos(nextAlpha));
 			normalize(p4);
-			p4->setTex(texX, texY);
-
-			// calcula vertex do topo e baixo da esfera para as coordenadas
-			if (i == -(stacks / 2)) {
-				topVertex = p1;
-			}
-			else if (i == (stacks / 2) - 1) {
-				bottomVertex = p3;
-			}
-			
+			p4->setTex(texX2, texY2);
 
 			t1 = new Triangle(p1, p2, p4);
 			t2 = new Triangle(p1, p4, p3);
@@ -412,9 +422,11 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 		curHeight = 0.0f;
 		curRad = radius;
 		float texX = float(i) / slices;
+		float texX2 = float(i + 1) / slices;
 
 		for (int j = 0; j < stacks - 1; j++) {
 			float texY = float(j) / stacks;
+			float texY2 = float(j + 1) / stacks;
 			float tmp[3];
 
 			p1 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
@@ -431,23 +443,23 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 			tmp[2] = p2->z;
 			normalize(tmp);
 			p2->setNormal(tmp);
-			p2->setTex(texX, texY);
+			p2->setTex(texX2, texY);
 
 			p3 = new Point((curRad - radStep) * sin(alpha + step), curHeight + stackStep, (curRad - radStep) * cos(alpha + step));
 			tmp[0] = p3->x;
-			tmp[1] = ratio * curRad;
+			tmp[1] = ratio * (curRad - radStep);
 			tmp[2] = p3->z;
 			normalize(tmp);
 			p3->setNormal(tmp);
-			p3->setTex(texX, texY);
+			p3->setTex(texX2, texY2);
 
 			p4 = new Point((curRad - radStep) * sin(alpha), curHeight + stackStep, (curRad - radStep) * cos(alpha));
 			tmp[0] = p4->x;
-			tmp[1] = ratio * curRad;
+			tmp[1] = ratio * (curRad - radStep);
 			tmp[2] = p4->z;
 			normalize(tmp);
 			p4->setNormal(tmp);
-			p4->setTex(texX, texY);
+			p4->setTex(texX, texY2);
 
 			triangulos.push_back(new Triangle(p1, p2, p3));
 			triangulos.push_back(new Triangle(p3, p4, p1));
@@ -463,15 +475,28 @@ void buildCone(float radius, int height, int slices, int stacks, const char* fil
 
 	for (int c = 0; c < slices; c++) {
 		float texX = float(c) / slices;
+		float texX2 = float(c + 1) / slices;
+		float tmp[3];
 
 		p1 = new Point(curRad * sin(alpha + step), curHeight, curRad * cos(alpha + step)); //TODO CHANGE TEX COORDINATES
-		normalize(p1);
-		p1->setTex(texX, stacks - 1 / stacks);
+		tmp[0] = p1->x;
+		tmp[1] = ratio * curRad;
+		tmp[2] = p1->z;
+		normalize(tmp);
+		p1->setNormal(tmp);
+		p1->setTex(texX2, (stacks - 1) / stacks);
 		p2 = new Point(curRad * sin(alpha), curHeight, curRad * cos(alpha));
-		normalize(p2);
-		p2->setTex(texX, stacks - 1 / stacks);
+		tmp[0] = p2->x;
+		tmp[1] = ratio * curRad;
+		tmp[2] = p2->z;
+		normalize(tmp);
+		p2->setNormal(tmp);
+		p2->setTex(texX, (stacks - 1) / stacks);
 		p3 = new Point(0.0f, height, 0.0f);
-		normalize(p3);
+		tmp[0] = 0.0f;
+		tmp[1] = 1.0f;
+		tmp[2] = 0.0f;
+		p3->setNormal(tmp);
 		p3->setTex(texX, 1.0f);
 
 		triangulos.push_back(new Triangle(p3, p2, p1));
