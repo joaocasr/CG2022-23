@@ -488,9 +488,11 @@ void loadTexture(std::string texFile, int texIndex) {
 	unsigned char* texData;
 	unsigned int texID;
 
+	string path = fs::current_path().string() + "\\" + texFile;
+
 	ilGenImages(1, &t);
 	ilBindImage(t);
-	ilLoadImage((ILstring)texFile.c_str());
+	ilLoadImage((ILstring) path.c_str());
 	tw = ilGetInteger(IL_IMAGE_WIDTH);
 	th = ilGetInteger(IL_IMAGE_HEIGHT);
 
@@ -1003,7 +1005,6 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 		//get the nested children group
 		groupElement.addChild(chld);
 	}
-
 
 	if (top_lvl == true)
 		my_world.push_back(groupElement);
