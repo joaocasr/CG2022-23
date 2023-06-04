@@ -1,4 +1,0 @@
-C:/Users/User/Desktop/Lessons/CG/CG2022-23/FASE4/engine_module/build/CMakeFiles/engine.dir
-C:/Users/User/Desktop/Lessons/CG/CG2022-23/FASE4/engine_module/build/CMakeFiles/xmlparser.dir
-C:/Users/User/Desktop/Lessons/CG/CG2022-23/FASE4/engine_module/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/User/Desktop/Lessons/CG/CG2022-23/FASE4/engine_module/build/CMakeFiles/ZERO_CHECK.dir
