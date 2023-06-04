@@ -186,7 +186,7 @@ void renderScene(void)
 		lookCamx, lookCamy, lookCamz,
 		upCamx, upCamy, upCamz);
 
-	if (lightpoints.size()) glDisable(GL_LIGHTING);
+	glDisable(GL_LIGHTING);
 	// Axis
 	glBegin(GL_LINES);
 		// X axis Red
@@ -202,13 +202,13 @@ void renderScene(void)
 		glVertex3f(0.0f, 0.0f, -100.0f);
 		glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
-	if (lightpoints.size()) glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 
 	glColor3f(1.0f, 1.0f, 1.0f);
 
 	int lcount = 0;
 	for (Light l : lightpoints) {
-		if (lcount > 7)
+		if (lcount > GL_MAX_LIGHTS - 1)
 			break;
 
 		if (strcmp(l.type.c_str(), "point") == 0) {
@@ -218,7 +218,6 @@ void renderScene(void)
 		else if (strcmp(l.type.c_str(), "directional") == 0) {
 			float lightDirection[4] = { l.dirLightx, l.dirLighty, l.dirLightz, 0.0f };
 			glLightfv(GL_LIGHT0 + lcount, GL_POSITION, lightDirection);
-
 		}
 		else if (strcmp(l.type.c_str(), "spot") == 0) {
 			float lightPosition[4] = { l.posLightx, l.posLighty, l.posLightz, 1.0f };
@@ -585,8 +584,18 @@ int main(int argc, char** argv)
 		glShadeModel(GL_SMOOTH);
 
 		for (int i = 0; i < lightpoints.size(); i++) {
-			if (i > 7)
+			if (i > GL_MAX_LIGHTS - 1)
 				break;
+
+			if (i > 0) {
+				GLfloat ambient[] = { 0.0, 0.0, 0.0, 1.0 };
+				GLfloat diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+				GLfloat specular[] = { 1.0, 1.0, 1.0, 1.0 };
+
+				glLightfv(GL_LIGHT0 + i, GL_AMBIENT, ambient);
+				glLightfv(GL_LIGHT0 + i, GL_DIFFUSE, diffuse);
+				glLightfv(GL_LIGHT0 + i, GL_SPECULAR, specular);
+			}
 
 			glEnable(GL_LIGHT0 + i);
 		}
