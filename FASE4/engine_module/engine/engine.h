@@ -26,7 +26,7 @@ namespace fs = std::filesystem;
 using namespace std;
 
 void parse_XML(std::string xmlfile);
-void loadTexture(char* texFile, int texIndex);
+void loadTexture(std::string texFile, int texIndex);
 
 class Point {
 
@@ -147,11 +147,11 @@ public:
 	vector<float> pontos;
 	vector<float> normais;
 	vector<float> tex;
-	float ambient[4];
-	float diffuse[4];
-	float specular[4];
-	float emissive[4];
-	float shininess;
+	float ambient[4] = { 50.0,50.0,50.0,1.0 };
+	float diffuse[4] = { 200.0,200.0,200.0,1.0 };
+	float specular[4] = { 0.0,0.0,0.0,1.0 };
+	float emissive[4] = { 0.0,0.0,0.0,1.0 };
+	float shininess = 0;
 	int bufIndex = -1;
 	int texIndex = -1;
 
@@ -219,7 +219,7 @@ public:
 		this->bufIndex = i;
 	}
 
-	GLuint getTexIndex() {
+	int getTexIndex() {
 		return texIndex;
 	}
 
@@ -284,7 +284,7 @@ class Light {
 
 public:
 	string type;
-	float posLightx = -1;
+	float posLightx = 0;
 	float posLighty = 0;
 	float posLightz = 0;
 	float dirLightx = 0;
