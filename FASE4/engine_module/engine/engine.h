@@ -147,10 +147,10 @@ public:
 	vector<float> pontos;
 	vector<float> normais;
 	vector<float> tex;
-	float ambient[4] = { 50.0,50.0,50.0,1.0 };
-	float diffuse[4] = { 200.0,200.0,200.0,1.0 };
-	float specular[4] = { 0.0,0.0,0.0,1.0 };
-	float emissive[4] = { 0.0,0.0,0.0,1.0 };
+	float ambient[4];
+	float diffuse[4];
+	float specular[4];
+	float emissive[4];
 	float shininess = 0;
 	int bufIndex = -1;
 	int texIndex = -1;

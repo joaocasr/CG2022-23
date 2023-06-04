@@ -33,7 +33,7 @@ double frames;
 int timebase;
 float gt = 0;
 int icount = 0, tcount = 0;
-GLuint *buffers, *textures;
+GLuint* buffers, * textures;
 
 void framerate() {
 	char title[50];
@@ -189,18 +189,18 @@ void renderScene(void)
 	if (lightpoints.size()) glDisable(GL_LIGHTING);
 	// Axis
 	glBegin(GL_LINES);
-	// X axis Red
-	glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(-100.0f, 0.0f, 0.0f);
-	glVertex3f(100.0f, 0.0f, 0.0f);
-	//Y Axis Green
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.0f, -100.0f, 0.0f);
-	glVertex3f(0.0f, 100.0f, 0.0f);
-	//Z axis Blue
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, -100.0f);
-	glVertex3f(0.0f, 0.0f, 100.0f);
+		// X axis Red
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f(100.0f, 0.0f, 0.0f);
+		//Y Axis Green
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 100.0f, 0.0f);
+		//Z axis Blue
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
 	if (lightpoints.size()) glEnable(GL_LIGHTING);
 
@@ -345,44 +345,20 @@ void build_groups(vector<Group> groups) {
 				glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
 				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
 				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
-				
-				int step = 9;
-				int l = m.textureimg.length();
-				if (l) {
-					glBindTexture(GL_TEXTURE_2D, textureModel);
-					step = 18;
-				}
 
-				int texindex = 0;
-				for (int c = 0; c < m.pontos.size(); c += step) {
-
-					if (l) {
-						glBegin(GL_QUADS);
-					}
-					else {
-						glBegin(GL_TRIANGLES);
-					}
+				for (int c = 0; c < m.pontos.size();c += 9) {
+					glBegin(GL_TRIANGLES);
 
 					glNormal3f(m.normais[c], m.normais[c + 1], m.normais[c + 2]);
 					glVertex3f(m.pontos[c], m.pontos[c + 1], m.pontos[c + 2]);
-					if (l) glTexCoord2f(m.tex[texindex], m.tex[texindex + 1]);
 
 					glNormal3f(m.normais[c + 3], m.normais[c + 4], m.normais[c + 5]);
 					glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
-					if (l) glTexCoord2f(m.tex[texindex + 2], m.tex[texindex + 3]);
 
 					glNormal3f(m.normais[c + 6], m.normais[c + 7], m.normais[c + 8]);
 					glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
-					if (l) glTexCoord2f(m.tex[texindex + 4], m.tex[texindex + 5]);
 
-					if (l) {
-						glNormal3f(m.normais[c + 15], m.normais[c + 16], m.normais[c + 17]);
-						glVertex3f(m.pontos[c + 15], m.pontos[c + 16], m.pontos[c + 17]);
-						glTexCoord2f(m.tex[texindex + 10], m.tex[texindex + 11]);
-					}
 					glEnd();
-
-					texindex += 12;
 				}
 			}
 		else if (vbo_mode == VBO_BASIC)
@@ -393,7 +369,8 @@ void build_groups(vector<Group> groups) {
 				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
 				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
 
-				glBindTexture(GL_TEXTURE_2D, textures[m.getTexIndex()]);
+				if(m.texIndex != -1)
+					glBindTexture(GL_TEXTURE_2D, textures[m.getTexIndex()]);
 
 				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()]);
 				glVertexPointer(3, GL_FLOAT, 0, 0);
@@ -406,8 +383,8 @@ void build_groups(vector<Group> groups) {
 
 				glDrawArrays(GL_TRIANGLES, 0, m.pontos.size() / 3);
 
-				glBindTexture(GL_TEXTURE_2D, 0);
-
+				if (m.texIndex != -1)
+					glBindTexture(GL_TEXTURE_2D, 0);
 			}
 
 		//Children
@@ -513,7 +490,7 @@ void loadTexture(std::string texFile, int texIndex) {
 
 	ilGenImages(1, &t);
 	ilBindImage(t);
-	ilLoadImage((ILstring) texFile.c_str());
+	ilLoadImage((ILstring)texFile.c_str());
 	tw = ilGetInteger(IL_IMAGE_WIDTH);
 	th = ilGetInteger(IL_IMAGE_HEIGHT);
 
@@ -536,7 +513,6 @@ void loadTexture(std::string texFile, int texIndex) {
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
-
 
 int main(int argc, char** argv)
 {
@@ -572,17 +548,6 @@ int main(int argc, char** argv)
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	//VBO/Texture Preping
-	buffers = (GLuint*)calloc(icount, sizeof(GLuint));
-	textures = (GLuint*)calloc(tcount, sizeof(GLuint));
-
-	if (!buffers) {
-		printf("Failed to allocate buffer memory!\nNot Using VBOs!\n");
-		vbo_mode = VBO_OFF;
-	}
-
-	glGenBuffers(icount, buffers);
-
 	ilInit();
 	ilEnable(IL_ORIGIN_SET);
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
@@ -595,6 +560,19 @@ int main(int argc, char** argv)
 
 	glEnable(GL_RESCALE_NORMAL);
 
+	//VBO Preping
+	buffers = (GLuint*)calloc(icount, sizeof(GLuint));
+	textures = (GLuint*)calloc(tcount, sizeof(GLuint));
+
+	if (!buffers) {
+		printf("Failed to allocate buffer memory!\nNot Using VBOs!\n");
+		vbo_mode = VBO_OFF;
+	}
+
+	glGenBuffers(icount, buffers);
+
+	prepareData_BasicVBO(my_world);
+
 	glEnable(GL_BLEND);
 	if (lightpoints.size()) {
 		glEnable(GL_LIGHTING);
@@ -605,7 +583,7 @@ int main(int argc, char** argv)
 		glShadeModel(GL_SMOOTH);
 
 		for (int i = 0; i < lightpoints.size(); i++) {
-			if (i > GL_MAX_LIGHTS - 1)
+			if (i > 7)
 				break;
 
 			glEnable(GL_LIGHT0 + i);
@@ -613,8 +591,6 @@ int main(int argc, char** argv)
 	}
 
 	glEnable(GL_TEXTURE_2D);
-
-	prepareData_BasicVBO(my_world);
 
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 
@@ -949,15 +925,27 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 				allmodels.push_back(model->Attribute("file"));
 				Model mod = Model(model->Attribute("file"));
 
+				XMLElement* texture = model->FirstChildElement("texture");
+				if (texture != nullptr) {
+					mod.setTextureImg(texture->Attribute("file"));
+					mod.setTexIndex(tcount++);
+				}
+
 				XMLElement* color = model->FirstChildElement("color");
 				if (color != nullptr) {
-					float Rambiente = 0; float Gambiente = 0; float Bambiente = 0;
-					float Rdiffuse = 0; float Gdiffuse = 0; float Bdiffuse = 0;
-					float Rspecular = 0; float Gspecular = 0; float Bspecular = 0;
-					float Remissive = 0; float Gemissive = 0; float Bemissive = 0;
+					float Rambiente = 0, Gambiente = 0, Bambiente = 0;
+					float Rdiffuse = 0, Gdiffuse = 0, Bdiffuse = 0;
+					float Rspecular = 0, Gspecular = 0, Bspecular = 0;
+					float Remissive = 0, Gemissive = 0, Bemissive = 0;
 					float shiny = 0;
 
-
+					if (mod.texIndex != -1) {
+						Rambiente = 50.0f; Gambiente = 50.0f; Bambiente = 50.0f;
+						Rdiffuse = 200.0f; Gdiffuse = 200.0f; Bdiffuse = 200.0f;
+						Rspecular = 0; Gspecular = 0; Bspecular = 0;
+						Remissive = 0; Gemissive = 0; Bemissive = 0;
+						shiny = 0;
+					}
 
 					XMLElement* diffuse = color->FirstChildElement("diffuse");
 					if (diffuse->Attribute("R") != nullptr) {
@@ -970,8 +958,6 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 						Bdiffuse = stof(diffuse->Attribute("B"));
 					}
 					mod.setDRGB(Rdiffuse, Gdiffuse, Bdiffuse);
-
-
 
 					XMLElement* ambient = diffuse->NextSiblingElement("ambient");
 					if (ambient->Attribute("R") != nullptr) {
@@ -1015,16 +1001,8 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 						shiny = stof(shininess->Attribute("value"));
 					}
 					mod.setShiny(shiny);
-
-
 				}
-
-				XMLElement* texture = model->FirstChildElement("texture");
-				if (texture != nullptr) {
-					mod.setTextureImg(texture->Attribute("file"));
-					mod.setTexIndex(tcount++);
-				}
-
+				
 				modelos.push_back(mod);
 			}
 			model = model->NextSiblingElement();
