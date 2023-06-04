@@ -19,7 +19,6 @@ vector<Group> my_world;
 
 vector<Light> lightpoints;
 
-int textureModel;
 float width = 0, height = 0;
 float posCamx = 0, posCamy = 0, posCamz = 0;
 float lookCamx = 0, lookCamy = 0, lookCamz = 0;
@@ -345,19 +344,45 @@ void build_groups(vector<Group> groups) {
 				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
 				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
 
-				for (int c = 0; c < m.pontos.size();c += 9) {
-					glBegin(GL_TRIANGLES);
+				int step = 9;
+				int l = strcmp(m.textureimg.c_str(), "none");
+				if (l) {
+					glBindTexture(GL_TEXTURE_2D, textures[m.getTexIndex()]);
+					step = 18;
+				}
+
+				int texindex = 0;
+				for (int c = 0; c < m.pontos.size();c += step) {
+					if (l)
+						glBegin(GL_QUADS);
+					else 
+						glBegin(GL_TRIANGLES);
 
 					glNormal3f(m.normais[c], m.normais[c + 1], m.normais[c + 2]);
 					glVertex3f(m.pontos[c], m.pontos[c + 1], m.pontos[c + 2]);
+					if (l) glTexCoord2f(m.tex[texindex], m.tex[texindex + 1]);
 
 					glNormal3f(m.normais[c + 3], m.normais[c + 4], m.normais[c + 5]);
 					glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
+					if (l) glTexCoord2f(m.tex[texindex + 2], m.tex[texindex + 3]);
 
 					glNormal3f(m.normais[c + 6], m.normais[c + 7], m.normais[c + 8]);
 					glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
+					if (l) glTexCoord2f(m.tex[texindex + 4], m.tex[texindex + 5]);
+
+					if (l) {
+						glNormal3f(m.normais[c + 15], m.normais[c + 16], m.normais[c + 17]);
+						glVertex3f(m.pontos[c + 15], m.pontos[c + 16], m.pontos[c + 17]);
+						glTexCoord2f(m.tex[texindex + 10], m.tex[texindex + 11]);
+					}
 
 					glEnd();
+
+					texindex += 12;
+				}
+
+				if (l) {
+					glBindTexture(GL_TEXTURE_2D, 0);
 				}
 			}
 		else if (vbo_mode == VBO_BASIC)
