@@ -279,7 +279,7 @@ void prepareData_BasicVBO(vector<Group> groups) {
 				m.tex.data(),
 				GL_STATIC_DRAW);
 
-			loadTexture((char*) m.textureimg.c_str(), m.getTexIndex());
+			loadTexture(m.textureimg, m.getTexIndex());
 		}
 
 		//Children
@@ -340,23 +340,23 @@ void build_groups(vector<Group> groups) {
 		if (vbo_mode == VBO_OFF)
 			for (Model m : g.modelos) {
 				//Materials
-				if (btexture == false) {
-					glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
-					glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
-					glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
-					glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
-					glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
-				}
+				glMaterialfv(GL_FRONT, GL_DIFFUSE, m.diffuse);
+				glMaterialfv(GL_FRONT, GL_AMBIENT, m.ambient);
+				glMaterialfv(GL_FRONT, GL_EMISSION, m.emissive);
+				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
+				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
 				
 				int step = 9;
-				if (btexture == true) {
+				int l = m.textureimg.length();
+				if (l) {
 					glBindTexture(GL_TEXTURE_2D, textureModel);
 					step = 18;
 				}
-				int texindex = 0;
-				for (int c = 0; c < m.pontos.size();c += step) {
 
-					if (btexture == true) {
+				int texindex = 0;
+				for (int c = 0; c < m.pontos.size(); c += step) {
+
+					if (l) {
 						glBegin(GL_QUADS);
 					}
 					else {
@@ -365,17 +365,17 @@ void build_groups(vector<Group> groups) {
 
 					glNormal3f(m.normais[c], m.normais[c + 1], m.normais[c + 2]);
 					glVertex3f(m.pontos[c], m.pontos[c + 1], m.pontos[c + 2]);
-					if (btexture == true) glTexCoord2f(m.tex[texindex], m.tex[texindex + 1]);
+					if (l) glTexCoord2f(m.tex[texindex], m.tex[texindex + 1]);
 
 					glNormal3f(m.normais[c + 3], m.normais[c + 4], m.normais[c + 5]);
 					glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
-					if (btexture == true) glTexCoord2f(m.tex[texindex + 2], m.tex[texindex + 3]);
+					if (l) glTexCoord2f(m.tex[texindex + 2], m.tex[texindex + 3]);
 
 					glNormal3f(m.normais[c + 6], m.normais[c + 7], m.normais[c + 8]);
 					glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
-					if (btexture == true) glTexCoord2f(m.tex[texindex + 4], m.tex[texindex + 5]);
+					if (l) glTexCoord2f(m.tex[texindex + 4], m.tex[texindex + 5]);
 
-					if (btexture == true) {
+					if (l) {
 						glNormal3f(m.normais[c + 15], m.normais[c + 16], m.normais[c + 17]);
 						glVertex3f(m.pontos[c + 15], m.pontos[c + 16], m.pontos[c + 17]);
 						glTexCoord2f(m.tex[texindex + 10], m.tex[texindex + 11]);
@@ -505,7 +505,7 @@ void processSpecialKeys(int key, int xx, int yy) {
 	glutPostRedisplay();
 }
 
-void loadTexture(char* texFile, int texIndex) {
+void loadTexture(std::string texFile, int texIndex) {
 
 	unsigned int t, tw, th;
 	unsigned char* texData;
@@ -513,7 +513,7 @@ void loadTexture(char* texFile, int texIndex) {
 
 	ilGenImages(1, &t);
 	ilBindImage(t);
-	ilLoadImage((ILstring) texFile);
+	ilLoadImage((ILstring) texFile.c_str());
 	tw = ilGetInteger(IL_IMAGE_WIDTH);
 	th = ilGetInteger(IL_IMAGE_HEIGHT);
 
@@ -535,41 +535,6 @@ void loadTexture(char* texFile, int texIndex) {
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-}
-
-int loadTextureVBOOFF(std::string s) {
-
-	unsigned int t, tw, th;
-	unsigned char* texData;
-	unsigned int texID;
-
-	ilInit();
-	ilEnable(IL_ORIGIN_SET);
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-	ilGenImages(1, &t);
-	ilBindImage(t);
-	ilLoadImage((ILstring)s.c_str());
-	tw = ilGetInteger(IL_IMAGE_WIDTH);
-	th = ilGetInteger(IL_IMAGE_HEIGHT);
-	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-	texData = ilGetData();
-
-	glGenTextures(1, &texID);
-
-	glBindTexture(GL_TEXTURE_2D, texID);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	return texID;
-
 }
 
 
@@ -640,7 +605,7 @@ int main(int argc, char** argv)
 		glShadeModel(GL_SMOOTH);
 
 		for (int i = 0; i < lightpoints.size(); i++) {
-			if (i > 7)
+			if (i > GL_MAX_LIGHTS - 1)
 				break;
 
 			glEnable(GL_LIGHT0 + i);
@@ -650,9 +615,6 @@ int main(int argc, char** argv)
 	glEnable(GL_TEXTURE_2D);
 
 	prepareData_BasicVBO(my_world);
-	if (btexture == true && vbo_mode == VBO_OFF) {
-		textureModel = loadTextureVBOOFF("earth.jpg");
-	}
 
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 
