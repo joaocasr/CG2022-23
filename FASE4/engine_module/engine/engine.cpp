@@ -12,7 +12,7 @@ using namespace tinyxml2;
 
 int sizeTriangulos = 0;
 int mode = M_FIX;
-int vbo_mode = VBO_OFF;
+int vbo_mode = VBO_BASIC;
 
 vector<string> allmodels;
 vector<Group> my_world;
@@ -31,8 +31,8 @@ float G_radious = 5.0f;
 double frames;
 int timebase;
 float gt = 0;
-int icount = 0, texCount = 0;
-GLuint* buffers;
+int icount = 0, tcount = 0;
+GLuint *buffers, *textures;
 
 void framerate() {
 	char title[50];
@@ -278,7 +278,7 @@ void prepareData_BasicVBO(vector<Group> groups) {
 				m.tex.data(),
 				GL_STATIC_DRAW);
 
-			loadTexture((char*) m.textureimg.c_str(), m.getTexID());
+			loadTexture((char*) m.textureimg.c_str(), m.getTexIndex());
 		}
 
 		//Children
@@ -374,7 +374,7 @@ void build_groups(vector<Group> groups) {
 				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
 				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
 
-				glBindTexture(GL_TEXTURE_2D, m.getTexID());
+				glBindTexture(GL_TEXTURE_2D, textures[m.getTexIndex()]);
 
 				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()]);
 				glVertexPointer(3, GL_FLOAT, 0, 0);
@@ -486,22 +486,24 @@ void processSpecialKeys(int key, int xx, int yy) {
 	glutPostRedisplay();
 }
 
-void loadTexture(char* texFile, GLuint texID) {
+void loadTexture(char* texFile, int texIndex) {
 
 	unsigned int t, tw, th;
 	unsigned char* texData;
+	unsigned int texID;
 
 	ilGenImages(1, &t);
 	ilBindImage(t);
-	ilLoadImage((ILstring)texFile);
+	ilLoadImage((ILstring) texFile);
 	tw = ilGetInteger(IL_IMAGE_WIDTH);
 	th = ilGetInteger(IL_IMAGE_HEIGHT);
 
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 	texData = ilGetData();
 
-	glGenTextures(1, &texID);
-	glBindTexture(GL_TEXTURE_2D, texID);
+	glGenTextures(1, &textures[texIndex]);
+
+	glBindTexture(GL_TEXTURE_2D, textures[texIndex]);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -546,14 +548,13 @@ int main(int argc, char** argv)
 	glewInit();
 #endif
 
-
-
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	//VBO Preping
+	//VBO/Texture Preping
 	buffers = (GLuint*)calloc(icount, sizeof(GLuint));
+	textures = (GLuint*)calloc(tcount, sizeof(GLuint));
 
 	if (!buffers) {
 		printf("Failed to allocate buffer memory!\nNot Using VBOs!\n");
@@ -563,8 +564,8 @@ int main(int argc, char** argv)
 	glGenBuffers(icount, buffers);
 
 	ilInit();
-
-	prepareData_BasicVBO(my_world);
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
 	// some OpenGL settings
 	glEnable(GL_DEPTH_TEST);
@@ -592,6 +593,8 @@ int main(int argc, char** argv)
 	}
 
 	glEnable(GL_TEXTURE_2D);
+
+	prepareData_BasicVBO(my_world);
 
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 
@@ -999,7 +1002,7 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 				XMLElement* texture = model->FirstChildElement("texture");
 				if (texture != nullptr) {
 					mod.setTextureImg(texture->Attribute("file"));
-					mod.setTexID(texCount++);
+					mod.setTexIndex(tcount++);
 				}
 
 				modelos.push_back(mod);
