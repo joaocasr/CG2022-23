@@ -673,10 +673,12 @@ void buildTorus(float rad1, float rad2, int slices, int stacks, char* filename) 
 	for (int i = 0; i < slices; i++) {
 		alpha = i * deltaAlpha;
 		float texX = float(i) / slices;
+		float texX2 = float(i + 1) / slices;
 
 		for (int j = 0; j < stacks; j++) {
 			beta = j * deltaBeta;
 			float texY = float(j) / stacks;
+			float texY2 = float(j + 1) / stacks;
 
 			p1 = new Point((rad1 + rad2 * cos(beta)) * cos(alpha),
 				rad2 * sin(beta),
@@ -688,19 +690,19 @@ void buildTorus(float rad1, float rad2, int slices, int stacks, char* filename) 
 				rad2 * sin(beta),
 				(rad1 + rad2 * cos(beta)) * sin(alpha + deltaAlpha));
 			normalize(p2);
-			p2->setTex(texX, texY);
+			p2->setTex(texX2, texY);
 
 			p3 = new Point((rad1 + rad2 * cos(beta + deltaBeta)) * cos(alpha + deltaAlpha),
 				rad2 * sin(beta + deltaBeta),
 				(rad1 + rad2 * cos(beta + deltaBeta)) * sin(alpha + deltaAlpha));
 			normalize(p3);
-			p3->setTex(texX, texY);
+			p3->setTex(texX2, texY2);
 
 			p4 = new Point((rad1 + rad2 * cos(beta + deltaBeta)) * cos(alpha), 
 				rad2 * sin(beta + deltaBeta),
 				(rad1 + rad2 * cos(beta + deltaBeta)) * sin(alpha));
 			normalize(p4);
-			p4->setTex(texX, texY);
+			p4->setTex(texX, texY2);
 
 			triangulos.push_back(new Triangle(p3, p2, p1));
 			triangulos.push_back(new Triangle(p1, p4, p3));
