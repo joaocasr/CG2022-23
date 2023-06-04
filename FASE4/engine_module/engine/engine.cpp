@@ -31,7 +31,8 @@ float G_radious = 5.0f;
 double frames;
 int timebase;
 float gt = 0;
-int icount = 0, texCount = 0;
+
+int icount = 0;
 GLuint* buffers;
 
 void framerate() {
@@ -271,14 +272,15 @@ void prepareData_BasicVBO(vector<Group> groups) {
 				m.normais.data(),
 				GL_STATIC_DRAW);
 
+			/*
+			
 			glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex() + 2]);
 
 			glBufferData(GL_ARRAY_BUFFER,
 				sizeof(float) * m.tex.size(),
 				m.tex.data(),
 				GL_STATIC_DRAW);
-
-			loadTexture((char*) m.textureimg.c_str(), m.getTexID());
+			*/
 		}
 
 		//Children
@@ -374,7 +376,7 @@ void build_groups(vector<Group> groups) {
 				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
 				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
 
-				glBindTexture(GL_TEXTURE_2D, m.getTexID());
+				//glBindTexture(GL_TEXTURE_2D, buffers[m.getBufIndex()+3]);
 
 				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()]);
 				glVertexPointer(3, GL_FLOAT, 0, 0);
@@ -382,12 +384,13 @@ void build_groups(vector<Group> groups) {
 				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex() + 1]);
 				glNormalPointer(GL_FLOAT, 0, 0);
 
-				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex() + 2]);
-				glTexCoordPointer(2, GL_FLOAT, 0, 0);
+
+				//glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+				//glTexCoordPointer(2, GL_FLOAT, 0, 0);
 
 				glDrawArrays(GL_TRIANGLES, 0, m.pontos.size() / 3);
 
-				glBindTexture(GL_TEXTURE_2D, 0);
+				//glBindTexture(GL_TEXTURE_2D, 0);
 
 			}
 
@@ -486,35 +489,6 @@ void processSpecialKeys(int key, int xx, int yy) {
 	glutPostRedisplay();
 }
 
-void loadTexture(char* texFile, GLuint texID) {
-
-	unsigned int t, tw, th;
-	unsigned char* texData;
-
-	ilGenImages(1, &t);
-	ilBindImage(t);
-	ilLoadImage((ILstring)texFile);
-	tw = ilGetInteger(IL_IMAGE_WIDTH);
-	th = ilGetInteger(IL_IMAGE_HEIGHT);
-
-	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-	texData = ilGetData();
-
-	glGenTextures(1, &texID);
-	glBindTexture(GL_TEXTURE_2D, texID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
 
 int main(int argc, char** argv)
 {
@@ -550,7 +524,7 @@ int main(int argc, char** argv)
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	//VBO Preping
 	buffers = (GLuint*)calloc(icount, sizeof(GLuint));
@@ -561,9 +535,6 @@ int main(int argc, char** argv)
 	}
 
 	glGenBuffers(icount, buffers);
-
-	ilInit();
-
 	prepareData_BasicVBO(my_world);
 
 	// some OpenGL settings
@@ -591,7 +562,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 
 	timebase = glutGet(GLUT_ELAPSED_TIME);
 
@@ -805,7 +776,7 @@ vector<Model> getModels(vector<Model> modelos) {
 				tmp.clear();
 			}
 			fname.setBufIndex(icount++); // Needed to know which VBO buffer to use for group
-			icount += 2;
+			icount++;//icount+=3;
 			modelosaux.push_back(fname);
 		}
 		else {
@@ -999,7 +970,6 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 				XMLElement* texture = model->FirstChildElement("texture");
 				if (texture != nullptr) {
 					mod.setTextureImg(texture->Attribute("file"));
-					mod.setTexID(texCount++);
 				}
 
 				modelos.push_back(mod);

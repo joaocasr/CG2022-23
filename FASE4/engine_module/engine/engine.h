@@ -26,7 +26,6 @@ namespace fs = std::filesystem;
 using namespace std;
 
 void parse_XML(std::string xmlfile);
-void loadTexture(char* texFile, GLuint texID);
 
 class Point {
 
@@ -153,7 +152,6 @@ public:
 	float emissive[4];
 	float shininess;
 	int bufIndex = -1;
-	GLuint texID;
 
 	Model(string nome) {
 		modelo = nome;
@@ -217,14 +215,6 @@ public:
 
 	void setBufIndex(int i) {
 		this->bufIndex = i;
-	}
-
-	GLuint getTexID() {
-		return texID;
-	}
-
-	void setTexID(int i) {
-		this->texID = (GLuint) i;
 	}
 
 };
