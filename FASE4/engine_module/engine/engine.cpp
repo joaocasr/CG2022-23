@@ -933,74 +933,54 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 
 				XMLElement* color = model->FirstChildElement("color");
 				if (color != nullptr) {
-					float Rambiente = 0, Gambiente = 0, Bambiente = 0;
-					float Rdiffuse = 0, Gdiffuse = 0, Bdiffuse = 0;
-					float Rspecular = 0, Gspecular = 0, Bspecular = 0;
-					float Remissive = 0, Gemissive = 0, Bemissive = 0;
-					float shiny = 0;
-
-					if (mod.texIndex != -1) {
-						Rambiente = 50.0f; Gambiente = 50.0f; Bambiente = 50.0f;
-						Rdiffuse = 200.0f; Gdiffuse = 200.0f; Bdiffuse = 200.0f;
-						Rspecular = 0; Gspecular = 0; Bspecular = 0;
-						Remissive = 0; Gemissive = 0; Bemissive = 0;
-						shiny = 0;
-					}
+					float Rambiente, Gambiente, Bambiente;
+					float Rdiffuse, Gdiffuse, Bdiffuse;
+					float Rspecular, Gspecular, Bspecular;
+					float Remissive, Gemissive, Bemissive;
+					float shiny;
 
 					XMLElement* diffuse = color->FirstChildElement("diffuse");
-					if (diffuse->Attribute("R") != nullptr) {
+					if (diffuse->Attribute("R") != nullptr && diffuse->Attribute("G") != nullptr && diffuse->Attribute("B") != nullptr) {
 						Rdiffuse = stof(diffuse->Attribute("R"));
-					}
-					if (diffuse->Attribute("G") != nullptr) {
 						Gdiffuse = stof(diffuse->Attribute("G"));
-					}
-					if (diffuse->Attribute("B") != nullptr) {
 						Bdiffuse = stof(diffuse->Attribute("B"));
+
+						mod.setDRGB(Rdiffuse, Gdiffuse, Bdiffuse);
 					}
-					mod.setDRGB(Rdiffuse, Gdiffuse, Bdiffuse);
 
 					XMLElement* ambient = diffuse->NextSiblingElement("ambient");
-					if (ambient->Attribute("R") != nullptr) {
+					if (ambient->Attribute("R") != nullptr && ambient->Attribute("G") != nullptr && ambient->Attribute("B") != nullptr) {
 						Rambiente = stof(ambient->Attribute("R"));
-					}
-					if (ambient->Attribute("G") != nullptr) {
 						Gambiente = stof(ambient->Attribute("G"));
-					}
-					if (ambient->Attribute("B") != nullptr) {
 						Bambiente = stof(ambient->Attribute("B"));
-					}
-					mod.setARGB(Rambiente, Gambiente, Bambiente);
 
+						mod.setARGB(Rambiente, Gambiente, Bambiente);
+					}
 
 					XMLElement* specular = ambient->NextSiblingElement("specular");
-					if (specular->Attribute("R") != nullptr) {
+					if (specular->Attribute("R") != nullptr && specular->Attribute("G") != nullptr && specular->Attribute("B") != nullptr) {
 						Rspecular = stof(specular->Attribute("R"));
-					}
-					if (specular->Attribute("G") != nullptr) {
 						Gspecular = stof(specular->Attribute("G"));
-					}
-					if (specular->Attribute("B") != nullptr) {
 						Bspecular = stof(specular->Attribute("B"));
+
+						mod.setSRGB(Rspecular, Gspecular, Bspecular);
 					}
-					mod.setSRGB(Rspecular, Gspecular, Bspecular);
 
 					XMLElement* emissive = specular->NextSiblingElement("emissive");
-					if (emissive->Attribute("R") != nullptr) {
+					if (emissive->Attribute("R") != nullptr && emissive->Attribute("G") != nullptr && emissive->Attribute("B") != nullptr) {
 						Remissive = stof(emissive->Attribute("R"));
-					}
-					if (emissive->Attribute("G") != nullptr) {
 						Gemissive = stof(emissive->Attribute("G"));
-					}
-					if (emissive->Attribute("B") != nullptr) {
 						Bemissive = stof(emissive->Attribute("B"));
+
+						mod.setERGB(Remissive, Gemissive, Bemissive);
 					}
-					mod.setERGB(Remissive, Gemissive, Bemissive);
 
 					XMLElement* shininess = emissive->NextSiblingElement("shininess");
 					if (shininess->Attribute("value") != nullptr) {
 						shiny = stof(shininess->Attribute("value"));
+
+						mod.setShiny(shiny);
 					}
-					mod.setShiny(shiny);
 				}
 				
 				modelos.push_back(mod);

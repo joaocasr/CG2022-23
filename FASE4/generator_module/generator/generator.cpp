@@ -77,8 +77,8 @@ void buildPlane(int units, int divs, char* filename) {
 	dir += "\\models\\";
 	dir += filename;
 
-	float stepx, stepy, stepz;
-	stepx = stepy = stepz = static_cast<float>(units) / divs;
+	float stepx, stepz;
+	stepx = stepz = static_cast<float>(units) / divs;
 	float finalx, finaly, finalz;
 	finalx = finaly = finalz = units / static_cast<float>(2);
 
@@ -100,10 +100,10 @@ void buildPlane(int units, int divs, char* filename) {
 			py2 = 0;
 
 			//pontos do plano
-			p1 = new Point(px1, py1, pz1, 0, 1, 0, j * stepy, i * stepx);
-			p2 = new Point(px2, py1, pz1, 0, 1, 0, j * stepy, i * stepx);
-			p3 = new Point(px1, py1, pz2, 0, 1, 0, j * stepy, i * stepx);
-			p4 = new Point(px2, py1, pz2, 0, 1, 0, j * stepy, i * stepx);
+			p1 = new Point(px1, py1, pz1, 0, 1, 0, float(i) / divs, float(j) / divs);
+			p2 = new Point(px2, py1, pz1, 0, 1, 0, float(i) / divs, float(j + 1) * 1.0f / divs);
+			p3 = new Point(px1, py1, pz2, 0, 1, 0, float(i + 1) / divs, float(j) * 1.0f / divs);
+			p4 = new Point(px2, py1, pz2, 0, 1, 0, float(i + 1) / divs, float(j + 1) * 1.0f / divs);
 
 			//triangulos do plano
 			t1 = new Triangle(p1, p3, p4);
@@ -112,7 +112,6 @@ void buildPlane(int units, int divs, char* filename) {
 			triangulos.push_back(t1);
 			triangulos.push_back(t2);
 			sizeTriangulos += 2;
-
 		}
 	}
 
