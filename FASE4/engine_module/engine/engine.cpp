@@ -189,18 +189,18 @@ void renderScene(void)
 	if (lightpoints.size()) glDisable(GL_LIGHTING);
 	// Axis
 	glBegin(GL_LINES);
-		// X axis Red
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(-100.0f, 0.0f, 0.0f);
-		glVertex3f(100.0f, 0.0f, 0.0f);
-		//Y Axis Green
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(0.0f, -100.0f, 0.0f);
-		glVertex3f(0.0f, 100.0f, 0.0f);
-		//Z axis Blue
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(0.0f, 0.0f, -100.0f);
-		glVertex3f(0.0f, 0.0f, 100.0f);
+	// X axis Red
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(-100.0f, 0.0f, 0.0f);
+	glVertex3f(100.0f, 0.0f, 0.0f);
+	//Y Axis Green
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.0f, -100.0f, 0.0f);
+	glVertex3f(0.0f, 100.0f, 0.0f);
+	//Z axis Blue
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, -100.0f);
+	glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
 	if (lightpoints.size()) glEnable(GL_LIGHTING);
 
@@ -271,6 +271,16 @@ void prepareData_BasicVBO(vector<Group> groups) {
 				sizeof(float) * m.normais.size(),
 				m.normais.data(),
 				GL_STATIC_DRAW);
+
+			/*
+			
+			glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex() + 2]);
+
+			glBufferData(GL_ARRAY_BUFFER,
+				sizeof(float) * m.tex.size(),
+				m.tex.data(),
+				GL_STATIC_DRAW);
+			*/
 		}
 
 		//Children
@@ -337,17 +347,23 @@ void build_groups(vector<Group> groups) {
 				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
 				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
 
+				//int texindex = 0;
 				for (int c = 0; c < m.pontos.size();c += 9) {
 					glBegin(GL_TRIANGLES);
 
 					glNormal3f(m.normais[c], m.normais[c + 1], m.normais[c + 2]);
 					glVertex3f(m.pontos[c], m.pontos[c + 1], m.pontos[c + 2]);
+					//glTexCoord2f(m.tex[texindex], m.tex[texindex + 1]);
 
 					glNormal3f(m.normais[c + 3], m.normais[c + 4], m.normais[c + 5]);
 					glVertex3f(m.pontos[c + 3], m.pontos[c + 4], m.pontos[c + 5]);
+					//glTexCoord2f(m.tex[texindex + 2], m.tex[texindex + 3]);
 
 					glNormal3f(m.normais[c + 6], m.normais[c + 7], m.normais[c + 8]);
 					glVertex3f(m.pontos[c + 6], m.pontos[c + 7], m.pontos[c + 8]);
+					//glTexCoord2f(m.tex[texindex + 4], m.tex[texindex + 5]);
+
+					//texindex += 6;
 
 					glEnd();
 				}
@@ -360,13 +376,22 @@ void build_groups(vector<Group> groups) {
 				glMaterialfv(GL_FRONT, GL_SPECULAR, m.specular);
 				glMaterialf(GL_FRONT, GL_SHININESS, m.shininess);
 
+				//glBindTexture(GL_TEXTURE_2D, buffers[m.getBufIndex()+3]);
+
 				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex()]);
 				glVertexPointer(3, GL_FLOAT, 0, 0);
 
 				glBindBuffer(GL_ARRAY_BUFFER, buffers[m.getBufIndex() + 1]);
 				glNormalPointer(GL_FLOAT, 0, 0);
 
+
+				//glBindBuffer(GL_ARRAY_BUFFER, buffers[2]);
+				//glTexCoordPointer(2, GL_FLOAT, 0, 0);
+
 				glDrawArrays(GL_TRIANGLES, 0, m.pontos.size() / 3);
+
+				//glBindTexture(GL_TEXTURE_2D, 0);
+
 			}
 
 		//Children
@@ -751,7 +776,7 @@ vector<Model> getModels(vector<Model> modelos) {
 				tmp.clear();
 			}
 			fname.setBufIndex(icount++); // Needed to know which VBO buffer to use for group
-			icount++;
+			icount++;//icount+=3;
 			modelosaux.push_back(fname);
 		}
 		else {
@@ -941,12 +966,12 @@ Group getGroups(XMLElement* xmlelement, bool top_lvl) {
 
 
 				}
-				
+
 				XMLElement* texture = model->FirstChildElement("texture");
 				if (texture != nullptr) {
 					mod.setTextureImg(texture->Attribute("file"));
 				}
-				
+
 				modelos.push_back(mod);
 			}
 			model = model->NextSiblingElement();
